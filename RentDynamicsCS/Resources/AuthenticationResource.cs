@@ -6,9 +6,9 @@ namespace RentDynamicsCS.Resources
 {
     public class AuthenticationResource
     {
-        private readonly RentDynamicsApiClient _apiClient;
+        private readonly IRentDynamicsApiClient _apiClient;
 
-        public AuthenticationResource(RentDynamicsApiClient apiClient)
+        public AuthenticationResource(IRentDynamicsApiClient apiClient)
         {
             _apiClient = apiClient;
         }
@@ -30,5 +30,17 @@ namespace RentDynamicsCS.Resources
         {
             throw new System.NotImplementedException();
         }
+    }
+
+    public static class AuthenticationResourceSyncMethodExtensions
+    {
+        public static AuthenticationResponse Login(this AuthenticationResource resource, string username, string password)
+            => resource.LoginAsync(username, password).GetAwaiter().GetResult();
+
+        public static AuthenticationResponse LoginAndSetAuthTokenAsync(this AuthenticationResource resource, string username, string password, RentDynamicsOptions options)
+            => resource.LoginAndSetAuthTokenAsync(username, password, options).GetAwaiter().GetResult();
+
+        public static void Logout(this AuthenticationResource resource)
+            => resource.LogoutAsync().GetAwaiter().GetResult();
     }
 }

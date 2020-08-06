@@ -1,15 +1,15 @@
 using System.Net.Http;
 using RentDynamicsCS.Models;
 
-namespace RentDynamicsCS
+namespace RentDynamicsCS.HttpApiClient
 {
-    public class CustomHttpRequestException : HttpRequestException
+    public class RentDynamicsHttpRequestException : HttpRequestException
     {
         public string? RawResponseBody { get; }
         public ApiError? ApiError { get; }
 
 
-        public CustomHttpRequestException(string message, string? rawResponseBody, ApiError? apiError)
+        public RentDynamicsHttpRequestException(string message, string? rawResponseBody, ApiError? apiError)
             : base(FormatMessage(message, apiError))
         {
             RawResponseBody = rawResponseBody;

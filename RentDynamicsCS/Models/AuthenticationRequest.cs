@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
@@ -22,7 +21,7 @@ namespace RentDynamicsCS.Models
         {
             using var sha1Managed = new SHA1Managed();
             byte[] passwordHash = sha1Managed.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return string.Join("", passwordHash.Select(b => b.ToString("X2"))).ToLower();
+            return passwordHash.ToHexString().ToLower();
         }
     }
 }

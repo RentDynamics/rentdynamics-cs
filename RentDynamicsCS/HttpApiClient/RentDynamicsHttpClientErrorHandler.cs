@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -5,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RentDynamicsCS.Models;
 
-namespace RentDynamicsCS
+namespace RentDynamicsCS.HttpApiClient
 {
     public class RentDynamicsHttpClientErrorHandler : DelegatingHandler
     {
@@ -41,11 +42,18 @@ namespace RentDynamicsCS
                 responseBody = await httpResponseMessage.Content.ReadAsStringAsync();
                 if (responseBody != null)
                 {
-                    apiError = JsonConvert.DeserializeObject<ApiError>(responseBody, _jsonSerializerSettings);
+                    try
+                    {
+                        apiError = JsonConvert.DeserializeObject<ApiError>(responseBody, _jsonSerializerSettings);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e); //TODO: Use logger
+                    }
                 }
             }
 
-            throw new CustomHttpRequestException($"Response status code does not indicate success: {httpResponseMessage.ReasonPhrase} ({httpResponseMessage.StatusCode})",
+            throw new RentDynamicsHttpRequestException($"Response status code does not indicate success: {httpResponseMessage.ReasonPhrase} ({httpResponseMessage.StatusCode})",
                                                  responseBody,
                                                  apiError);
 

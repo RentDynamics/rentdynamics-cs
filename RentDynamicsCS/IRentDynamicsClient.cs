@@ -3,16 +3,26 @@ using System.Threading.Tasks;
 
 namespace RentDynamicsCS
 {
-    public interface IRentDynamicsClient
+    public interface IRentDynamicsApiClient
     {
         Task<TResult> GetJsonAsync<TResult>(string url, CancellationToken token = default);
-        TResult GetJson<TResult>(string url);
-        Task<TResult> PostJsonAsync<TResult>(string url, object data, CancellationToken token = default);
-        TResult PostJson<TResult>(string url, object data);
-        Task<TResult> PutJsonAsync<TResult>(string url, object data, CancellationToken token = default);
-        TResult PutJson<TResult>(string url, object data);
+        Task<TResult> PostJsonAsync<TRequest, TResult>(string url, TRequest data, CancellationToken token = default);
+        Task<TResult> PutJsonAsync<TRequest, TResult>(string url, TRequest data, CancellationToken token = default);
+        Task<TResult> DeleteJsonAsync<TResult>(string url, CancellationToken token = default);
+    }
 
-        Task<string> LoginAsync(string username, string password, CancellationToken token = default);
-        Task LogoutAsync(CancellationToken token = default);
+    public static class RentDynamicsApiClientSyncMethodExtensions
+    {
+        public static TResult GetJson<TResult>(this IRentDynamicsApiClient apiClient, string url)
+            => apiClient.GetJsonAsync<TResult>(url).GetAwaiter().GetResult();
+
+        public static TResult PostJson<TRequest, TResult>(this IRentDynamicsApiClient apiClient, string url, TRequest data)
+            => apiClient.PostJsonAsync<TRequest, TResult>(url, data).GetAwaiter().GetResult();
+
+        public static TResult PutJson<TRequest, TResult>(this IRentDynamicsApiClient apiClient, string url, TRequest data)
+            => apiClient.PutJsonAsync<TRequest, TResult>(url, data).GetAwaiter().GetResult();
+
+        public static TResult DeleteJson<TResult>(this IRentDynamicsApiClient apiClient, string url)
+            => apiClient.DeleteJsonAsync<TResult>(url).GetAwaiter().GetResult();
     }
 }

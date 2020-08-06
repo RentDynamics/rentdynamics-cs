@@ -1,17 +1,14 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RentDynamicsCS.RestClient;
 
-namespace RentDynamicsCS.Resources
+namespace RentDynamicsCS.HttpApiClient
 {
-    public class RentDynamicsApiClient
+    public class RentDynamicsApiClient : IRentDynamicsApiClient
     {
         protected HttpClient HttpClient { get; }
-        protected JsonSerializerSettings JsonSerializerSettings { get; }
 
         protected JsonMediaTypeFormatter JsonFormatter { get; }
         protected MediaTypeFormatter[] Formatters { get; }
@@ -19,25 +16,14 @@ namespace RentDynamicsCS.Resources
         public RentDynamicsApiClient(HttpClient httpClient, JsonSerializerSettings? jsonSerializerSettings = null)
         {
             HttpClient = httpClient;
-            JsonSerializerSettings = jsonSerializerSettings ?? GetDefaultSerializerSettings();
 
-            JsonFormatter = new JsonMediaTypeFormatter { SerializerSettings = JsonSerializerSettings };
+            JsonFormatter = new JsonMediaTypeFormatter { SerializerSettings = jsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings };
             Formatters = new MediaTypeFormatter[] { JsonFormatter };
         }
 
         public RentDynamicsApiClient(RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings = null)
-            : this(CreateDefaultClient(options, jsonSerializerSettings), jsonSerializerSettings)
+            : this(RentDynamicsHttpClientFactory.Create(options, jsonSerializerSettings), jsonSerializerSettings)
         {
-        }
-
-        private static HttpClient CreateDefaultClient(RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings)
-        {
-            return RentDynamicsHttpClientFactory.Create(options, jsonSerializerSettings ?? GetDefaultSerializerSettings());
-        }
-
-        private static JsonSerializerSettings GetDefaultSerializerSettings()
-        {
-            return RentDynamicsRestClientConfigurationHelper.DefaultSerializerSettings;
         }
 
         public virtual async Task<TResult> GetJsonAsync<TResult>(string requestUri, CancellationToken token = default)
@@ -57,7 +43,7 @@ namespace RentDynamicsCS.Resources
             var response = await HttpClient.PutAsync(requestUri, data, JsonFormatter, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
-        
+
         public virtual async Task<TResult> DeleteJsonAsync<TResult>(string requestUri, CancellationToken token = default)
         {
             var response = await HttpClient.DeleteAsync(requestUri, token);
