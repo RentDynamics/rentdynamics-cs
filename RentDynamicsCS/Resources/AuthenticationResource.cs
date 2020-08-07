@@ -15,7 +15,7 @@ namespace RentDynamicsCS.Resources
 
         public async Task<LoginResponse> LoginAsync(string username, string password, CancellationToken token = default)
         {
-            var authenticationResponse = await _apiClient.PostJsonAsync<LoginRequest, LoginResponse>("/auth/login", new LoginRequest(username, password), token);
+            var authenticationResponse = await _apiClient.PostAsync<LoginRequest, LoginResponse>("/auth/login", new LoginRequest(username, password), token);
 
             _apiClient.Options.AuthToken = authenticationResponse.AuthenticationToken;
 
@@ -24,7 +24,7 @@ namespace RentDynamicsCS.Resources
 
         public async Task<LogoutResponse> LogoutAsync(CancellationToken cancellationToken = default)
         {
-            return await _apiClient.PostJsonAsync<LogoutRequest, LogoutResponse>("/auth/logout", new LogoutRequest(_apiClient.Options.AuthToken), cancellationToken);
+            return await _apiClient.PostAsync<LogoutRequest, LogoutResponse>("/auth/logout", new LogoutRequest(_apiClient.Options.AuthToken), cancellationToken);
         }
     }
 

@@ -29,25 +29,25 @@ namespace RentDynamicsCS.HttpApiClient
         {
         }
 
-        public virtual async Task<TResult> GetJsonAsync<TResult>(string requestUri, CancellationToken token = default)
+        public virtual async Task<TResult> GetAsync<TResult>(string requestUri, CancellationToken token = default)
         {
             var response = await HttpClient.GetAsync(requestUri, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> PostJsonAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default)
+        public virtual async Task<TResult> PostAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default)
         {
             var response = await HttpClient.PostAsync(requestUri, data, JsonFormatter, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> PutJsonAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default)
+        public virtual async Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default)
         {
             var response = await HttpClient.PutAsync(requestUri, data, JsonFormatter, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> DeleteJsonAsync<TResult>(string requestUri, CancellationToken token = default)
+        public virtual async Task<TResult> DeleteAsync<TResult>(string requestUri, CancellationToken token = default)
         {
             var response = await HttpClient.DeleteAsync(requestUri, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
