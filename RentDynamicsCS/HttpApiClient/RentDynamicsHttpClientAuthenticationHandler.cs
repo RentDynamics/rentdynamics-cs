@@ -21,7 +21,10 @@ namespace RentDynamicsCS.HttpApiClient
             var unixEpoch = new DateTime(1970, 1, 1);
             long unixTimestampMilliseconds = (long) (DateTime.UtcNow - unixEpoch).TotalMilliseconds;
 
-            string requestContent = await request.Content.ReadAsStringAsync();
+            string? requestContent = request.Content == null
+                ? null
+                : await request.Content.ReadAsStringAsync();
+            
             string nonce = _nonceCalculator.GetNonce(_options.ApiSecretKey, unixTimestampMilliseconds, request.RequestUri.AbsolutePath, requestContent);
 
             request.Headers.Add("x-rd-api-key", _options.ApiKey);
