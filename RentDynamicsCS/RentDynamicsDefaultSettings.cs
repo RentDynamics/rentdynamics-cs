@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace RentDynamicsCS
 {
@@ -6,7 +7,7 @@ namespace RentDynamicsCS
     {
         public static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
         {
-            ContractResolver = new OrderedContractResolver(),
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
             DefaultValueHandling = DefaultValueHandling.Include,
             TypeNameHandling = TypeNameHandling.None,
             NullValueHandling = NullValueHandling.Ignore,

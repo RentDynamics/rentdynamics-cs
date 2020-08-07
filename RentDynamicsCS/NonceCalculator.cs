@@ -1,5 +1,9 @@
+using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace RentDynamicsCS
 {
@@ -10,9 +14,33 @@ namespace RentDynamicsCS
 
     public class NonceCalculator : INonceCalculator
     {
+        private static string GetSortedJson(string unsortedJson)
+        {
+            using var reader = new JsonTextReader(new StringReader(unsortedJson))
+            {
+                DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone
+            };
+            var jObject = JObject.Load(reader);
+
+            JsonSortHelper.Sort(jObject);
+
+            return jObject.ToString(Formatting.None);
+        }
+
+        private static string? PrepareBody(string? data)
+        {
+            if (data == null) return null;
+
+            data = data.Replace(" ", string.Empty);
+
+            data = GetSortedJson(data);
+
+            return data;
+        }
+
         public string GetNonce(string apiSecretKey, long unixTimestampMilliseconds, string relativeUrl, string? data = "")
         {
-            string nonceString = unixTimestampMilliseconds + relativeUrl + data?.Replace(" ", string.Empty);
+            string nonceString = unixTimestampMilliseconds + relativeUrl + PrepareBody(data);
 
             var encoding = Encoding.UTF8;
 
