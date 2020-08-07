@@ -5,6 +5,8 @@ namespace RentDynamicsCS
 {
     public interface IRentDynamicsApiClient
     {
+        RentDynamicsOptions Options { get; }
+
         Task<TResult> GetJsonAsync<TResult>(string url, CancellationToken token = default);
         Task<TResult> PostJsonAsync<TRequest, TResult>(string url, TRequest data, CancellationToken token = default);
         Task<TResult> PutJsonAsync<TRequest, TResult>(string url, TRequest data, CancellationToken token = default);

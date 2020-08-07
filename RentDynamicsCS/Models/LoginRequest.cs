@@ -4,14 +4,14 @@ using Newtonsoft.Json;
 
 namespace RentDynamicsCS.Models
 {
-    public class AuthenticationRequest
+    public class LoginRequest
     {
         public string Username { get; }
         
         [JsonProperty("password")]
         public string PasswordHash { get; }
 
-        public AuthenticationRequest(string username, string password)
+        public LoginRequest(string username, string password)
         {
             Username = username;
             PasswordHash = GetPasswordHash(password);

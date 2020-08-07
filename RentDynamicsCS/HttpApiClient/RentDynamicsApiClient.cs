@@ -13,16 +13,19 @@ namespace RentDynamicsCS.HttpApiClient
         protected JsonMediaTypeFormatter JsonFormatter { get; }
         protected MediaTypeFormatter[] Formatters { get; }
 
-        public RentDynamicsApiClient(HttpClient httpClient, JsonSerializerSettings? jsonSerializerSettings = null)
+        public RentDynamicsOptions Options { get; }
+        
+        public RentDynamicsApiClient(HttpClient httpClient, RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings = null)
         {
             HttpClient = httpClient;
+            Options = options;
 
             JsonFormatter = new JsonMediaTypeFormatter { SerializerSettings = jsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings };
             Formatters = new MediaTypeFormatter[] { JsonFormatter };
         }
 
         public RentDynamicsApiClient(RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings = null)
-            : this(RentDynamicsHttpClientFactory.Create(options, jsonSerializerSettings), jsonSerializerSettings)
+            : this(RentDynamicsHttpClientFactory.Create(options, jsonSerializerSettings), options, jsonSerializerSettings)
         {
         }
 

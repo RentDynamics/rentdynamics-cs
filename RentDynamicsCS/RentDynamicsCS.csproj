@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
         <Title>RentDynamicsCS</Title>
@@ -9,6 +8,7 @@
         <Description>C# client library to access RentDynamics APIs</Description>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <RepositoryUrl>https://github.com/RentDynamics/TODO</RepositoryUrl>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

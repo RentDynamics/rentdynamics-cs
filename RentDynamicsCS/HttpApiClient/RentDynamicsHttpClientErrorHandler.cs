@@ -53,10 +53,7 @@ namespace RentDynamicsCS.HttpApiClient
                 }
             }
 
-            throw new RentDynamicsHttpRequestException($"Response status code does not indicate success: {httpResponseMessage.ReasonPhrase} ({httpResponseMessage.StatusCode})",
-                                                 responseBody,
-                                                 apiError);
-
+            throw new RentDynamicsHttpRequestException("Response status code does not indicate success.", httpResponseMessage, responseBody, apiError);
         }
     }
 }
