@@ -10,7 +10,7 @@ namespace RentDynamicsCS.Tests.ResourcesDataSerialization
     public abstract class BaseResourceDataSerializationTest<TResource>
     where TResource: BaseRentDynamicsResource
     {
-        protected Mock<HttpMessageHandler> MockHandler { get; private set; }
+        protected Mock<HttpMessageHandler> MockHandler { get; private set; } = null!;
         protected virtual TResource Resource => (TResource) Activator.CreateInstance(typeof(TResource), CreateRdClient())!; 
 
         [TestInitialize]
@@ -28,7 +28,7 @@ namespace RentDynamicsCS.Tests.ResourcesDataSerialization
         {
             var options = new RentDynamicsOptions("test", "test-secret", isDevelopment: true);
             var httpClient = mockHandler.CreateClientWithBaseAddress();
-            return new RentDynamicsApiClient(httpClient, options);
+            return new RentDynamicsApiClient(httpClient, new RentDynamicsApiClientSettings { Options = options });
         }
     }
 }
