@@ -4,36 +4,39 @@ using RentDynamicsCS.Models;
 
 namespace RentDynamicsCS.Resources
 {
-    public class AuthenticationResource
+    public interface IAuthenticationResource
     {
-        private readonly IRentDynamicsApiClient _apiClient;
+        Task<LoginResponse> LoginAsync(string username, string password, CancellationToken token = default);
+        Task<LogoutResponse> LogoutAsync(CancellationToken cancellationToken = default);
+    }
 
-        public AuthenticationResource(IRentDynamicsApiClient apiClient)
+    public class AuthenticationResource : BaseRentDynamicsResource, IAuthenticationResource
+    {
+        public AuthenticationResource(IRentDynamicsApiClient apiClient) : base(apiClient)
         {
-            _apiClient = apiClient;
         }
 
         public async Task<LoginResponse> LoginAsync(string username, string password, CancellationToken token = default)
         {
-            var authenticationResponse = await _apiClient.PostAsync<LoginRequest, LoginResponse>("/auth/login", new LoginRequest(username, password), token);
+            var authenticationResponse = await ApiClient.PostAsync<LoginRequest, LoginResponse>("/auth/login", new LoginRequest(username, password), token);
 
-            _apiClient.Options.AuthToken = authenticationResponse.AuthenticationToken;
+            ApiClient.Options.AuthToken = authenticationResponse.AuthenticationToken;
 
             return authenticationResponse;
         }
 
         public async Task<LogoutResponse> LogoutAsync(CancellationToken cancellationToken = default)
         {
-            return await _apiClient.PostAsync<LogoutRequest, LogoutResponse>("/auth/logout", new LogoutRequest(_apiClient.Options.AuthToken), cancellationToken);
+            return await ApiClient.PostAsync<LogoutRequest, LogoutResponse>("/auth/logout", new LogoutRequest(ApiClient.Options.AuthToken), cancellationToken);
         }
     }
 
     public static class AuthenticationResourceSyncMethodExtensions
     {
-        public static LoginResponse Login(this AuthenticationResource resource, string username, string password)
+        public static LoginResponse Login(this IAuthenticationResource resource, string username, string password)
             => resource.LoginAsync(username, password).GetAwaiter().GetResult();
 
-        public static LogoutResponse Logout(this AuthenticationResource resource)
+        public static LogoutResponse Logout(this IAuthenticationResource resource)
             => resource.LogoutAsync().GetAwaiter().GetResult();
     }
 }
