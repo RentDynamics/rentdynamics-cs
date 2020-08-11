@@ -22,7 +22,7 @@ namespace RentDynamicsCS.HttpApiClient
             baseMessage += $"{httpResponseMessage.ReasonPhrase} ({(int) httpResponseMessage.StatusCode}-{httpResponseMessage.StatusCode})";
             if (apiError == null) return baseMessage;
 
-            string apiErrorMessage = string.Join(Environment.NewLine, apiError.GetErrors());
+            string apiErrorMessage = string.Join(Environment.NewLine, apiError);
 
             if (apiErrorMessage == string.Empty) return baseMessage;
 

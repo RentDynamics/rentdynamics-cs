@@ -2,15 +2,12 @@ using System.Collections.Generic;
 
 namespace RentDynamicsCS.Models
 {
-    public class ApiError
+    public class ApiError : Dictionary<string, object>
     {
-        public string? ErrorMessage { get; set; }
-        public string? Detail { get; set; }
+        private string? GetValueOrNull(string key) => TryGetValue("errorMessage", out object result) ? result.ToString() : null;
 
-        public IEnumerable<string> GetErrors()
-        {
-            if (ErrorMessage != null) yield return ErrorMessage;
-            if (Detail != null) yield return Detail;
-        }
+        public string? ErrorMessage => GetValueOrNull("errorMessage");
+        public string? ErrorMessage2 => GetValueOrNull("error_message");
+        public string? Detail => GetValueOrNull("detail");
     }
 }
