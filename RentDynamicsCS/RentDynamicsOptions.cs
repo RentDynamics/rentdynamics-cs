@@ -6,7 +6,7 @@ namespace RentDynamicsCS
     {
         public string ApiKey { get; }
         public string ApiSecretKey { get; }
-        public string? AuthToken { get; set; }
+        public UserAuthentication UserAuthentication { get; }
 
         public bool IsDevelopment { get; }
         public string DevelopmentUrl { get; }
@@ -17,14 +17,14 @@ namespace RentDynamicsCS
         public RentDynamicsOptions(
             string apiKey,
             string apiSecretKey,
-            string? authToken = null,
+            UserAuthentication? userAuthentication = null,
             bool isDevelopment = false,
             string productionUrl = "https://api.rentdynamics.com",
             string developmentUrl = "https://api-dev.rentdynamics.com")
         {
             ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
             ApiSecretKey = apiSecretKey ?? throw new ArgumentNullException(nameof(apiSecretKey));
-            AuthToken = authToken;
+            UserAuthentication = userAuthentication ?? new UserAuthentication();
             IsDevelopment = isDevelopment;
             DevelopmentUrl = developmentUrl;
             ProductionUrl = productionUrl;

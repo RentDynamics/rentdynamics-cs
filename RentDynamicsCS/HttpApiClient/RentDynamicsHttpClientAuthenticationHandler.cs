@@ -24,17 +24,18 @@ namespace RentDynamicsCS.HttpApiClient
             string? requestContent = request.Content == null
                 ? null
                 : await request.Content.ReadAsStringAsync();
-            
+
             string nonce = _nonceCalculator.GetNonce(_options.ApiSecretKey, unixTimestampMilliseconds, request.RequestUri.PathAndQuery, requestContent);
 
             request.Headers.Add("x-rd-api-key", _options.ApiKey);
             request.Headers.Add("x-rd-timestamp", unixTimestampMilliseconds.ToString());
             request.Headers.Add("x-rd-api-nonce", nonce);
 
+            var userAuthentication = _options.UserAuthentication;
             //TODO: Is refresh token behavior required?
-            if (_options.AuthToken != null)
+            if (userAuthentication.IsAuthenticated)
             {
-                request.Headers.Add("Authorization", $"TOKEN {_options.AuthToken}");
+                request.Headers.Add("Authorization", $"TOKEN {userAuthentication.AuthenticationToken}");
             }
 
             return await base.SendAsync(request, cancellationToken);
