@@ -1,50 +1,66 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using RentDynamicsCS.HttpApiClient;
 using RentDynamicsCS.Resources;
+using Scrutor;
 
 namespace RentDynamicsCS.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddRentDynamicsApi(this IServiceCollection services, RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings = null)
+        private static void TryAddCoreRentDynamicsServices(this IServiceCollection services)
+
         {
-            services.AddSingleton<RentDynamicsOptions>(_ => options);
-            services.AddSingleton<RentDynamicsApiClientSettings>(provider => new RentDynamicsApiClientSettings
-            {
-                Options = provider.GetRequiredService<RentDynamicsOptions>(),
-                JsonSerializerSettings = jsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings
-            });
-
-            services.AddScoped<RentDynamicsHttpClientErrorHandler>(_ => new RentDynamicsHttpClientErrorHandler(jsonSerializerSettings ??
-                                                                                                               RentDynamicsDefaultSettings.DefaultSerializerSettings));
-            services.AddScoped<RentDynamicsHttpClientAuthenticationHandler>();
-            services.AddScoped<INonceCalculator, NonceCalculator>();
-
-            services.AddHttpClient<IRentDynamicsApiClient, RentDynamicsApiClient>((provider, client) =>
-                    {
-                        var options = provider.GetRequiredService<RentDynamicsOptions>();
-                        client.BaseAddress = new Uri(options.BaseUrl);
-                    })
-                    .AddHttpMessageHandler<RentDynamicsHttpClientErrorHandler>()
-                    .AddHttpMessageHandler<RentDynamicsHttpClientAuthenticationHandler>();
+            services.TryAddScoped<INonceCalculator, NonceCalculator>();
 
             services.Scan(selector => selector.FromAssemblyOf<BaseRentDynamicsResource>()
                                               .AddClasses(classes => classes.AssignableTo<BaseRentDynamicsResource>())
-                                              .AsImplementedInterfaces());
+                                              .AsImplementedInterfaces()
+                                              .UsingRegistrationStrategy(RegistrationStrategy.Skip));
+        }
+
+        public static IServiceCollection AddRentDynamicsApiClient<TClient, TClientImplementation, TClientSettings>(
+            this IServiceCollection services,
+            TClientSettings settings
+        )
+            where TClient : class, IRentDynamicsApiClient
+            where TClientSettings : class, IRentDynamicsApiClientSettings
+            where TClientImplementation : RentDynamicsApiClient<TClientSettings>, TClient
+        {
+            services.AddSingleton(settings);
+            services.TryAddCoreRentDynamicsServices();
+
+            services.AddScoped<RentDynamicsHttpClientErrorHandler<TClientSettings>>();
+            services.AddScoped<RentDynamicsHttpClientAuthenticationHandler<TClientSettings>>();
+
+            services.AddHttpClient<TClient, TClientImplementation>((provider, client) => { client.BaseAddress = new Uri(settings.Options.BaseUrl); })
+                    .AddHttpMessageHandler<RentDynamicsHttpClientErrorHandler<TClientSettings>>()
+                    .AddHttpMessageHandler<RentDynamicsHttpClientAuthenticationHandler<TClientSettings>>();
 
             return services;
-
         }
-        public static IServiceCollection AddRentDynamicsApi(
+
+        public static IServiceCollection AddDefaultRentDynamicsClient(
             this IServiceCollection services,
             string apiKey,
             string apiSecretKey,
             bool isDevelopment = false,
             JsonSerializerSettings? jsonSerializerSettings = null)
         {
-            return services.AddRentDynamicsApi(new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment), jsonSerializerSettings);
+            var settings = new RentDynamicsApiClientSettings
+            {
+                Options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment),
+                JsonSerializerSettings = jsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings
+            };
+
+            return services.AddRentDynamicsApiClient<IRentDynamicsApiClient, RentDynamicsApiClient, RentDynamicsApiClientSettings>(settings);
+        }
+
+        public static IServiceCollection AddDefaultRentDynamicsClient(this IServiceCollection services, Func<IServiceProvider, IRentDynamicsApiClient> implementationFactory)
+        {
+            return services.AddTransient(implementationFactory);
         }
     }
 }

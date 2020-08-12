@@ -17,17 +17,19 @@ namespace RentDynamicsCS
         public RentDynamicsOptions(
             string apiKey,
             string apiSecretKey,
-            UserAuthentication? userAuthentication = null,
+            Action<UserAuthentication> configureUserAuthentication = null,
             bool isDevelopment = false,
             string productionUrl = "https://api.rentdynamics.com",
             string developmentUrl = "https://api-dev.rentdynamics.com")
         {
             ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
             ApiSecretKey = apiSecretKey ?? throw new ArgumentNullException(nameof(apiSecretKey));
-            UserAuthentication = userAuthentication ?? new UserAuthentication();
+            UserAuthentication = new UserAuthentication();
             IsDevelopment = isDevelopment;
             DevelopmentUrl = developmentUrl;
             ProductionUrl = productionUrl;
+
+            configureUserAuthentication?.Invoke(UserAuthentication);
         }
     }
 }

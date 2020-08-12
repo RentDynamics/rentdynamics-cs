@@ -35,7 +35,7 @@ namespace RentDynamicsCS.Tests.DependencyInjection
         {
             var services = new ServiceCollection();
 
-            services.AddRentDynamicsApi("test", "test-key", isDevelopment: true);
+            services.AddDefaultRentDynamicsClient("test", "test-key", isDevelopment: true);
 
             using var provider = services.BuildServiceProvider();
             using var scope = provider.CreateScope();

@@ -8,13 +8,14 @@ using RentDynamicsCS.Models;
 
 namespace RentDynamicsCS.HttpApiClient
 {
-    public class RentDynamicsHttpClientErrorHandler : DelegatingHandler
+    public class RentDynamicsHttpClientErrorHandler<TClientSettings> : DelegatingHandler
+        where TClientSettings : IRentDynamicsApiClientSettings
     {
-        private readonly JsonSerializerSettings _jsonSerializerSettings;
+        private readonly TClientSettings _settings;
 
-        public RentDynamicsHttpClientErrorHandler(JsonSerializerSettings jsonSerializerSettings)
+        public RentDynamicsHttpClientErrorHandler(TClientSettings settings)
         {
-            _jsonSerializerSettings = jsonSerializerSettings;
+            _settings = settings;
         }
 
         protected virtual bool ShouldTryReadResponseBody(HttpResponseMessage responseMessage)
@@ -27,13 +28,13 @@ namespace RentDynamicsCS.HttpApiClient
 
             return contentLength <= 1024 * 30; //30 KB
         }
-        
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var httpResponseMessage = await base.SendAsync(request, cancellationToken);
 
             if (httpResponseMessage.IsSuccessStatusCode) return httpResponseMessage;
-            
+
             string? responseBody = null;
             ApiError? apiError = null;
 
@@ -44,7 +45,7 @@ namespace RentDynamicsCS.HttpApiClient
                 {
                     try
                     {
-                        apiError = JsonConvert.DeserializeObject<ApiError>(responseBody, _jsonSerializerSettings);
+                        apiError = JsonConvert.DeserializeObject<ApiError>(responseBody, _settings.JsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings);
                     }
                     catch (Exception e)
                     {
