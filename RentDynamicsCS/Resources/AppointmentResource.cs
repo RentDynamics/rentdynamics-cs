@@ -6,13 +6,7 @@ using RentDynamicsCS.Models;
 
 namespace RentDynamicsCS.Resources
 {
-    public interface IAppointmentResource
-    {
-        Task<List<DateTime>> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool isUtc);
-        Task<AppointmentDays> GetAppointmentDaysAsync(int communityGroupId, DateTime startAppointmentDate, DateTime endAppointmentDate);
-    }
-
-    public class AppointmentResource : BaseRentDynamicsResource, IAppointmentResource
+    public class AppointmentResource : BaseRentDynamicsResource
     {
         public AppointmentResource(IRentDynamicsApiClient apiClient) : base(apiClient)
         {

@@ -4,7 +4,7 @@ using RentDynamicsCS.Models;
 
 namespace RentDynamicsCS.Resources
 {
-    public class AuthenticationResource : BaseRentDynamicsResource, IAuthenticationResource
+    public class AuthenticationResource : BaseRentDynamicsResource
     {
         private UserAuthentication UserAuthentication => ApiClient.Options.UserAuthentication;
 

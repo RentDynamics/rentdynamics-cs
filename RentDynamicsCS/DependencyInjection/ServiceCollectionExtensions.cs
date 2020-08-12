@@ -15,10 +15,18 @@ namespace RentDynamicsCS.DependencyInjection
         {
             services.TryAddScoped<INonceCalculator, NonceCalculator>();
 
+            services.TryAddRentDynamicsResourceFactories();
+
             services.Scan(selector => selector.FromAssemblyOf<BaseRentDynamicsResource>()
                                               .AddClasses(classes => classes.AssignableTo<BaseRentDynamicsResource>())
-                                              .AsImplementedInterfaces()
+                                              .AsSelf()
                                               .UsingRegistrationStrategy(RegistrationStrategy.Skip));
+        }
+
+        private static void TryAddRentDynamicsResourceFactories(this IServiceCollection services)
+        {
+            services.TryAddScoped(typeof(IRentDynamicsResourceFactory<>), typeof(RentDynamicsResourceFactory<>));
+            services.TryAddScoped<IRentDynamicsResourceFactory>(provider => provider.GetRequiredService<IRentDynamicsResourceFactory<IRentDynamicsApiClient>>());
         }
 
         public static IServiceCollection AddRentDynamicsApiClient<TClient, TClientImplementation, TClientSettings>(
