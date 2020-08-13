@@ -14,5 +14,7 @@ namespace RentDynamics.RdClient
             Formatting = Formatting.None,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
         };
+
+        internal const string DateFormatShortUs = "MM\\/dd\\/yyyy";
     }
 }

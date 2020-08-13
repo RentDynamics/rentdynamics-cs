@@ -16,7 +16,7 @@ namespace RentDynamics.RdClient.Resources
         {
             var parameters = new Dictionary<string, string>
             {
-                { "appointmentDate", appointmentDate.Date.ToString("MM/dd/yyyy") },
+                { "appointmentDate", appointmentDate.Date.ToString(RentDynamicsDefaultSettings.DateFormatShortUs) },
                 { "isUTC", isUtc.ToString() }
             };
             string query = QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
@@ -27,8 +27,8 @@ namespace RentDynamics.RdClient.Resources
         {
             var parameters = new Dictionary<string, string>
             {
-                { "start", startAppointmentDate.Date.ToString("MM/dd/yyyy") },
-                { "end", endAppointmentDate.Date.ToString("MM/dd/yyyy") },
+                { "start", startAppointmentDate.Date.ToString(RentDynamicsDefaultSettings.DateFormatShortUs) },
+                { "end", endAppointmentDate.Date.ToString(RentDynamicsDefaultSettings.DateFormatShortUs) },
             };
             string query = QueryHelpers.AddQueryString($"/appointmentDays/{communityGroupId}", parameters);
             return await ApiClient.GetAsync<AppointmentDays>(query);

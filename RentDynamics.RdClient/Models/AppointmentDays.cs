@@ -5,7 +5,7 @@ using RentDynamics.RdClient.Converters;
 
 namespace RentDynamics.RdClient.Models
 {
-    [JsonArray(ItemConverterType = typeof(DateFormatConverter), ItemConverterParameters = new object[] { "MM/dd/yyyy" })]
+    [JsonArray(ItemConverterType = typeof(DateFormatConverter), ItemConverterParameters = new object[] { RentDynamicsDefaultSettings.DateFormatShortUs })]
     public class AppointmentDays : List<DateTime>
     {
     }
