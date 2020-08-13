@@ -24,7 +24,7 @@ namespace RentDynamics.RdClient.Resources
         {
             if (!UserAuthentication.IsAuthenticated) throw new AuthenticationResourceException("User is not authenticated");
 
-            var logoutRequest = new LogoutRequest(UserAuthentication.UserId.Value, UserAuthentication.AuthenticationToken);
+            var logoutRequest = new LogoutRequest(UserAuthentication.UserId.Value);
             await ApiClient.PostAsync<LogoutRequest, object?>("/auth/logout", logoutRequest, cancellationToken);
             UserAuthentication.RemoveAuthentication();
         }
