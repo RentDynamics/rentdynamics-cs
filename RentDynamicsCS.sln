@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.Client", "RentDynamics.Client\RentDynamics.Client.csproj", "{15358AB5-F692-4A00-8C47-228C9D01A546}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.RdClient", "RentDynamics.RdClient\RentDynamics.RdClient.csproj", "{15358AB5-F692-4A00-8C47-228C9D01A546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.Client.Tests", "RentDynamics.Client.Tests\RentDynamics.Client.Tests.csproj", "{73EDDC6D-75AF-4C4B-B800-5A30C132A792}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.RdClient.Tests", "RentDynamics.RdClient.Tests\RentDynamics.RdClient.Tests.csproj", "{73EDDC6D-75AF-4C4B-B800-5A30C132A792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

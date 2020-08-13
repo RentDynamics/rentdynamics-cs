@@ -9,6 +9,8 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <RepositoryUrl>https://github.com/RentDynamics/TODO</RepositoryUrl>
         <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+        <RootNamespace>RentDynamics.RdClient</RootNamespace>
+        <AssemblyName>RentDynamics.RdClient</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

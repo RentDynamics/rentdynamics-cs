@@ -5,6 +5,8 @@
         <IsPackable>false</IsPackable>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
+        <AssemblyName>RentDynamics.RdClient.Tests</AssemblyName>
+        <RootNamespace>RentDynamics.RdClient.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RentDynamics.Client\RentDynamics.Client.csproj" />
+      <ProjectReference Include="..\RentDynamics.RdClient\RentDynamics.RdClient.csproj" />
     </ItemGroup>
 
 </Project>
