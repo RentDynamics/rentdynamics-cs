@@ -1,20 +1,8 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using RentDynamics.Client.Resources;
 
-namespace RentDynamics.Client
+namespace RentDynamics.Client.Resources
 {
-    public interface IRentDynamicsResourceFactory
-    {
-        TResource CreateResource<TResource>()
-            where TResource : BaseRentDynamicsResource;
-    }
-
-    public interface IRentDynamicsResourceFactory<TClient> : IRentDynamicsResourceFactory
-        where TClient : IRentDynamicsApiClient
-    {
-    }
-
     public class RentDynamicsResourceFactory<TClient> : IRentDynamicsResourceFactory<TClient>
         where TClient : IRentDynamicsApiClient
     {
