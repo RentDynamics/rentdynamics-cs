@@ -4,11 +4,11 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RentDynamics.Client.DependencyInjection;
-using RentDynamics.Client.HttpApiClient;
-using RentDynamics.Client.Resources;
+using RentDynamics.RdClient.DependencyInjection;
+using RentDynamics.RdClient.HttpApiClient;
+using RentDynamics.RdClient.Resources;
 
-namespace RentDynamics.Client.Tests.DependencyInjection
+namespace RentDynamics.RdClient.Tests.DependencyInjection
 {
     [TestClass]
     public class DependencyInjectionTests

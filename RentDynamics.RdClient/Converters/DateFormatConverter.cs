@@ -1,6 +1,6 @@
 using Newtonsoft.Json.Converters;
 
-namespace RentDynamics.Client.Converters
+namespace RentDynamics.RdClient.Converters
 {
     public class DateFormatConverter : IsoDateTimeConverter
     {

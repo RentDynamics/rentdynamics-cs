@@ -1,4 +1,4 @@
-namespace RentDynamics.Client
+namespace RentDynamics.RdClient
 {
     public class UserAuthentication
     {

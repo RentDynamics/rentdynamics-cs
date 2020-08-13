@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using RentDynamics.Client.Converters;
+using RentDynamics.RdClient.Converters;
 
-namespace RentDynamics.Client.Models
+namespace RentDynamics.RdClient.Models
 {
     [JsonArray(ItemConverterType = typeof(DateFormatConverter), ItemConverterParameters = new object[] { "MM/dd/yyyy" })]
     public class AppointmentDays : List<DateTime>

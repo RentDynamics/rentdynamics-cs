@@ -1,8 +1,8 @@
 using System;
 using System.Net.Http;
-using RentDynamics.Client.Models;
+using RentDynamics.RdClient.Models;
 
-namespace RentDynamics.Client.HttpApiClient
+namespace RentDynamics.RdClient.HttpApiClient
 {
     public class RentDynamicsHttpRequestException : HttpRequestException
     {

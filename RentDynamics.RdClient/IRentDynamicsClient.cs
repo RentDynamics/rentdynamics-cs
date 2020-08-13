@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RentDynamics.Client
+namespace RentDynamics.RdClient
 {
     public interface IRentDynamicsApiClient
     {

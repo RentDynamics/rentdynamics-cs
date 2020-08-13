@@ -1,4 +1,4 @@
-namespace RentDynamics.Client.Models
+namespace RentDynamics.RdClient.Models
 {
     public class LogoutResponse
     {

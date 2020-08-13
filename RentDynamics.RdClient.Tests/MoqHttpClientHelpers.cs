@@ -3,7 +3,7 @@ using System.Net.Http;
 using Moq;
 using Moq.Contrib.HttpClient;
 
-namespace RentDynamics.Client.Tests
+namespace RentDynamics.RdClient.Tests
 {
     public static class MoqHttpClientHelpers
     {

@@ -1,4 +1,4 @@
-namespace RentDynamics.Client.Resources
+namespace RentDynamics.RdClient.Resources
 {
     public abstract class BaseRentDynamicsResource
     {

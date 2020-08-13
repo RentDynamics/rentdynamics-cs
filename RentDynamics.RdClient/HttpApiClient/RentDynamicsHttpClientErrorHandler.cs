@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RentDynamics.Client.Models;
+using RentDynamics.RdClient.Models;
 
-namespace RentDynamics.Client.HttpApiClient
+namespace RentDynamics.RdClient.HttpApiClient
 {
     public class RentDynamicsHttpClientErrorHandler<TClientSettings> : DelegatingHandler
         where TClientSettings : IRentDynamicsApiClientSettings

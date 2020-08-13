@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.Contrib.HttpClient;
-using RentDynamics.Client.Resources;
+using RentDynamics.RdClient.Resources;
 
-namespace RentDynamics.Client.Tests.ResourcesDataSerialization
+namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 {
     [TestClass]
     public class AppointmentResourceTests : BaseResourceDataSerializationTest<AppointmentResource>

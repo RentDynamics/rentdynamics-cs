@@ -2,10 +2,10 @@ using System;
 using System.Net.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RentDynamics.Client.HttpApiClient;
-using RentDynamics.Client.Resources;
+using RentDynamics.RdClient.HttpApiClient;
+using RentDynamics.RdClient.Resources;
 
-namespace RentDynamics.Client.Tests.ResourcesDataSerialization
+namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 {
     public abstract class BaseResourceDataSerializationTest<TResource>
     where TResource: BaseRentDynamicsResource

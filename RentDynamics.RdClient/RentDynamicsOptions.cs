@@ -1,6 +1,6 @@
 using System;
 
-namespace RentDynamics.Client
+namespace RentDynamics.RdClient
 {
     public class RentDynamicsOptions
     {

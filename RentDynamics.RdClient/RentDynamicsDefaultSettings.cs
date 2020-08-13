@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace RentDynamics.Client
+namespace RentDynamics.RdClient
 {
     public static class RentDynamicsDefaultSettings
     {

@@ -2,11 +2,11 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
-using RentDynamics.Client.HttpApiClient;
-using RentDynamics.Client.Resources;
+using RentDynamics.RdClient.HttpApiClient;
+using RentDynamics.RdClient.Resources;
 using Scrutor;
 
-namespace RentDynamics.Client.DependencyInjection
+namespace RentDynamics.RdClient.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {

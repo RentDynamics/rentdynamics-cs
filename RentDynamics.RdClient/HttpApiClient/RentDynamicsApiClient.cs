@@ -3,7 +3,7 @@ using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RentDynamics.Client.HttpApiClient
+namespace RentDynamics.RdClient.HttpApiClient
 {
     public class RentDynamicsApiClient : RentDynamicsApiClient<RentDynamicsApiClientSettings>
     {

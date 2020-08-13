@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace RentDynamics.Client
+namespace RentDynamics.RdClient
 {
     internal static class ByteToStringExtensions
     {

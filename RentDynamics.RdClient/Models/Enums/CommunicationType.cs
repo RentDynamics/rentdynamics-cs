@@ -1,4 +1,4 @@
-namespace RentDynamics.Client.Models.Enums
+namespace RentDynamics.RdClient.Models.Enums
 {
     public enum CommunicationType
     {

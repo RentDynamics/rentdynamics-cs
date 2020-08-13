@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 
-namespace RentDynamics.Client.HttpApiClient
+namespace RentDynamics.RdClient.HttpApiClient
 {
     public static class RentDynamicsHttpClientFactory
     {

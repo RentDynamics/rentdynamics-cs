@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace RentDynamics.Client.HttpApiClient
+namespace RentDynamics.RdClient.HttpApiClient
 {
     public interface IRentDynamicsApiClientSettings
     {

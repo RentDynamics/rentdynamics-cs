@@ -1,9 +1,9 @@
 using System;
 using Newtonsoft.Json;
-using RentDynamics.Client.Converters;
-using RentDynamics.Client.Models.Enums;
+using RentDynamics.RdClient.Converters;
+using RentDynamics.RdClient.Models.Enums;
 
-namespace RentDynamics.Client.Models
+namespace RentDynamics.RdClient.Models
 {
     public class LeadCardRequest
     {

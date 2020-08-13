@@ -1,4 +1,4 @@
-namespace RentDynamics.Client.Resources
+namespace RentDynamics.RdClient.Resources
 {
     public interface IRentDynamicsResourceFactory<TClient> : IRentDynamicsResourceFactory
         where TClient : IRentDynamicsApiClient

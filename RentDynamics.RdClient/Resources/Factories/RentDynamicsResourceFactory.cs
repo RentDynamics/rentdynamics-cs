@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RentDynamics.Client.Resources
+namespace RentDynamics.RdClient.Resources
 {
     public class RentDynamicsResourceFactory<TClient> : IRentDynamicsResourceFactory<TClient>
         where TClient : IRentDynamicsApiClient

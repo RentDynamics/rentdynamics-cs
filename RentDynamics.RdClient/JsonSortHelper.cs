@@ -1,7 +1,7 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace RentDynamics.Client
+namespace RentDynamics.RdClient
 {
     public static class JsonSortHelper
     {
