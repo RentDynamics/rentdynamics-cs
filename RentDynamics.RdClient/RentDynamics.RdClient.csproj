@@ -7,7 +7,7 @@
         <Authors>RentDynamics</Authors>
         <Description>C# client library to access RentDynamics APIs</Description>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <RepositoryUrl>https://github.com/RentDynamics/TODO</RepositoryUrl>
+        <RepositoryUrl>https://github.com/RentDynamics/rentdynamics-cs</RepositoryUrl>
         <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
         <RootNamespace>RentDynamics.RdClient</RootNamespace>
         <AssemblyName>RentDynamics.RdClient</AssemblyName>
