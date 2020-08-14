@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RentDynamics.RdClient.Models;
 
@@ -12,10 +13,12 @@ namespace RentDynamics.RdClient.HttpApiClient
         where TClientSettings : IRentDynamicsApiClientSettings
     {
         private readonly TClientSettings _settings;
+        private readonly ILogger<RentDynamicsHttpClientErrorHandler<TClientSettings>> _logger;
 
-        public RentDynamicsHttpClientErrorHandler(TClientSettings settings)
+        public RentDynamicsHttpClientErrorHandler(TClientSettings settings, ILogger<RentDynamicsHttpClientErrorHandler<TClientSettings>> logger)
         {
             _settings = settings;
+            _logger = logger;
         }
 
         protected virtual bool ShouldTryReadResponseBody(HttpResponseMessage responseMessage)
@@ -49,7 +52,7 @@ namespace RentDynamics.RdClient.HttpApiClient
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e); //TODO: Use logger
+                        _logger.LogWarning(e, "Failed to deserialize error response body into ApiError. Body: {errorResponseBody}", responseBody);
                     }
                 }
             }

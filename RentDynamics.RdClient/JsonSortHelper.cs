@@ -18,7 +18,6 @@ namespace RentDynamics.RdClient
                 {
                     Sort(propertyObject);
                 }
-                //TODO: sorting with arrays
             }
         }
     }

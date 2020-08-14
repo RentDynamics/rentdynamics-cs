@@ -1,16 +1,20 @@
 using System;
 using System.Net.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
     public static class RentDynamicsHttpClientFactory
     {
-        public static HttpClient Create<TClientSettings>(TClientSettings settings)
+        public static HttpClient Create<TClientSettings>(TClientSettings settings, ILoggerFactory? loggerFactory)
             where TClientSettings : IRentDynamicsApiClientSettings
         {
+            loggerFactory ??= new NullLoggerFactory();
+            
             var httpClientHandler = new HttpClientHandler();
 
-            var errorHandler = new RentDynamicsHttpClientErrorHandler<TClientSettings>(settings)
+            var errorHandler = new RentDynamicsHttpClientErrorHandler<TClientSettings>(settings, loggerFactory.CreateLogger<RentDynamicsHttpClientErrorHandler<TClientSettings>>())
             {
                 InnerHandler = httpClientHandler
             };

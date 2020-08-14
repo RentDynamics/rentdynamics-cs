@@ -36,7 +36,6 @@ namespace RentDynamics.RdClient.HttpApiClient
         request.Headers.Add("x-rd-api-nonce", nonce);
 
         var userAuthentication = Options.UserAuthentication;
-        //TODO: Is refresh token behavior required?
         if (userAuthentication.IsAuthenticated)
         {
             request.Headers.Add("Authorization", $"TOKEN {userAuthentication.AuthenticationToken}");

@@ -2,13 +2,14 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
     public class RentDynamicsApiClient : RentDynamicsApiClient<RentDynamicsApiClientSettings>
     {
-        public RentDynamicsApiClient(RentDynamicsApiClientSettings settings)
-            : base(RentDynamicsHttpClientFactory.Create(settings), settings)
+        public RentDynamicsApiClient(RentDynamicsApiClientSettings settings, ILoggerFactory? loggerFactory = null)
+            : base(RentDynamicsHttpClientFactory.Create(settings, loggerFactory), settings)
         {
         }
 
