@@ -1,6 +1,8 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 
+[assembly: InternalsVisibleTo("RentDynamics.RdClient.Tests")]
 namespace RentDynamics.RdClient
 {
     internal static class ByteToStringExtensions
