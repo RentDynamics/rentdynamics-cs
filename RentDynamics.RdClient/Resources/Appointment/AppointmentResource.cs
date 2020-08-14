@@ -12,7 +12,7 @@ namespace RentDynamics.RdClient.Resources
         {
         }
 
-        public async Task<List<DateTime>> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool isUtc)
+        public async Task<AppointmentTimes> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool isUtc)
         {
             var parameters = new Dictionary<string, string>
             {
@@ -20,7 +20,7 @@ namespace RentDynamics.RdClient.Resources
                 { "isUTC", isUtc.ToString() }
             };
             string query = QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
-            return await ApiClient.GetAsync<List<DateTime>>(query);
+            return await ApiClient.GetAsync<AppointmentTimes>(query);
         }
 
         public async Task<AppointmentDays> GetAppointmentDaysAsync(int communityGroupId, DateTime startAppointmentDate, DateTime endAppointmentDate)

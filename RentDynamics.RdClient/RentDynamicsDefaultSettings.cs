@@ -16,5 +16,7 @@ namespace RentDynamics.RdClient
         };
 
         internal const string DateFormatShortUs = "MM\\/dd\\/yyyy";
+        internal const string TimeFormatUs = "hh\\:mm tt";
+        internal const string CultureNameUs = "en-Us";
     }
 }
