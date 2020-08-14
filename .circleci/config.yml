@@ -19,7 +19,7 @@ jobs:
             dotnet test -v normal --logger "trx" --no-restore --no-build
       - run:
           name: Convert test trx files to JUnit
-          command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamicsCS.Tests/TestResults/*.trx --output test-results
+          command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
           when: always
       - store_test_results:
           path: test-results
