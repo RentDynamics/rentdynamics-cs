@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,12 +22,12 @@ namespace RentDynamics.RdClient.HttpApiClient
 
         protected virtual bool ShouldTryReadResponseBody(HttpResponseMessage responseMessage)
         {
-            bool hasContentLengthHeader = responseMessage.Headers.TryGetValues("Content-Length", out var contentLengthHeaders);
-            if (!hasContentLengthHeader) return true;
+            HttpContent? content = responseMessage.Content;
+            if (content == null) return false;
 
-            bool readContentLength = long.TryParse(contentLengthHeaders.First(), out long contentLength);
-            if (!readContentLength) return true;
+            long? contentLength = content.Headers.ContentLength;
 
+            if (contentLength == null) return true;
             return contentLength <= 1024 * 30; //30 KB
         }
 
