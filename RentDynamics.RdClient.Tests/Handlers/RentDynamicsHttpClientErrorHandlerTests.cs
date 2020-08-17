@@ -1,37 +1,25 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using FluentAssertions.Specialized;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Moq.Contrib.HttpClient;
 using Newtonsoft.Json;
 using RentDynamics.RdClient.HttpApiClient;
 
-namespace RentDynamics.RdClient.Tests
+namespace RentDynamics.RdClient.Tests.Handlers
 {
     [TestClass]
-    public class RentDynamicsHttpClientErrorHandlerTests
+    public class RentDynamicsHttpClientErrorHandlerTests : BaseHandlersTest<RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>>
     {
-        protected RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings> ErrorHandler { get; private set; }
-        protected Mock<HttpMessageHandler> MockHandler { get; private set; }
-
-        protected HttpClient Client => MockHandler.CreateClient(ErrorHandler);
-
-        [TestInitialize]
-        public void Initialize()
+        protected override RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings> CreateHandlerUnderTest()
         {
             var settings = new RentDynamicsApiClientSettings();
             var logger = new NullLogger<RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>>();
-            ErrorHandler = new RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>(settings, logger);
             
-            MockHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            return new RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>(settings, logger);
         }
 
         [TestMethod]
@@ -42,9 +30,8 @@ namespace RentDynamics.RdClient.Tests
                        {
                            Content = new StringContent(JsonConvert.SerializeObject(new { errorMessage = "My test error message" }))
                        }));
-            var client = MockHandler.CreateClient(ErrorHandler);
 
-            var exception = await client.Awaiting(c => c.GetAsync(""))
+            var exception = await Client.Awaiting(c => c.GetAsync(""))
                                         .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
 
             exception.Which.RawResponseBody.Should().Contain("My test error message");
@@ -67,9 +54,8 @@ namespace RentDynamics.RdClient.Tests
                            response.Content.Headers.ContentLength = null;
                            return Task.FromResult(response);
                        });
-            var client = MockHandler.CreateClient(ErrorHandler);
 
-            var exception = await client.Awaiting(c => c.GetAsync(""))
+            var exception = await Client.Awaiting(c => c.GetAsync(""))
                                         .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
 
             exception.Which.RawResponseBody.Should().Contain("My test error message");
