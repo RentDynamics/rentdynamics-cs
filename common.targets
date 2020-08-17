@@ -1,0 +1,5 @@
+<Project>
+    <Target Name="OutputVersion" AfterTargets="Pack">
+        <Message Importance="high" Text="Nuget version is: $(Version)"/>
+    </Target>
+</Project>

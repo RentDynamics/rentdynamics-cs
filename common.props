@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
+        <Title>RentDynamicsCS</Title>
+        <Authors>RentDynamics</Authors>
+        <Description>C# client library to access RentDynamics APIs</Description>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <RepositoryUrl>https://github.com/RentDynamics/rentdynamics-cs</RepositoryUrl>
+        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    </PropertyGroup>
+</Project>

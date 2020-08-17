@@ -1,31 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>8</LangVersion>
-        <Nullable>enable</Nullable>
-        <Title>RentDynamicsCS</Title>
-        <Authors>RentDynamics</Authors>
-        <Description>C# client library to access RentDynamics APIs</Description>
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <RepositoryUrl>https://github.com/RentDynamics/rentdynamics-cs</RepositoryUrl>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
         <RootNamespace>RentDynamics.RdClient</RootNamespace>
         <AssemblyName>RentDynamics.RdClient</AssemblyName>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-        <PackageReference Include="Scrutor" Version="3.2.1" />
-    </ItemGroup>
+    <Import Project="../common.props"/>
+    <Import Project="../common.targets"/>
 
-    <Target Name="OutputVersion" AfterTargets="Pack">
-        <Message Importance="high" Text="Nuget version is: $(Version)" />
-    </Target>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2020.1.0"/>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.1"/>
+    </ItemGroup>
 
 </Project>
