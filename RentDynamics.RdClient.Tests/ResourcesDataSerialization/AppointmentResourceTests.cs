@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using System.Web;
 using FluentAssertions;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.Contrib.HttpClient;
 using RentDynamics.RdClient.Resources;
@@ -18,7 +15,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
     public class AppointmentResourceTests : BaseResourceDataSerializationTest<AppointmentResource>
     {
         [TestMethod]
-        public async Task AppointmentTimesMoqEndpoint()
+        public async Task AppointmentTimesRequest_ShouldBeSuccessful()
         {
             const int communityGroupId = 1;
             MockHandler.SetupAnyRequest()
@@ -47,7 +44,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         }
 
         [TestMethod]
-        public async Task AppointmentDaysMoqEndpoint()
+        public async Task AppointmentDaysRequest_ShouldBeSuccessful()
         {
             const int communityGroupId = 1;
 

@@ -17,7 +17,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
     public class AuthenticationResourceTests : BaseResourceDataSerializationTest<AuthenticationResource>
     {
         [TestMethod]
-        public async Task LoginRequest_ShouldBeSent()
+        public async Task LoginRequest_ShouldBeSuccessful()
         {
             const string username = "user";
             const string password = "password";
@@ -49,7 +49,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         }
 
         [TestMethod]
-        public async Task LogoutRequest_ShouldBeSent()
+        public async Task LogoutRequest_ShouldBeSuccessful()
         {
             Options.UserAuthentication.SetAuthentication(100500, "myToken");
 
@@ -69,7 +69,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         }
 
         [TestMethod]
-        public async Task LogoutRequest_ShouldFail_WhenUserIsNotAuthenticated()
+        public async Task LogoutRequest_ShouldBeFailed_WhenUserIsNotAuthenticated()
         {
             Options.UserAuthentication.RemoveAuthentication();
 
