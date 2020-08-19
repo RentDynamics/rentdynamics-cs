@@ -20,6 +20,12 @@ namespace RentDynamics.RdClient.HttpApiClient
             _nonceCalculator = nonceCalculator ?? new NonceCalculator();
         }
 
+        private static string UnescapeSpecialRdApiCharacters(string url)
+        {
+            //Pipe '|' character is treated specially in RD api. Details: https://github.com/Skylude/django-rest-framework-signature/blob/master/rest_framework_signature/authentication.py#L132
+            return url.Replace("%7C", "|");
+        }
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var unixEpoch = new DateTime(1970, 1, 1);
@@ -29,7 +35,8 @@ namespace RentDynamics.RdClient.HttpApiClient
                 ? null
                 : await request.Content.ReadAsStringAsync();
 
-            string nonce = _nonceCalculator.GetNonce(Options.ApiSecretKey, unixTimestampMilliseconds, request.RequestUri.PathAndQuery, requestContent);
+            string unescapedPathAndQuery = UnescapeSpecialRdApiCharacters(request.RequestUri.PathAndQuery);
+            string nonce = _nonceCalculator.GetNonce(Options.ApiSecretKey, unixTimestampMilliseconds, unescapedPathAndQuery, requestContent);
 
             request.Headers.Add("x-rd-api-key", Options.ApiKey);
             request.Headers.Add("x-rd-timestamp", unixTimestampMilliseconds.ToString());
