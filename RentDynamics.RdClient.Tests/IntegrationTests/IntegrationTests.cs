@@ -25,7 +25,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                                                       "5555555555",
                                                       DateTime.UtcNow,
                                                       2,
-                                                      "my test valery"
+                                                      "my test valery",
+                                                      appointmentDate: DateTime.Today.AddMinutes(15).AddHours(15)
                                                      );
             var res = await resource.CreateCommunityLeadCardAsync(communityId, leadCardRequest);
         }

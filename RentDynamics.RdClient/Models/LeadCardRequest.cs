@@ -15,10 +15,7 @@ namespace RentDynamics.RdClient.Models
         public string Email { get; }
         public string FirstName { get; }
         public string LastName { get; }
-
-        [JsonConverter(typeof(DateFormatConverter), "yyyy-MM-dd")]
         public DateTime MoveDate { get; }
-
         public string PhoneNumber { get; }
         public string Note { get; }
 
