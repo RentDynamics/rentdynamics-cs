@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentDynamics.RdClient.Models;
 using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Resources.LeadCards;
 
 namespace RentDynamics.RdClient.Tests.IntegrationTests
 {
@@ -13,19 +14,20 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
         [TestMethod]
         public async Task LeadCardRequest()
         {
-            int communityId = AvailableCommunityGroupId;
+            int communityId = 1;
 
             var apiClient = CreateApiClient();
-            var res = await apiClient.PostAsync<LeadCardRequest, Dictionary<string, object>>($"/communities/{communityId}/leadCards",
-                                                                                             new LeadCardRequest("valery_petrov@somedomain.com",
-                                                                                                                 "Valery",
-                                                                                                                 "Petrov",
-                                                                                                                 1234,
-                                                                                                                 "5555555555",
-                                                                                                                 DateTime.UtcNow,
-                                                                                                                 2,
-                                                                                                                 "my test valery"
-                                                                                                                ));
+            var resource = new LeadCardsResource(apiClient);
+            var leadCardRequest = new LeadCardRequest("valery_petrov@somedomain.com",
+                                                      "Valery",
+                                                      "Petrov",
+                                                      1234,
+                                                      "5555555555",
+                                                      DateTime.UtcNow,
+                                                      2,
+                                                      "my test valery"
+                                                     );
+            var res = await resource.CreateCommunityLeadCardAsync(communityId, leadCardRequest);
         }
 
         [TestMethod]
