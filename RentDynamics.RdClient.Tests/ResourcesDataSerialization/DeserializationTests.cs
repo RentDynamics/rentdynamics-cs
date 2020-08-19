@@ -34,7 +34,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         }
 
         [TestMethod]
-        public async Task Model_ShouldWithPascalCaseProperties_ShouldBeSerializer_IntoCamelCaseJson()
+        public async Task Model_WithPascalCaseProperties_ShouldBeSerialized_IntoCamelCaseJson()
         {
             MockHandler.SetupAnyRequest()
                        .ReturnsResponse(HttpStatusCode.NoContent, Stream.Null);
