@@ -11,7 +11,7 @@ using RentDynamics.RdClient.Resources.LeadCards;
 namespace RentDynamics.RdClient.Tests.IntegrationTests
 {
     [TestClass]
-    public class IntegrationTests : BaseIntegrationTest
+    public class RdApiIntegrationTests : BaseRdApiIntegrationTest
     {
         private void ShouldBeSame<TTarget, TProperty>(TTarget o1, TTarget o2, Func<TTarget, TProperty> selector)
         {

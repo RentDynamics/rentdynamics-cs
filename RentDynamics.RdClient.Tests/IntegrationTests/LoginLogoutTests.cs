@@ -5,7 +5,7 @@ using RentDynamics.RdClient.Resources;
 namespace RentDynamics.RdClient.Tests.IntegrationTests
 {
     [TestClass]
-    public class LoginLogoutTests : BaseIntegrationTest
+    public class LoginLogoutTests : BaseRdApiIntegrationTest
     {
         protected override bool AutomaticAuthentication => false;
 
