@@ -29,6 +29,12 @@ namespace RentDynamics.RdClient.DependencyInjection
             services.TryAddScoped<IRentDynamicsResourceFactory>(provider => provider.GetRequiredService<IRentDynamicsResourceFactory<IRentDynamicsApiClient>>());
         }
 
+        public static IServiceCollection AddRentDynamicsApiClient<TClientSettings>(this IServiceCollection services, TClientSettings settings)
+            where TClientSettings : class, IRentDynamicsApiClientSettings
+        {
+            return services.AddRentDynamicsApiClient<IRentDynamicsApiClient<TClientSettings>, RentDynamicsApiClient<TClientSettings>, TClientSettings>(settings);
+        }
+
         public static IServiceCollection AddRentDynamicsApiClient<TClient, TClientImplementation, TClientSettings>(
             this IServiceCollection services,
             TClientSettings settings
@@ -37,6 +43,9 @@ namespace RentDynamics.RdClient.DependencyInjection
             where TClientSettings : class, IRentDynamicsApiClientSettings
             where TClientImplementation : RentDynamicsApiClient<TClientSettings>, TClient
         {
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
+            if (settings.Options == null) throw new ArgumentNullException(nameof(settings.Options));
+            
             services.AddSingleton(settings);
             services.TryAddCoreRentDynamicsServices();
 

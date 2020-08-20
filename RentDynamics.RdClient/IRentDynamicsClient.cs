@@ -1,8 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using RentDynamics.RdClient.HttpApiClient;
 
 namespace RentDynamics.RdClient
 {
+    [PublicAPI]
     public interface IRentDynamicsApiClient
     {
         RentDynamicsOptions Options { get; }
@@ -13,18 +16,8 @@ namespace RentDynamics.RdClient
         Task<TResult> DeleteAsync<TResult>(string url, CancellationToken token = default);
     }
 
-    public static class RentDynamicsApiClientSyncMethodExtensions
+    public interface IRentDynamicsApiClient<[UsedImplicitly] TSettings> : IRentDynamicsApiClient
+        where TSettings : IRentDynamicsApiClientSettings
     {
-        public static TResult Get<TResult>(this IRentDynamicsApiClient apiClient, string url)
-            => apiClient.GetAsync<TResult>(url).GetAwaiter().GetResult();
-
-        public static TResult Post<TRequest, TResult>(this IRentDynamicsApiClient apiClient, string url, TRequest data)
-            => apiClient.PostAsync<TRequest, TResult>(url, data).GetAwaiter().GetResult();
-
-        public static TResult Put<TRequest, TResult>(this IRentDynamicsApiClient apiClient, string url, TRequest data)
-            => apiClient.PutAsync<TRequest, TResult>(url, data).GetAwaiter().GetResult();
-
-        public static TResult Delete<TResult>(this IRentDynamicsApiClient apiClient, string url)
-            => apiClient.DeleteAsync<TResult>(url).GetAwaiter().GetResult();
     }
 }

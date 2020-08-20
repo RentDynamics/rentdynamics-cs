@@ -17,7 +17,7 @@ namespace RentDynamics.RdClient
         public RentDynamicsOptions(
             string apiKey,
             string apiSecretKey,
-            Action<UserAuthentication> configureUserAuthentication = null,
+            Action<UserAuthentication>? configureUserAuthentication = null,
             bool isDevelopment = false,
             string productionUrl = "https://api.rentdynamics.com",
             string developmentUrl = "https://api-dev.rentdynamics.com")

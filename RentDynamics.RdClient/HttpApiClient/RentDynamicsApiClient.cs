@@ -19,7 +19,7 @@ namespace RentDynamics.RdClient.HttpApiClient
         }
     }
 
-    public abstract class RentDynamicsApiClient<TSettings> : IRentDynamicsApiClient
+    public class RentDynamicsApiClient<TSettings> : IRentDynamicsApiClient<TSettings>
         where TSettings : IRentDynamicsApiClientSettings
     {
         protected HttpClient HttpClient { get; }
@@ -29,7 +29,7 @@ namespace RentDynamics.RdClient.HttpApiClient
 
         public RentDynamicsOptions Options { get; }
 
-        protected RentDynamicsApiClient(HttpClient httpClient, TSettings settings)
+        public RentDynamicsApiClient(HttpClient httpClient, TSettings settings)
         {
             HttpClient = httpClient;
             Options = settings.Options;

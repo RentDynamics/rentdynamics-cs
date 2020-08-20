@@ -58,6 +58,22 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
 
             resource.Should().NotBeNull();
         }
+
+        class CustomClientSettings : RentDynamicsApiClientSettings
+        {
+        }
+
+        [TestMethod]
+        public void ApiClientForCustomSettingsInterface_ShouldBeResolved()
+        {
+            var services = new ServiceCollection();
+
+            services.AddRentDynamicsApiClient<CustomClientSettings>(new CustomClientSettings { Options = new RentDynamicsOptions("test", "test", isDevelopment: true) });
+            using var provider = services.BuildServiceProvider();
+            using var scope = provider.CreateScope();
+
+            var customApiClient = scope.ServiceProvider.GetRequiredService<IRentDynamicsApiClient<CustomClientSettings>>();
+        }
         
     }
 }
