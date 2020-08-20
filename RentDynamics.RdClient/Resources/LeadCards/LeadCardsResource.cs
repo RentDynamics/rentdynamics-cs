@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using RentDynamics.RdClient.Models;
 
@@ -10,9 +10,9 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         {
         }
 
-        public Task<LeadCard> CreateCommunityLeadCardAsync(int communityId, LeadCard request)
+        public Task<LeadCard> CreateCommunityLeadCardAsync(int communityId, LeadCard request, CancellationToken token = default)
         {
-            return ApiClient.PostAsync<LeadCard, LeadCard>($"/communities/{communityId}/leadCards", request);
+            return ApiClient.PostAsync<LeadCard, LeadCard>($"/communities/{communityId}/leadCards", request, token);
         }
     }
 }
