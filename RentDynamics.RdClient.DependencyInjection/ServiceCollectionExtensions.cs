@@ -10,7 +10,7 @@ namespace RentDynamics.RdClient.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        private static void TryAddCoreRentDynamicsServices(this IServiceCollection services)
+        public static void TryAddCoreRentDynamicsServices(this IServiceCollection services)
 
         {
             services.TryAddScoped<INonceCalculator, NonceCalculator>();
@@ -68,6 +68,7 @@ namespace RentDynamics.RdClient.DependencyInjection
 
         public static IServiceCollection AddDefaultRentDynamicsClient(this IServiceCollection services, Func<IServiceProvider, IRentDynamicsApiClient> implementationFactory)
         {
+            services.TryAddCoreRentDynamicsServices();
             return services.AddTransient(implementationFactory);
         }
     }
