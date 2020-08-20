@@ -5,7 +5,7 @@ namespace RentDynamics.RdClient.Resources.LeadCards
 {
     public static class LeadCardsResourceSyncExtensions
     {
-        public static Dictionary<string, object> CreateCommunityLeadCard(this LeadCardsResource resource, int communityId, LeadCardRequest request)
+        public static LeadCard CreateCommunityLeadCard(this LeadCardsResource resource, int communityId, LeadCard request)
             => resource.CreateCommunityLeadCardAsync(communityId, request).GetAwaiter().GetResult();
     }
 }

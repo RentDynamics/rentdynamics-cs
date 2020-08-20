@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.Globalization;
+using JsonNet.ContractResolvers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Converters;
 
 namespace RentDynamics.RdClient
 {
@@ -7,12 +10,13 @@ namespace RentDynamics.RdClient
     {
         public static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            ContractResolver = new PrivateSetterCamelCasePropertyNamesContractResolver(),
             DefaultValueHandling = DefaultValueHandling.Include,
             TypeNameHandling = TypeNameHandling.None,
             NullValueHandling = NullValueHandling.Ignore,
             Formatting = Formatting.None,
-            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+            Converters = new List<JsonConverter> { new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal } }
         };
 
         internal const string DateFormatShortUs = "MM\\/dd\\/yyyy";

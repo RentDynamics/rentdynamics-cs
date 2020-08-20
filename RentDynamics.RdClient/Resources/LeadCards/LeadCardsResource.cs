@@ -10,9 +10,9 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         {
         }
 
-        public Task<Dictionary<string, object>> CreateCommunityLeadCardAsync(int communityId, LeadCardRequest request)
+        public Task<LeadCard> CreateCommunityLeadCardAsync(int communityId, LeadCard request)
         {
-            return ApiClient.PostAsync<LeadCardRequest, Dictionary<string, object>>($"/communities/{communityId}/leadCards", request);
+            return ApiClient.PostAsync<LeadCard, LeadCard>($"/communities/{communityId}/leadCards", request);
         }
     }
 }
