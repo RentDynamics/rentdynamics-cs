@@ -23,10 +23,10 @@ namespace RentDynamics.RdClient.Models
         public DateTime Created { get; private set; }
 
         public long LeadId { get; set; }
-        public long? AdSourceId { get; set; }
+        public int? AdSourceId { get; set; }
         public int? SecondaryAdSourceId { get; set; }
         public int? LeaseTerm { get; set; }
-        public long UserId { get; set; }
+        public int UserId { get; set; }
         public int? ReferrerSourceId { get; set; }
 
         public int Community { get; private set; }
