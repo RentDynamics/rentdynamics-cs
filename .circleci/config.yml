@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Upload Code coverage results
           command: |
-            dotnet tool install -g codecov || true
+            dotnet tool install -g codecov.tool -ignore-failed-sources || true
             covfile=$(find . -name "coverage.cobertura.xml")
             echo "Cov file path: $covfile"
             codecov -f "$covfile"
