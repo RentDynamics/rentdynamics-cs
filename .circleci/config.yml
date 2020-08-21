@@ -30,7 +30,7 @@ jobs:
             dotnet tool install -g codecov.tool || true
             covfile=$(find . -name "coverage.cobertura.xml")
             covfiles_count=$(echo "$covfile" | wc -l)
-            echo "Found '$covfiles_count' coverage files
+            echo "Found '$covfiles_count' coverage files"
             echo "Cov file path: $covfile"
             ~/.dotnet/tools/codecov -f "$covfile"
           when: always
