@@ -1,4 +1,9 @@
 # RentDynamics.RdClient
+
+[![Circle CI Badge][circleci-badge]][circleci-link]
+[![codecov](https://codecov.io/gh/RentDynamics/rentdynamics-cs/branch/dev/graph/badge.svg)](https://codecov.io/gh/RentDynamics/rentdynamics-cs)
+[![MIT License](https://img.shields.io/npm/l/rentdynamics.svg)](LICENSE)
+
 C# client package to access RentDynamics API
 
 ## Installation
@@ -81,7 +86,7 @@ After that from your service/controller class you can consume `IRentDynamicsApiC
   }
 ```
 
-### Advanced usage
+## Advanced usage
 
 ### Using multiple clients with different permissions
 If you have several api-keys with different permissions sets, you will need to take a slightly different approach.
@@ -131,4 +136,6 @@ Now in your services/controller you can do:
 
 
  
-
+[circleci-badge]: https://circleci.com/gh/RentDynamics/rentdynamics-cs/tree/dev.svg?style=shield&circle-token=8ca42b3ae23f8df7f754457b3daae599f716f85c
+[circleci-link]: https://circleci.com/gh/RentDynamics/rentdynamics-cs
+[license-image]: https://img.shields.io/npm/l/rentdynamics.svg

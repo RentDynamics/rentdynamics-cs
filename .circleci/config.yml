@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Unit Tests
           command: |
-            dotnet test -v normal --logger "trx" --no-restore --no-build
+            dotnet test -v normal --logger "trx" --no-restore --no-build --collect:"XPlat Code Coverage"
       - run:
           name: Convert test trx files to JUnit
           command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
@@ -24,6 +24,13 @@ jobs:
       - store_test_results:
           path: test-results
           when: always
+      - run:
+          name: Upload Code coverage results
+          command: |
+            dotnet tool install -g codecov || true
+            covfile=$(find . -name "coverage.cobertura.xml")
+            echo "Cov file path: $covfile"
+            codecov -f "$covfile"
       - save_cache:
           key: dotnet-rd-client-lib
           paths:
