@@ -31,6 +31,7 @@ jobs:
             covfile=$(find . -name "coverage.cobertura.xml")
             echo "Cov file path: $covfile"
             codecov -f "$covfile"
+          when: always
       - save_cache:
           key: dotnet-rd-client-lib
           paths:
