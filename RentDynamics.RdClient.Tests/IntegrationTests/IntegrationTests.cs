@@ -81,7 +81,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             req.Pets.Add(pet);
 
             // MoveDate = DateTime.Today.AddHours(2).AddDays(-2).AddMinutes(33).AddSeconds(21).AddMilliseconds(11)
-            var res = await resource.CreateCommunityLeadCardAsync(communityId, req);
+            var res = await resource.CreateLeadCardAsync(communityId, req);
 
             Console.WriteLine(JsonConvert.SerializeObject(res, Formatting.Indented));
 

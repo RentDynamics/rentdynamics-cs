@@ -10,7 +10,7 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         {
         }
 
-        public Task<LeadCard> CreateCommunityLeadCardAsync(int communityId, LeadCard request, CancellationToken token = default)
+        public Task<LeadCard> CreateLeadCardAsync(int communityId, LeadCard request, CancellationToken token = default)
         {
             return ApiClient.PostAsync<LeadCard, LeadCard>($"/communities/{communityId}/leadCards", request, token);
         }
