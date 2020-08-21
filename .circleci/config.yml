@@ -30,7 +30,7 @@ jobs:
             dotnet tool install -g codecov.tool || true
             covfile=$(find . -name "coverage.cobertura.xml")
             echo "Cov file path: $covfile"
-            codecov -f "$covfile"
+            ~/.dotnet/tools/codecov -f "$covfile"
           when: always
       - save_cache:
           key: dotnet-rd-client-lib
