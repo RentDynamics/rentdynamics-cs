@@ -10,5 +10,6 @@ namespace RentDynamics.RdClient.Models
         public string Breed { get; set; }
         public string PetName { get; set; }
         public bool IsServiceAnimal { get; set; }
+        public long CreatedBy { get; set; }
     }
 }

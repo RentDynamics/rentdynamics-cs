@@ -21,7 +21,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
         [TestMethod]
         public async Task LeadCardRequest()
         {
-            int communityId = 1;
+            int communityId = 42;
 
             var apiClient = CreateApiClient();
             var resource = new LeadCardsResource(apiClient);
@@ -63,7 +63,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             {
                 AddressLine1 = "123 Main Street",
                 AddressLine2 = "-",
-                Country = "Russia",
+                County = "some county",
                 Zip = "7777",
                 City = "MagicalLand",
                 State = "Alaska",
@@ -120,7 +120,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                            );
 
             ShouldBeSame(req.Address, res.Address, a => a.City);
-            ShouldBeSame(req.Address!, res.Address, a => a.Country);
+            ShouldBeSame(req.Address!, res.Address, a => a.County);
             ShouldBeSame(req.Address!, res.Address, a => a.State);
             ShouldBeSame(req.Address!, res.Address, a => a.AddressLine1);
             ShouldBeSame(req.Address!, res.Address, a => a.AddressLine2);
