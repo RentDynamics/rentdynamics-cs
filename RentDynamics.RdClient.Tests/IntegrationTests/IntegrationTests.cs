@@ -18,6 +18,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             selector(o2).Should().Be(selector(o1));
         }
 
+        private static readonly TimeSpan ResourceCreationDatePrecision = TimeSpan.FromSeconds(20);
+
         [TestMethod]
         public async Task LeadCardRequest()
         {
@@ -74,13 +76,13 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
             var pet = new Pet
             {
+                PetTypeId = 1,
                 Breed = "Bulldog",
                 PetName = "Anton"
             };
 
             req.Pets.Add(pet);
 
-            // MoveDate = DateTime.Today.AddHours(2).AddDays(-2).AddMinutes(33).AddSeconds(21).AddMilliseconds(11)
             var res = await resource.CreateLeadCardAsync(communityId, req);
 
             Console.WriteLine(JsonConvert.SerializeObject(res, Formatting.Indented));
@@ -97,18 +99,18 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             ShouldBeSame(req, res, a => a.CommunicationTypeId);
             ShouldBeSame(req, res, a => a.TourTypeId);
             ShouldBeSame(req, res, a => a.MoveReasonTypeId);
-            // ShouldBeSame(req, res, a => a.UnqualifiedReasonTypeId);
-            // ShouldBeSame(req, res, a => a.EndFollowUpReasonTypeId);
-            // ShouldBeSame(req, res, a => a.PreferredCommunicationTypeId);
-            // ShouldBeSame(req, res, a => a.NoAppointmentReasonTypeId);
-            // ShouldBeSame(req, res, a => a.SecondaryPreferredCommunicationTypeId);
+            ShouldBeSame(req, res, a => a.UnqualifiedReasonTypeId);
+            ShouldBeSame(req, res, a => a.NoAppointmentReasonTypeId);
             ShouldBeSame(req, res, a => a.LeaseTerm);
             ShouldBeSame(req, res, a => a.ReferrerSourceId);
             ShouldBeSame(req, res, a => a.SecondaryAdSourceId);
-            // ShouldBeSame(req, res, a => a.FollowUpDate);
+
+            res.EndFollowUpReasonTypeId.Should().BeNull();
+            res.PreferredCommunicationTypeId.Should().BeNull();
+            res.SecondaryPreferredCommunicationTypeId.Should().BeNull();
             res.AppointmentDate.Should().BeCloseTo(req.AppointmentDate!.Value);
             res.MoveDate.Should().BeCloseTo(req.MoveDate!.Value);
-            res.Created.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+            res.Created.Should().BeCloseTo(DateTime.UtcNow, ResourceCreationDatePrecision);
 
             res.Amenities.Should().ContainInOrder(req.Amenities);
             res.Occupants.Should()
@@ -124,7 +126,14 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             ShouldBeSame(req.Address!, res.Address, a => a.State);
             ShouldBeSame(req.Address!, res.Address, a => a.AddressLine1);
             ShouldBeSame(req.Address!, res.Address, a => a.AddressLine2);
-            res.Address!.Created.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+            res.Address!.Created.Should().BeCloseTo(DateTime.UtcNow, ResourceCreationDatePrecision);
+
+
+            var singlePet = res.Pets.Should().ContainSingle();
+            singlePet.Which.Breed.Should().Be(pet.Breed);
+            singlePet.Which.PetName.Should().Be(pet.PetName);
+            singlePet.Which.IsServiceAnimal.Should().Be(pet.IsServiceAnimal);
+            singlePet.Which.PetTypeId.Should().Be(pet.PetTypeId);
         }
 
         [TestMethod]
