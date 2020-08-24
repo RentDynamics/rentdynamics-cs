@@ -103,4 +103,4 @@ workflows:
           context: DotNetBuild
           requires:
             - build
-#            - publish_nuget_release
+            - publish_nuget_release
