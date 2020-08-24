@@ -9,7 +9,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
     {
         protected override bool AutomaticAuthentication => false;
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public async Task LoginLogoutTest()
         {
             var apiClient = CreateApiClient();

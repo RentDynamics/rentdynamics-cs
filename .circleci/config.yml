@@ -1,5 +1,15 @@
 version: 2
 
+commands:
+  export_release_info:
+    steps:
+      - run:
+          command: |
+            export version=$(cat version.md | head -1)
+            export changelog=$(cat version.md | tail +2)
+
+            echo "Current version is '$version'"
+            echo "$changelog"
 jobs:
   build:
     docker:
@@ -10,13 +20,14 @@ jobs:
       - restore_cache:
           keys:
             - dotnet-rd-client-lib
+      - export_release_info
       - run:
           name: Compile
-          command: dotnet build --packages .packages
+          command: dotnet build -c Release --packages .packages -p:Version="$version"
       - run:
           name: Unit Tests
           command: |
-            dotnet test -v normal --logger "trx" --no-restore --no-build --collect:"XPlat Code Coverage"
+            dotnet test -c Release -v normal --logger "trx" --no-restore --no-build --collect:"XPlat Code Coverage"
       - run:
           name: Convert test trx files to JUnit
           command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
@@ -38,10 +49,51 @@ jobs:
           key: dotnet-rd-client-lib
           paths:
             - .packages
+      - run:
+          name: Pack Release
+          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$version"
+      - persist_to_workspace:
+            root: out
+            paths:
+              - lib
+  publish_nuget_release:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - attach_workspace:
+          at: out
+      - run:
+          name: Publish to Nuget.org
+          command: dotnet nuget push out/lib/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_ORG_API_KEY
+  publish_github_release:
+    docker:
+      - image: cibuilds/github:0.13
+    steps:
+      - checkout
+      - export_release_info
+      - attach_workspace:
+          at: out
+      - run:
+          name: Publish Github Release
+          command: |
+            ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$changelog" -draft -soft "v$version" out/lib
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - build:
-          context: DotNetBuild    
+          context: DotNetBuild
+      - publish_nuget_release:
+          context: DotNetBuild
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
+      - publish_github_release:
+          context: DotNetBuild
+          requires:
+            - build
+#            - publish_nuget_release
