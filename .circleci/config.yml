@@ -5,11 +5,11 @@ commands:
     steps:
       - run:
           command: |
-            export version=$(cat version.md | head -1)
-            export changelog=$(cat version.md | tail +2)
+            echo 'export VERSION=$(cat version.md | head -1)' >> $BASH_ENV
+            echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
 
-            echo "Current version is '$version'"
-            echo "$changelog"
+            echo "Current version is 'VERSION'"
+            echo "CHANGELOG"
 jobs:
   build:
     docker:
@@ -23,7 +23,7 @@ jobs:
       - export_release_info
       - run:
           name: Compile
-          command: dotnet build -c Release --packages .packages -p:Version="$version"
+          command: dotnet build -c Release --packages .packages -p:Version="$VERSION"
       - run:
           name: Unit Tests
           command: |
@@ -51,7 +51,7 @@ jobs:
             - .packages
       - run:
           name: Pack Release
-          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$version"
+          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$VERSION"
       - persist_to_workspace:
             root: out
             paths:
@@ -76,7 +76,7 @@ jobs:
       - run:
           name: Publish Github Release
           command: |
-            ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$changelog" -draft -soft "v$version" out/lib
+            ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -draft -soft "v$VERSION" out/lib
 
 workflows:
   version: 2
