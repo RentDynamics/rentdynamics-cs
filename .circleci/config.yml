@@ -27,15 +27,9 @@ jobs:
       - run:
           name: Upload Code coverage results
           command: |
-            initial_covfile=$(find . -name "coverage.cobertura.xml")
-            initial_covfiles_count=$(echo "$initial_covfile" | wc -l)
-            echo "Found 'initial_covfiles_count' initial coverage files"
-            
             dotnet tool install -g codecov.tool || true
             
             covfile=$(find . -name "coverage.cobertura.xml" | head -1)
-            covfiles_count=$(echo "$covfile" | wc -l)
-            echo "Found '$covfiles_count' coverage files"
             echo "Cov file path: $covfile"
             
             ~/.dotnet/tools/codecov -f "$covfile"
