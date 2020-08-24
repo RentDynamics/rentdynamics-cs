@@ -8,8 +8,8 @@ commands:
             echo 'export VERSION=$(cat version.md | head -1)' >> $BASH_ENV
             echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
 
-            echo "Current version is 'VERSION'"
-            echo "CHANGELOG"
+            echo "Current version is '$VERSION'"
+            echo "$CHANGELOG"
 jobs:
   build:
     docker:
@@ -76,7 +76,7 @@ jobs:
       - run:
           name: Publish Github Release
           command: |
-            ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -draft -soft "v$VERSION" out/lib
+            ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -draft -soft "v$VERSION" out/lib
 
 workflows:
   version: 2
