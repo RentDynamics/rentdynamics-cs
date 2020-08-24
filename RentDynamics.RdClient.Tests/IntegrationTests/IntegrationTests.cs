@@ -134,6 +134,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             singlePet.Which.PetName.Should().Be(pet.PetName);
             singlePet.Which.IsServiceAnimal.Should().Be(pet.IsServiceAnimal);
             singlePet.Which.PetTypeId.Should().Be(pet.PetTypeId);
+            singlePet.Which.Created.Should().BeCloseTo(DateTime.UtcNow, ResourceCreationDatePrecision);
+            singlePet.Which.CreatedById.Should().Be(-1);
         }
 
         [TestMethod]
