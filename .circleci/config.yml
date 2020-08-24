@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 commands:
   export_release_info:
