@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace RentDynamics.RdClient.HttpApiClient
@@ -19,16 +20,18 @@ namespace RentDynamics.RdClient.HttpApiClient
         }
     }
 
+    [PublicAPI]
     public class RentDynamicsApiClient<TSettings> : IRentDynamicsApiClient<TSettings>
         where TSettings : IRentDynamicsApiClientSettings
     {
         protected HttpClient HttpClient { get; }
 
         protected JsonMediaTypeFormatter JsonFormatter { get; }
-        protected MediaTypeFormatter[] Formatters { get; }
+        protected MediaTypeFormatter[] Formatters { get; set; }
 
         public RentDynamicsOptions Options { get; }
 
+        [UsedImplicitly]
         public RentDynamicsApiClient(HttpClient httpClient, TSettings settings)
         {
             HttpClient = httpClient;
