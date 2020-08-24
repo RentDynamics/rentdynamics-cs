@@ -79,7 +79,11 @@ jobs:
             ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
             
             echo "$ghr_result"
-            [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]] && exit 1
+
+            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
+            then
+              exit 1
+            fi
 
 workflows:
   version: 2
