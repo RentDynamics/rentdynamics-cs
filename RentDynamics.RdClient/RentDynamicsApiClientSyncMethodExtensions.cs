@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
+
 namespace RentDynamics.RdClient
 {
+    [PublicAPI]
     public static class RentDynamicsApiClientSyncMethodExtensions
     {
         public static TResult Get<TResult>(this IRentDynamicsApiClient apiClient, string url)

@@ -1,10 +1,14 @@
+using JetBrains.Annotations;
+
 namespace RentDynamics.RdClient.Resources
 {
-    public interface IRentDynamicsResourceFactory<TClient> : IRentDynamicsResourceFactory
+    [PublicAPI]
+    public interface IRentDynamicsResourceFactory<[UsedImplicitly] TClient> : IRentDynamicsResourceFactory
         where TClient : IRentDynamicsApiClient
     {
     }
 
+    [PublicAPI]
     public interface IRentDynamicsResourceFactory
     {
         TResource CreateResource<TResource>() where TResource : BaseRentDynamicsResource;
