@@ -41,7 +41,7 @@ var leadCard = new LeadCard
 };
 
 int communityId = "<your-community-id >";
-LeadCard leadCardResult = await leadCardResource.CreateCommunityLeadCardAsync(communityId, leadCard);
+LeadCard leadCardResult = await leadCardResource.CreateLeadCardAsync(communityId, leadCard);
 ```
 
 ### AspNetCore apps with DI container
@@ -81,7 +81,7 @@ After that from your service/controller class you can consume `IRentDynamicsApiC
       await _authenticationResource.LoginAsync("login", "password");
 
       var leadCard = new LeadCard { ... };
-      return await _leadCardsResource.CreateCommunityLeadCardAsync(communityId, leadCard);
+      return await _leadCardsResource.CreateLeadCardAsync(communityId, leadCard);
     }
   }
 ```
