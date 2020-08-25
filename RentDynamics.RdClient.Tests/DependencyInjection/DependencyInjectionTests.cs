@@ -37,21 +37,19 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
 
         [TestMethod]
         [DynamicData(nameof(GetRentDynamicsResourceClasses), DynamicDataSourceType.Method)]
-        public void AllResourceClasses_ShouldBeResolved_ByResourceFactory(Type resourceClassType)
+        public void AllResourceClasses_ShouldBeResolved_ByResourceByClientFactory(Type resourceClassType)
         {
             var services = new ServiceCollection();
 
             services.AddDefaultRentDynamicsClient("test", "test-key", isDevelopment: true);
             
-            services.AddScoped<RentDynamicsApiClient>();
-            services.AddScoped<RentDynamicsResourceFactory<RentDynamicsApiClient>>();
 
             using var provider = services.BuildServiceProvider();
             using var scope = provider.CreateScope();
 
-            var factory = provider.GetRequiredService<RentDynamicsResourceFactory<RentDynamicsApiClient>>();
+            var factory = provider.GetRequiredService<IRentDynamicsResourceByClientFactory<IRentDynamicsApiClient>>();
 
-            var factoryMethod =  factory.GetType().GetMethod(nameof(RentDynamicsResourceFactory<RentDynamicsApiClient>.CreateResource))
+            var factoryMethod =  factory.GetType().GetMethod(nameof(RentDynamicsResourceByClientFactory<RentDynamicsApiClient>.CreateResource))
                            ?? throw new Exception("CreateResource method was not found");
 
             object? resource = factoryMethod.MakeGenericMethod(resourceClassType).Invoke(factory, new object[0]);
@@ -75,5 +73,26 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
             var customApiClient = scope.ServiceProvider.GetRequiredService<IRentDynamicsApiClient<CustomClientSettings>>();
         }
         
+        [TestMethod]
+        [DynamicData(nameof(GetRentDynamicsResourceClasses), DynamicDataSourceType.Method)]
+        public void AllResourceClasses_ShouldBeResolved_ByResourceBySettingsFactory(Type resourceClassType)
+        {
+            var services = new ServiceCollection();
+
+            var customClientSettings = new CustomClientSettings {Options = new RentDynamicsOptions("custom-key", "custom-secret", isDevelopment: true)};
+            services.AddRentDynamicsApiClient(customClientSettings);
+
+            using var provider = services.BuildServiceProvider();
+            using var scope = provider.CreateScope();
+
+            var factory = provider.GetRequiredService<IRentDynamicsResourceBySettingsFactory<CustomClientSettings>>();
+
+            var factoryMethod =  factory.GetType().GetMethod(nameof(RentDynamicsResourceBySettingsFactory<CustomClientSettings>.CreateResource))
+                              ?? throw new Exception("CreateResource method was not found");
+
+            object? resource = factoryMethod.MakeGenericMethod(resourceClassType).Invoke(factory, new object[0]);
+
+            resource.Should().NotBeNull();
+        }
     }
 }

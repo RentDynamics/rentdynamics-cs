@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace RentDynamics.RdClient.Resources
 {
-    public class RentDynamicsResourceFactory<TClient> : IRentDynamicsResourceFactory<TClient>
+    public class RentDynamicsResourceByClientFactory<TClient> : IRentDynamicsResourceByClientFactory<TClient>
         where TClient : IRentDynamicsApiClient
     {
         private readonly TClient _apiClient;
         private readonly IServiceProvider _provider;
 
-        public RentDynamicsResourceFactory(TClient apiClient, IServiceProvider provider)
+        public RentDynamicsResourceByClientFactory(TClient apiClient, IServiceProvider provider)
         {
             _apiClient = apiClient;
             _provider = provider;

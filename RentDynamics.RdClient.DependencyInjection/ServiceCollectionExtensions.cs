@@ -25,8 +25,8 @@ namespace RentDynamics.RdClient.DependencyInjection
 
         private static void TryAddRentDynamicsResourceFactories(this IServiceCollection services)
         {
-            services.TryAddScoped(typeof(IRentDynamicsResourceFactory<>), typeof(RentDynamicsResourceFactory<>));
-            services.TryAddScoped<IRentDynamicsResourceFactory>(provider => provider.GetRequiredService<IRentDynamicsResourceFactory<IRentDynamicsApiClient>>());
+            services.TryAddScoped(typeof(IRentDynamicsResourceByClientFactory<>), typeof(RentDynamicsResourceByClientFactory<>));
+            services.TryAddScoped(typeof(IRentDynamicsResourceBySettingsFactory<>), typeof(RentDynamicsResourceBySettingsFactory<>));
         }
 
         public static IServiceCollection AddRentDynamicsApiClient<TClientSettings>(this IServiceCollection services, TClientSettings settings)
