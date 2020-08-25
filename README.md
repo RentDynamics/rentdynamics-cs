@@ -130,6 +130,29 @@ Now in your services/controller you can do:
   }
 ```
 
+
+### Caveats when using multiple clients 
+* **Do not** inject `Resource` classes in you services directly when using multiple clients because the resource class will be created with a default `IRentDynamicsApiClient` implementation which can cause unexpected behavior
+* **Do** use `IRentDynamicsResourceBySettingsFactory`/`IRentDynamicsResourceByClientFactory` interfaces to create resource classes
+```c#
+    public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
+    {
+    }
+    
+    public class RdExampleServiceWithCustomClientAndResource
+    {
+        private readonly LeadCardsResource _leadCardsResource;
+        public RdExampleServiceWithCustomClientAndResource(IRentDynamicsResourceBySettingsFactory<CustomRentDynamicsApiClientSettings> resourceBySettingsFactory,
+                                                           IRentDynamicsResourceByClientFactory<IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>> resourceByClientFactory)
+        {
+            _leadCardsResource = resourceBySettingsFactory.CreateResource<LeadCardsResource>();
+            //OR
+            _leadCardsResource = resourceByClientFactory.CreateResource<LeadCardsResource>();
+        }
+    }
+```
+
+
 ## Accessing not yet implemented endpoints
 This package does not yet implement support for the full set of available RentDynamics API endpoints. Only a limited set of [Resource](RentDynamics.RdClient/Resources) classes is provided as of now. The list is going to be extended in the future, however you can still access any API endpoint using plain `IRentDynamicsApiClient` interface directly.
 
