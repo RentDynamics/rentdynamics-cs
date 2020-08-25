@@ -120,10 +120,9 @@ Then in your `ConfigureServices` method
 Now in your services/controller you can do:
 
 ```c#
-  [ApiController]
-  public class RdExampleController
+  public class RdExampleService
   {
-    public RdExampleController(IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings> customRdApiClient,
+    public RdExampleService(IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings> customRdApiClient,
                                IRentDynamicsApiClient<AnotherCustomRentDynamicsApiClientSettings> anotherCustomRdApiClient)
     {
       ...
@@ -131,7 +130,48 @@ Now in your services/controller you can do:
   }
 ```
 
+## Accessing not yet implemented endpoints
+This package does not yet implement support for the full set of available RentDynamics API endpoints. Only a limited set of [Resource](RentDynamics.RdClient/Resources) classes is provided as of now. The list is going to be extended in the future, however you can still access any API endpoint using plain `IRentDynamicsApiClient` interface directly.
 
+```c#
+ public class RdExampleAddressService
+ {
+     private readonly IRentDynamicsApiClient _apiClient;
+
+     public RdExampleAddressService(IRentDynamicsApiClient defaultApiClient, // You can use default client
+                                    IRentDynamicsApiClient<AnotherCustomRentDynamicsApiClientSettings> anotherCustomRdApiClient // Or any custom client
+     )
+     {
+         _apiClient = defaultApiClient;
+     }
+
+     public async Task AccessAddressEndpoint()
+     {
+         var newAddress = new Dictionary<string, object>
+         {
+             { "addressLine_1", "123 Main Street" },
+             { "city", "LA" },
+             { "stateId", 5 },
+             { "zip", "95800" },
+             { "addressTypeId", 1 }
+         };
+
+         var createdAddress = await _apiClient.PostAsync<Dictionary<string, object>, Dictionary<string, object>>("/addresses", newAddress);
+
+         string addressId = createdAddress["id"].ToString()!;
+
+         var getAddress = await _apiClient.GetAsync<Dictionary<string, object>>($"/addresses/{addressId}");
+
+         var addressUpdate = new Dictionary<string, object>
+         {
+             { "city", "New city" }
+         };
+         var updatedAddress = await _apiClient.PutAsync<Dictionary<string, object>, Dictionary<string, object>>($"addresses/{addressId}", addressUpdate);
+
+         await _apiClient.DeleteAsync($"addresses/{addressId}");
+     }
+ }
+```
 
 
 
