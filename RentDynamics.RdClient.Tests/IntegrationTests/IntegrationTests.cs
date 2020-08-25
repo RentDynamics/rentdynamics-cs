@@ -164,7 +164,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             };
             var putAddress = await apiClient.PutAsync<object, Dictionary<string, object>>($"addresses/{addressId}", updateAddress);
 
-            var deleted = await apiClient.DeleteAsync<Dictionary<string, object>>($"addresses/{addressId}");
+            await apiClient.DeleteAsync($"addresses/{addressId}");
         }
 
         [TestMethod]

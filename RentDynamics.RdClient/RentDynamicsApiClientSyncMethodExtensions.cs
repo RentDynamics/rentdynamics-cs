@@ -13,5 +13,8 @@ namespace RentDynamics.RdClient
 
         public static TResult Delete<TResult>(this IRentDynamicsApiClient apiClient, string url)
             => apiClient.DeleteAsync<TResult>(url).GetAwaiter().GetResult();
+
+        public static void Delete(this IRentDynamicsApiClient apiClient, string url)
+            => apiClient.DeleteAsync(url).GetAwaiter().GetResult();
     }
 }

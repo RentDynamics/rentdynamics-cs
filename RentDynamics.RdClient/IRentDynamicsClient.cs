@@ -14,6 +14,7 @@ namespace RentDynamics.RdClient
         Task<TResult> PostAsync<TRequest, TResult>(string url, TRequest data, CancellationToken token = default);
         Task<TResult> PutAsync<TRequest, TResult>(string url, TRequest data, CancellationToken token = default);
         Task<TResult> DeleteAsync<TResult>(string url, CancellationToken token = default);
+        Task DeleteAsync(string uri, CancellationToken token = default);
     }
 
     public interface IRentDynamicsApiClient<[UsedImplicitly] TSettings> : IRentDynamicsApiClient

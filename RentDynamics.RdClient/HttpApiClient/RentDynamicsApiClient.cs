@@ -64,5 +64,10 @@ namespace RentDynamics.RdClient.HttpApiClient
             var response = await HttpClient.DeleteAsync(requestUri, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
+
+        public virtual Task DeleteAsync(string requestUri, CancellationToken token = default)
+        {
+            return HttpClient.DeleteAsync(requestUri, token);
+        }
     }
 }
