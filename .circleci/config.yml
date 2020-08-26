@@ -12,6 +12,14 @@ commands:
             echo "Current version is '$VERSION'"
             echo "Build date is '$BUILD_DATE'"
             echo "$CHANGELOG"
+      - run:
+          command: |
+            mkdir release_info && cd release_info
+            date +'%Y%m%d' | cat > build_date.txt
+      - persist_to_workspace:
+          root: release_info
+          paths:
+            - build_date.txt
 jobs:
   build:
     docker:
@@ -78,6 +86,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: out
+      - attach_workspace:
+          at: release_info
       - run:
           name: Publish Github Release
           command: |
@@ -95,6 +105,9 @@ jobs:
             echo "ghr args:" "${args[@]}"
             complete_version="${VERSION}_${BUILD_DATE}"
             echo "Complete version is: '$complete_version'"
+            
+            build_date =$(cat release_info/build_date.txt)
+            echo "Build date '$build_date'"
 
 #            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
             
