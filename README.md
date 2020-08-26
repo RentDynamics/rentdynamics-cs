@@ -78,7 +78,7 @@ public class RdExampleController
 
   public async Task<LeadCard> PostLeadCard([FromQuery] int communityId, [FromBody] object input)
   {
-    await _authenticationResource.LoginAsync("login", "password");
+    await _authenticationResource.LoginAsync("username", "password");
 
     var leadCard = new LeadCard { ... };
     return await _leadCardsResource.CreateLeadCardAsync(communityId, leadCard);
@@ -108,10 +108,10 @@ Then in your `ConfigureServices` method
 public void ConfigureServices(IServiceCollection services)
 {
   ...
-  var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<your-api-key>", "<your-api-secret-key>", isDevelopment: true) };
+  var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret-key>", isDevelopment: true) };
   services.AddRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>(customSettings);
 
-  var anotherCustomSettings = new AnotherCustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<your-another-api-key>", "<your-another-api-secret-key>", isDevelopment: true) };
+  var anotherCustomSettings = new AnotherCustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<another-api-key>", "<another-api-secret-key>", isDevelopment: true) };
   services.AddRentDynamicsApiClient<AnotherCustomRentDynamicsApiClientSettings>(anotherCustomSettings);
   ...
 }
