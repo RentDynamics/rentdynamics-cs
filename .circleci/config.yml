@@ -1,17 +1,8 @@
 version: 2.1
 
 commands:
-  export_release_info:
+  store_build_date:
     steps:
-      - run:
-          command: |
-            echo 'export VERSION=$(cat version.md | head -1)' >> $BASH_ENV
-            echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
-            echo 'export BUILD_DATE=$(date +'%Y%m%d.%s')' >> $BASH_ENV
-
-            echo "Current version is '$VERSION'"
-            echo "Build date is '$BUILD_DATE'"
-            echo "$CHANGELOG"
       - run:
           command: |
             mkdir release_info && cd release_info
@@ -20,20 +11,55 @@ commands:
           root: release_info
           paths:
             - build_date.txt
+  export_version_info:
+    steps:
+      - run:
+          command: |
+            echo 'export BASE_VERSION=$(cat version.md | head -1)' >> $BASH_ENV
+            echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
+  export_final_version:
+    parameters:
+      is_prerelease:
+        type: boolean
+        default: false
+    steps:
+      - attach_workspace:
+          at: release_info
+      - export_version_info
+      - run:
+          command: |
+            is_prerelease=<< parameters.is_prerelease >>
+            version=$BASE_VERSION
+            build_date=$(cat release_info/build_date.txt)
+            if [ $is_prerelease ]
+            then
+              version="${version}-preview.${build_date}.${CIRCLE_BUILD_NUM}"
+            fi
+
+            echo "Final version is: '$version'"
+            
+            echo 'export FINAL_VERSION="$version" >> $BASH_ENV
+
 jobs:
   build:
+    parameters:
+      is_prerelease:
+        type: boolean
+        default: false
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
-
+  
     steps:
       - checkout
       - restore_cache:
           keys:
             - dotnet-rd-client-lib
-      - export_release_info
+      - store_build_date
+      - export_final_version:
+          is_prerelease: << parameters.is_prerelease >>
       - run:
           name: Compile
-          command: dotnet build -c Release --packages .packages -p:Version="$VERSION"
+          command: dotnet build -c Release --packages .packages -p:Version="$FINAL_VERSION"
       - run:
           name: Unit Tests
           command: |
@@ -49,10 +75,10 @@ jobs:
           name: Upload Code coverage results
           command: |
             dotnet tool install -g codecov.tool || true
-            
+  
             covfile=$(find . -name "coverage.cobertura.xml" | head -1)
             echo "Cov file path: $covfile"
-            
+  
             ~/.dotnet/tools/codecov -f "$covfile"
           when: always
       - save_cache:
@@ -61,11 +87,11 @@ jobs:
             - .packages
       - run:
           name: Pack Release
-          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$VERSION"
+          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$FINAL_VERSION"
       - persist_to_workspace:
-            root: out
-            paths:
-              - lib
+          root: out
+          paths:
+            - lib
   publish_nuget_release:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -86,8 +112,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: out
-      - attach_workspace:
-          at: release_info
+      - export_final_version:
+          is_prerelease: << parameters.is_prerelease >>
       - run:
           name: Publish Github Release
           command: |
@@ -98,51 +124,67 @@ jobs:
             args+=('-r' '${CIRCLE_PROJECT_REPONAME}')
             args+=('-c' '${CIRCLE_SHA1}')
             args+=('-b' "$CHANGELOG")
+            args+=('-n' "v$FINAL_VERSION")
             args+=('-soft')
             $is_prerelease && args+=('-prerelease')
-            args+=("$tag")
             
+            args+=("v$FINAL_VERSION")
+            args+=("out/lib")
+
             echo "ghr args:" "${args[@]}"
-            complete_version="${VERSION}_${BUILD_DATE}"
-            echo "Complete version is: '$complete_version'"
-            
-            build_date=$(cat release_info/build_date.txt)
-            echo "Build date '$build_date'"
+            echo "Final version is: '$FINAL_VERSION'"
 
-#            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
-            
-#            echo "$ghr_result"
+    #            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
 
-#            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
-#            then
-#              exit 1
-#            fi
+    #            echo "$ghr_result"
+
+    #            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
+    #            then
+    #              exit 1
+    #            fi
+  
 
 workflows:
   version: 2
-  build_and_deploy:
+  build_dev:
     jobs:
       - build:
-          context: DotNetBuild
+         is_prerelease: true
+         context: DotNetBuild
       - publish_nuget_release:
           context: DotNetBuild
           filters:
             branches:
               only:
-                - master
+                - /__dev$/
           requires:
             - build
       - publish_github_release:
+          is_prerelease: true
+          context: DotNetBuild
+          filters:
+            branches:
+              only:
+                - /__dev$/
+          requires:
+            - build
+            - publish_nuget_release
+  build_release:
+    jobs:
+      - build:
+          is_prerelease: false
+          context: DotNetBuild
+          filters:
+            branches:
+              only:
+                - master
+      - publish_nuget_release:
+          context: DotNetBuild
+          requires:
+            - build
+      - publish_github_release:
+          is_prerelease: false
           context: DotNetBuild
           requires:
             - build
             - publish_nuget_release
-      - publish_github_release:
-          is_prerelease: true
-          context: DotNetBuild
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - /.*__dev$/
