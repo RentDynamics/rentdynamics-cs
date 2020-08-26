@@ -27,6 +27,7 @@ commands:
           at: release_info
       - export_version_info
       - run:
+          name: Calculate and export final version
           command: |
             is_prerelease=<< parameters.is_prerelease >>
             version=$BASE_VERSION
@@ -38,7 +39,7 @@ commands:
 
             echo "Final version is: '$version'"
             
-            echo 'export FINAL_VERSION="$version" >> $BASH_ENV
+            echo 'export FINAL_VERSION="$version"' >> $BASH_ENV
 
 jobs:
   build:
