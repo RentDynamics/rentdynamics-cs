@@ -1,4 +1,4 @@
-0.0.1-preview
+0.0.2
 # Features
 * Initial library implementation
 * `LeadCard`, `AppointmentTimes`, `AppointmentDays`, `Login/Logout` models and endpoint methods
