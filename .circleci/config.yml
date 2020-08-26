@@ -106,7 +106,7 @@ jobs:
             complete_version="${VERSION}_${BUILD_DATE}"
             echo "Complete version is: '$complete_version'"
             
-            build_date =$(cat release_info/build_date.txt)
+            build_date=$(cat release_info/build_date.txt)
             echo "Build date '$build_date'"
 
 #            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
