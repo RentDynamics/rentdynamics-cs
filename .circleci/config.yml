@@ -39,7 +39,7 @@ commands:
 
             echo "Final version is: '$version'"
             
-            echo 'export FINAL_VERSION="$version"' >> $BASH_ENV
+            echo "export FINAL_VERSION=$version" >> $BASH_ENV
 
 jobs:
   build:
