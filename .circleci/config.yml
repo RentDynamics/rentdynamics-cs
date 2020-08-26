@@ -7,7 +7,7 @@ commands:
           command: |
             echo 'export VERSION=$(cat version.md | head -1)' >> $BASH_ENV
             echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
-            echo 'export BUILD_DATE=$(date +'%Y%m%d.%s') >> $BASH_ENV
+            echo 'export BUILD_DATE=$(date +'%Y%m%d.%s')' >> $BASH_ENV
 
             echo "Current version is '$VERSION'"
             echo "Build date is '$BUILD_DATE'"
