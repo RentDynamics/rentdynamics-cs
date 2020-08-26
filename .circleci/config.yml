@@ -99,9 +99,9 @@ jobs:
     steps:
       - attach_workspace:
           at: out
-      - run:
-          name: Publish to Nuget.org
-          command: dotnet nuget push out/lib/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_ORG_API_KEY
+#      - run:
+#          name: Publish to Nuget.org
+#          command: dotnet nuget push out/lib/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_ORG_API_KEY
   publish_github_release:
     docker:
       - image: cibuilds/github:0.13
@@ -156,8 +156,7 @@ workflows:
           context: DotNetBuild
           filters:
             branches:
-              only:
-                - /__dev$/
+              only: /__dev$/
           requires:
             - build
       - publish_github_release:
@@ -165,8 +164,7 @@ workflows:
           context: DotNetBuild
           filters:
             branches:
-              only:
-                - /__dev$/
+              only: /__dev$/
           requires:
             - build
             - publish_nuget_release
@@ -177,8 +175,7 @@ workflows:
           context: DotNetBuild
           filters:
             branches:
-              only:
-                - master
+              only: master
       - publish_nuget_release:
           context: DotNetBuild
           requires:
