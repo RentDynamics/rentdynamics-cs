@@ -172,26 +172,26 @@ public class RdExampleAddressService
   {
     var newAddress = new Dictionary<string, object>
     {
-      { "addressLine1", "123 Main Street" },
+      { "addressLine_1", "123 Main Street" },
       { "city", "LA" },
       { "stateId", 5 },
       { "zip", "95800" },
       { "addressTypeId", 1 }
     };
 
-    var createdAddress = await _apiClient.PostAsync<Dictionary<string, object>, Dictionary<string, object>>("/addresses", newAddress);
+    var createdAddress = await _apiClient.PostAsync<Dictionary<string, object>, Dictionary<string, object>>("addresses", newAddress);
 
     string addressId = createdAddress["id"].ToString();
 
-    var getAddress = await _apiClient.GetAsync<Dictionary<string, object>>($"/addresses/{addressId}");
+    var getAddress = await _apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
 
     var addressUpdate = new Dictionary<string, object>
     {
       { "city", "New city" }
     };
-    var updatedAddress = await _apiClient.PutAsync<Dictionary<string, object>, Dictionary<string, object>>($"/addresses/{addressId}", addressUpdate);
+    var updatedAddress = await _apiClient.PutAsync<Dictionary<string, object>, Dictionary<string, object>>($"addresses/{addressId}", addressUpdate);
 
-    await _apiClient.DeleteAsync($"/addresses/{addressId}");
+    await _apiClient.DeleteAsync($"addresses/{addressId}");
   }
 }
 ```

@@ -152,11 +152,11 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                 { "addressTypeId", 1 },
             };
 
-            var createdAddress = await apiClient.PostAsync<object, Dictionary<string, object>>("/addresses", newAddress);
+            var createdAddress = await apiClient.PostAsync<object, Dictionary<string, object>>("addresses", newAddress);
 
             string addressId = createdAddress["id"].ToString()!;
 
-            var getAddress = await apiClient.GetAsync<Dictionary<string, object>>($"/addresses/{addressId}");
+            var getAddress = await apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
 
             var updateAddress = new Dictionary<string, object>
             {
