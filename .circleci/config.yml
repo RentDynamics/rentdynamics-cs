@@ -119,11 +119,12 @@ jobs:
           name: Publish Github Release
           command: |
             is_prerelease=<< parameters.is_prerelease >>
+            
             args=()
-            args+=('-u' '${CIRCLE_PROJECT_USERNAME}')
-            args+=('-t' '${RD_NUGET_PASSWORD}')
-            args+=('-r' '${CIRCLE_PROJECT_REPONAME}')
-            args+=('-c' '${CIRCLE_SHA1}')
+            args+=('-u' "${CIRCLE_PROJECT_USERNAME}")
+            args+=('-t' "${RD_NUGET_PASSWORD}")
+            args+=('-r' "${CIRCLE_PROJECT_REPONAME}")
+            args+=('-c' "${CIRCLE_SHA1}")
             args+=('-b' "$CHANGELOG")
             args+=('-n' "v$FINAL_VERSION")
             args+=('-soft')
@@ -133,16 +134,14 @@ jobs:
             args+=("out/lib")
 
             echo "ghr args:" "${args[@]}"
-            echo "Final version is: '$FINAL_VERSION'"
 
-    #            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
+            ghr_result=$(ghr "${args[@]}")
+            echo "$ghr_result"
 
-    #            echo "$ghr_result"
-
-    #            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
-    #            then
-    #              exit 1
-    #            fi
+            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
+            then
+              exit 1
+            fi
   
 
 workflows:
