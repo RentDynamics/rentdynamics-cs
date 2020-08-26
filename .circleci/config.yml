@@ -156,7 +156,7 @@ workflows:
           context: DotNetBuild
           filters:
             branches:
-              only: /__dev$/
+              only: /.*__dev$/
           requires:
             - build
       - publish_github_release:
@@ -164,7 +164,7 @@ workflows:
           context: DotNetBuild
           filters:
             branches:
-              only: /__dev$/
+              only: /.*__dev$/
           requires:
             - build
             - publish_nuget_release
