@@ -7,8 +7,10 @@ commands:
           command: |
             echo 'export VERSION=$(cat version.md | head -1)' >> $BASH_ENV
             echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
+            echo 'export BUILD_DATE=$(date +'%Y%m%d.%s') >> $BASH_ENV
 
             echo "Current version is '$VERSION'"
+            echo "Build date is '$BUILD_DATE'"
             echo "$CHANGELOG"
 jobs:
   build:
@@ -68,22 +70,40 @@ jobs:
   publish_github_release:
     docker:
       - image: cibuilds/github:0.13
+    parameters:
+      is_prerelease:
+        type: boolean
+        default: false
     steps:
       - checkout
-      - export_release_info
       - attach_workspace:
           at: out
       - run:
           name: Publish Github Release
           command: |
-            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
+            is_prerelease=<< parameters.is_prerelease >>
+            args=()
+            args+=('-u' '${CIRCLE_PROJECT_USERNAME}')
+            args+=('-t' '${RD_NUGET_PASSWORD}')
+            args+=('-r' '${CIRCLE_PROJECT_REPONAME}')
+            args+=('-c' '${CIRCLE_SHA1}')
+            args+=('-b' "$CHANGELOG")
+            args+=('-soft')
+            $is_prerelease && args+=('-prerelease')
+            args+=("$tag")
             
-            echo "$ghr_result"
+            echo "ghr args:" "${args[@]}"
+            complete_version="${VERSION}_${BUILD_DATE}"
+            echo "Complete version is: '$complete_version'"
 
-            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
-            then
-              exit 1
-            fi
+#            ghr_result=$(ghr -u ${CIRCLE_PROJECT_USERNAME} -t ${RD_NUGET_PASSWORD} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -b "$CHANGELOG" -n "v$VERSION" -prerelease -soft "v$VERSION" out/lib)
+            
+#            echo "$ghr_result"
+
+#            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
+#            then
+#              exit 1
+#            fi
 
 workflows:
   version: 2
@@ -104,3 +124,12 @@ workflows:
           requires:
             - build
             - publish_nuget_release
+      - publish_github_release:
+          is_prerelease: true
+          context: DotNetBuild
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - /.*__dev$/
