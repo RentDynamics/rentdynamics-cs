@@ -133,25 +133,85 @@ public class RdExampleService
 
 ### Caveats when using multiple clients 
 * **Do not** inject `Resource` classes in you services directly when using multiple clients because the resource class will be created with a default `IRentDynamicsApiClient` implementation which can cause unexpected behavior
-* **Do** use `IRentDynamicsResourceBySettingsFactory`/`IRentDynamicsResourceByClientFactory` interfaces to create resource classes
+* **Do** use `IRentDynamicsResourceBySettingsFactory`or`IRentDynamicsResourceByClientFactory` interfaces to create resource classes
+
+#### Which resource factory to use: `IRentDynamicsResourceByClientFactory` vs. `IRentDynamicsResourceBySettingsFactory`
+
+##### `IRentDynamicsResourceBySettingsFactory<TSettings>` example
+`IRentDynamicsResourceBySettingsFactory<TSettings>` is a simplified and sometimes a more convenient version of `IRentDynamicsResourceByClientFactory` interface. It requires that  you provide a `TSettings` type (which must implement `IRentDynamicsApiClientSettings` interface) that contains the API credentials you want to use.
+
+The factory then will resolve `IRentDynamicsApiClient<TSettings>` interface implementation from the DI container and pass it to the `Resource` class you are requesting.
+
+**When to use the factory:**
+For simple scenarios when paired with `AddRentDynamicsApiClient<TClientSettings>(...)` DI container extension method (see example below).
+
 ```c#
 public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
 {
 }
 
-public class RdExampleServiceWithCustomClientAndResource
+//Inside your Startup.cs file
+public void ConfigureServices(IServiceCollection services)
 {
-  private readonly LeadCardsResource _leadCardsResource;
-  public RdExampleServiceWithCustomClientAndResource(IRentDynamicsResourceBySettingsFactory<CustomRentDynamicsApiClientSettings> resourceBySettingsFactory,
-                                                     IRentDynamicsResourceByClientFactory<IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>> resourceByClientFactory)
-  {
-    _leadCardsResource = resourceBySettingsFactory.CreateResource<LeadCardsResource>();
-    //OR
-    _leadCardsResource = resourceByClientFactory.CreateResource<LeadCardsResource>();
-  }
+    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret>") };
+    services.AddRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>(customSettings); //Register api client implementation that will use credentials from CustomRentDynamicsApiClientSettings class
+    
+    ... //other code
+}
+
+public class ResourceBySettingsFactoryExample
+{
+    private readonly LeadCardsResource _leadCardsResource;
+    
+    public ResourceBySettingsFactoryExample(IRentDynamicsResourceBySettingsFactory<CustomRentDynamicsApiClientSettings> resourceBySettingsFactory)
+    {
+        _leadCardsResource = resourceBySettingsFactory.CreateResource<LeadCardsResource>(); //The resource will be created with IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings> api client implementation
+    }
 }
 ```
 
+##### `IRentDynamicsResourceByClientFactory<TClient>` example
+This factory is similar to `IRentDynamicsResourceBySettingsFactory<TSettings>`, but is more flexible because it allows using any custom-made api-client implementation, not only the default `IRentDynamicsApiClient`.
+
+**When to use the factory:**
+For scenarios when you define your own implementation of `IRentDynamicsApiClient` interface paired with `AddRentDynamicsApiClient<TClient, TClientImplementation, TClientSettings>(...)` DI container extension method (see example below).
+
+```c#
+public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
+{
+}
+
+public interface ICustomRentDynamicsApiClient : IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>
+{
+}
+
+public class CustomRentDynamicsApiClient : RentDynamicsApiClient<CustomRentDynamicsApiClientSettings>, ICustomRentDynamicsApiClient
+{
+    public CustomRentDynamicsApiClient(HttpClient httpClient, CustomRentDynamicsApiClientSettings settings)
+      : base(httpClient, settings)
+    {
+    }
+}
+
+//Inside your Startup.cs file
+public void ConfigureServices(IServiceCollection services)
+{
+    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret>") };
+    services.AddRentDynamicsApiClient<ICustomRentDynamicsApiClient, CustomRentDynamicsApiClient, CustomRentDynamicsApiClientSettings>(customSettings); //Register ICustomRentDynamicsApiClient api client interface with CustomRentDynamicsApiClient as implementation and use credentials from CustomRentDynamicsApiClientSettings class
+    
+    ... //other code
+}
+
+public class ResourceByClientFactoryExample
+{
+    private readonly LeadCardsResource _leadCardsResource;
+    
+    public ResourceByClientFactoryExample(IRentDynamicsResourceByClientFactory<ICustomRentDynamicsApiClient> resourceByClientFactory)
+    {
+        _leadCardsResource = resourceByClientFactory.CreateResource<LeadCardsResource>(); //The resource will be created with ICustomRentDynamicsApiClient api client implementation
+    }
+}
+```
 
 ## Accessing not yet implemented endpoints
 This package does not yet implement support for the full set of available RentDynamics API endpoints. Only a limited set of [Resource](RentDynamics.RdClient/Resources) classes is provided as of now. The list is going to be extended in the future, however, you can still access any API endpoint using the `IRentDynamicsApiClient` interface directly.
