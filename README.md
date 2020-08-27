@@ -143,7 +143,7 @@ public class RdExampleService
 The factory then will resolve `IRentDynamicsApiClient<TSettings>` interface implementation from the DI container and pass it to the `Resource` class you are requesting.
 
 **When to use the factory:**
-For simple scenarios when paired with `AddRentDynamicsApiClient<TClientSettings>(...)` DI container extension method (see example below).
+For simple scenarios paired with `AddRentDynamicsApiClient<TClientSettings>(...)` DI container extension method (see example below).
 
 ```c#
 public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
