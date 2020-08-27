@@ -125,10 +125,11 @@ jobs:
             args+=('-t' "${RD_NUGET_PASSWORD}")
             args+=('-r' "${CIRCLE_PROJECT_REPONAME}")
             args+=('-c' "${CIRCLE_SHA1}")
-            args+=('-b' "$CHANGELOG")
             args+=('-n' "v$FINAL_VERSION")
             args+=('-soft')
+
             $is_prerelease && args+=('-prerelease')
+            ! $is_prerelease && args+=('-b' "$CHANGELOG")
 
             args+=("v$FINAL_VERSION")
             args+=("out/lib")
