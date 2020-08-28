@@ -1,6 +1,6 @@
 # RentDynamics.RdClient
 
-[![Circle CI Badge][circleci-badge]][circleci-link]
+[![Circle CI Badge](https://circleci.com/gh/RentDynamics/rentdynamics-cs/tree/dev.svg?style=shield&circle-token=8ca42b3ae23f8df7f754457b3daae599f716f85c)](https://circleci.com/gh/RentDynamics/rentdynamics-cs)
 [![codecov](https://codecov.io/gh/RentDynamics/rentdynamics-cs/branch/dev/graph/badge.svg)](https://codecov.io/gh/RentDynamics/rentdynamics-cs)
 [![MIT License](https://img.shields.io/npm/l/rentdynamics.svg)](LICENSE)
 [![Nuget](https://img.shields.io/nuget/v/RentDynamics.RdClient?style=flat)](https://www.nuget.org/packages/RentDynamics.RdClient)
@@ -265,10 +265,3 @@ public class RdExampleAddressService
   }
 }
 ```
-
-
-
- 
-[circleci-badge]: https://circleci.com/gh/RentDynamics/rentdynamics-cs/tree/dev.svg?style=shield&circle-token=8ca42b3ae23f8df7f754457b3daae599f716f85c
-[circleci-link]: https://circleci.com/gh/RentDynamics/rentdynamics-cs
-[license-image]: https://img.shields.io/npm/l/rentdynamics.svg
