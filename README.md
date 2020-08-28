@@ -3,6 +3,7 @@
 [![Circle CI Badge][circleci-badge]][circleci-link]
 [![codecov](https://codecov.io/gh/RentDynamics/rentdynamics-cs/branch/dev/graph/badge.svg)](https://codecov.io/gh/RentDynamics/rentdynamics-cs)
 [![MIT License](https://img.shields.io/npm/l/rentdynamics.svg)](LICENSE)
+[![Nuget](https://img.shields.io/nuget/v/RentDynamics.RdClient?style=flat)](https://www.nuget.org/packages/RentDynamics.RdClient)
 
 C# client package to access RentDynamics API
 
