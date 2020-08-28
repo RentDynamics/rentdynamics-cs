@@ -152,6 +152,10 @@ workflows:
       - build:
           is_prerelease: true
           context: DotNetBuild
+          filters:
+            branches:
+              ignore:
+                - master
       - publish_nuget_release:
           context: DotNetBuild
           filters:
