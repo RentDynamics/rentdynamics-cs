@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Resources.Authentication;
 
 namespace RentDynamics.RdClient.Tests.IntegrationTests
 {

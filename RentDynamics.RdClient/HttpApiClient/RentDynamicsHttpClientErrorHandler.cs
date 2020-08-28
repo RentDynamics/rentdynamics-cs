@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using RentDynamics.RdClient.Models;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {

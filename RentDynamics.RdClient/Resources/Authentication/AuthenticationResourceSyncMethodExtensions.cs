@@ -1,6 +1,4 @@
-using RentDynamics.RdClient.Models;
-
-namespace RentDynamics.RdClient.Resources
+namespace RentDynamics.RdClient.Resources.Authentication
 {
     public static class AuthenticationResourceSyncMethodExtensions
     {

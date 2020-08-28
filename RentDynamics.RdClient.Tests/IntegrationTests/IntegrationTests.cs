@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using RentDynamics.RdClient.Models;
-using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Resources.Appointment;
 using RentDynamics.RdClient.Resources.LeadCards;
 
 namespace RentDynamics.RdClient.Tests.IntegrationTests

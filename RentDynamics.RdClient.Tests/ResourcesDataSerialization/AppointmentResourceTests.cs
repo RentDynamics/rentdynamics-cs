@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.Contrib.HttpClient;
-using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Resources.Appointment;
 
 namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 {

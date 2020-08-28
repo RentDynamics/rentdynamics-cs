@@ -1,6 +1,5 @@
 using System;
 using System.Net.Http;
-using RentDynamics.RdClient.Models;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {

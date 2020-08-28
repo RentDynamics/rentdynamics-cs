@@ -1,6 +1,6 @@
 using System;
 
-namespace RentDynamics.RdClient.Resources
+namespace RentDynamics.RdClient.Resources.Authentication
 {
     public class AuthenticationResourceException : Exception
     {

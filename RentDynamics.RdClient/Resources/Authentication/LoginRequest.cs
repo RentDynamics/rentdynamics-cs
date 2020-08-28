@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace RentDynamics.RdClient.Models
+namespace RentDynamics.RdClient.Resources.Authentication
 {
     public class LoginRequest
     {

@@ -1,7 +1,6 @@
 using System;
-using RentDynamics.RdClient.Models;
 
-namespace RentDynamics.RdClient.Resources
+namespace RentDynamics.RdClient.Resources.Appointment
 {
     public static class AppointmentResourceSyncMethodExtensions
     {

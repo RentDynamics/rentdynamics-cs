@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using RentDynamics.RdClient.Models;
 
-namespace RentDynamics.RdClient.Resources
+namespace RentDynamics.RdClient.Resources.Appointment
 {
     public class AppointmentResource : BaseRentDynamicsResource
     {

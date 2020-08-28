@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace RentDynamics.RdClient.Models
+namespace RentDynamics.RdClient.Resources.LeadCards
 {
     [PublicAPI]
     public class Occupant

@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentDynamics.RdClient.HttpApiClient;
-using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Resources.Authentication;
 using RentDynamics.RdClient.Tests.TestUtils;
 
 namespace RentDynamics.RdClient.Tests.IntegrationTests

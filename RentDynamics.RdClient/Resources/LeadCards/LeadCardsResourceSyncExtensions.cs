@@ -1,5 +1,3 @@
-using RentDynamics.RdClient.Models;
-
 namespace RentDynamics.RdClient.Resources.LeadCards
 {
     public static class LeadCardsResourceSyncExtensions

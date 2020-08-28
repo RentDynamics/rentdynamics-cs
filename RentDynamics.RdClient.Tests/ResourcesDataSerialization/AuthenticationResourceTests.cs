@@ -9,7 +9,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.Contrib.HttpClient;
 using Newtonsoft.Json.Linq;
-using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Resources.Authentication;
 
 namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using RentDynamics.RdClient.Converters;
 
-namespace RentDynamics.RdClient.Models
+namespace RentDynamics.RdClient.Resources.Appointment
 {
     [DebuggerDisplay("Count = {Count}")]
     [JsonArray(ItemConverterType = typeof(DateFormatConverter), ItemConverterParameters = new object[] { RentDynamicsDefaultSettings.DateFormatShortUs })]

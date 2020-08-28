@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
-using RentDynamics.RdClient.Models;
 
-namespace RentDynamics.RdClient.Resources
+namespace RentDynamics.RdClient.Resources.Authentication
 {
     public class AuthenticationResource : BaseRentDynamicsResource
     {

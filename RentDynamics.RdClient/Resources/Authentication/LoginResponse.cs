@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace RentDynamics.RdClient.Models
+namespace RentDynamics.RdClient.Resources.Authentication
 {
     public class LoginResponse
     {

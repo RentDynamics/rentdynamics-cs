@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RentDynamics.RdClient.Models
+namespace RentDynamics.RdClient.HttpApiClient
 {
     public class ApiError : Dictionary<string, object>
     {
