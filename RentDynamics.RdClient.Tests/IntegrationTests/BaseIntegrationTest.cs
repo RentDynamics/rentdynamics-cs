@@ -15,6 +15,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
         protected RentDynamicsOptions ApiOptions { get; private set; } = null!;
 
         protected virtual int AvailableCommunityGroupId => Config.GetEnvVar<int>("RD_API_COMMUNITY_GROUP_ID");
+        protected virtual int AvailableCommunityId => Config.GetEnvVar<int>("RD_API_COMMUNITY_ID");
         protected virtual string RdApiUserName => Config.GetEnvVar<string>("RD_API_USERNAME");
         protected virtual string RdApiPassword => Config.GetEnvVar<string>("RD_API_PASSWORD");
         protected virtual string RdApiKey => Config.GetEnvVar<string>("RD_API_KEY");

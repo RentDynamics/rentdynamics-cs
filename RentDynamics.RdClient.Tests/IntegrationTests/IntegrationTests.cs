@@ -22,7 +22,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
         [TestMethod]
         public async Task LeadCardRequest()
         {
-            int communityId = 42;
+            int communityId = AvailableCommunityId;
 
             var apiClient = CreateApiClient();
             var resource = new LeadCardsResource(apiClient);
