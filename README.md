@@ -17,11 +17,9 @@ Install-Package RentDynamics.RdClient.DependencyInjection //For DI container ext
 ## API credentials and authentication
 You need a set of credentials to access API: `apiKey` and `apiSecretKey`.
 
-There are 2 types of API credentials: full-access and non-full-access.
+There are 2 types of API credentials: normal credentials that require user authentication and by-pass user authentication credentials.
 
-Authentication step is optional for full-access credentials.
-
-As for non-full-access credentials, you will also need to authenticate with a RentDynamics user using `AuthenticationResource` class ([see example below](#console-apps-with-no-di-container)).
+As for normal credentials, you will also need to authenticate with a RentDynamics user using `AuthenticationResource` class ([see example below](#console-apps-with-no-di-container)).
 
 
 ## Simple usage
@@ -39,7 +37,7 @@ var settings = new RentDynamicsApiClientSettings { Options = options };
 var rdApiClient = new RentDynamicsApiClient(settings); //Store API client somewhere in a `static` field and reuse it for single-user scenarios
 
 var authenticationResource = new AuthenticationResource(rdApiClient);
-await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step for full-access api credentials
+await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step for by-pass user authentication api credentials
 
 var leadCardResource = new LeadCardsResource(rdApiClient);
 
