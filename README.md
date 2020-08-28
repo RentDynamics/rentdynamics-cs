@@ -19,8 +19,8 @@ Install-Package RentDynamics.RdClient.DependencyInjection //For DI container ext
 You need a set of credentials to access API: `apiKey` and `apiSecretKey`.
 
 ```c#
-string apiKey = "<your api key>";
-string apiSecretKey = "<your api secret>";
+string apiKey = "<api-key>";
+string apiSecretKey = "<api-secret-key>";
 
 bool isDevelopment = false; //Chose between production/development RD environment
 
@@ -40,7 +40,7 @@ var leadCard = new LeadCard
     LastName = "Parker"
 };
 
-int communityId = "<your-community-id>";
+int communityId = "<community-id>";
 LeadCard leadCardResult = await leadCardResource.CreateLeadCardAsync(communityId, leadCard);
 ```
 
@@ -78,7 +78,7 @@ public class RdExampleController
 
   public async Task<LeadCard> PostLeadCard([FromQuery] int communityId, [FromBody] object input)
   {
-    await _authenticationResource.LoginAsync("username", "password");
+    await _authenticationResource.LoginAsync("<username>", "<password>");
 
     var leadCard = new LeadCard { ... };
     return await _leadCardsResource.CreateLeadCardAsync(communityId, leadCard);
@@ -153,7 +153,7 @@ public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
 //Inside your Startup.cs file
 public void ConfigureServices(IServiceCollection services)
 {
-    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret>") };
+    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret-key>") };
     services.AddRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>(customSettings); //Register api client implementation that will use credentials from CustomRentDynamicsApiClientSettings class
     
     ... //other code
@@ -196,7 +196,7 @@ public class CustomRentDynamicsApiClient : RentDynamicsApiClient<CustomRentDynam
 //Inside your Startup.cs file
 public void ConfigureServices(IServiceCollection services)
 {
-    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret>") };
+    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret-key>") };
     services.AddRentDynamicsApiClient<ICustomRentDynamicsApiClient, CustomRentDynamicsApiClient, CustomRentDynamicsApiClientSettings>(customSettings); //Register ICustomRentDynamicsApiClient api client interface with CustomRentDynamicsApiClient as implementation and use credentials from CustomRentDynamicsApiClientSettings class
     
     ... //other code
