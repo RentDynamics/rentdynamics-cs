@@ -9,6 +9,10 @@
         <DocumentationFile>bin\Debug\RentDynamics.RdClient.DependencyInjection.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    </PropertyGroup>
+
     <Import Project="../common.props"/>
     <Import Project="../common.targets"/>
 

@@ -14,6 +14,10 @@
         <DocumentationFile>bin\Release\RentDynamics.RdClient.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    </PropertyGroup>
+
     <Import Project="../common.props"/>
     <Import Project="../common.targets"/>
 
