@@ -12,7 +12,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
     {
         protected IConfigurationRoot Config { get; }
 
-        protected RentDynamicsOptions ApiOptions { get; private set; } = null!;
+        protected RentDynamicsOptions ApiOptions { get; }
 
         protected virtual int AvailableCommunityGroupId => Config.GetEnvVar<int>("RD_API_COMMUNITY_GROUP_ID");
         protected virtual int AvailableCommunityId => Config.GetEnvVar<int>("RD_API_COMMUNITY_ID");
