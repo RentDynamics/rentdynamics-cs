@@ -27,7 +27,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             var apiClient = CreateApiClient();
             var resource = new LeadCardsResource(apiClient);
 
-            var req = new LeadCard("Valeriy", "21111111111", "valery_petrov@somedomain.com")
+            var req = new LeadCard("Valeriy", "2111111111", "valery_petrov@somedomain.com")
             {
                 LastName = "Petrov",
                 Bathrooms = (decimal?) 1.5,
@@ -48,7 +48,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
             req.Amenities.Add(22);
 
-            var occupant = new Occupant("Pedro", "2111111111", "pedro_petrov@somedomain.com", 1);
+            var occupant = new Occupant("Pedro", "2111111112", "pedro_petrov@somedomain.com", 1);
             req.Occupants.Add(occupant);
 
             var address = new Address("123 Main Street", "MagicalLand", "Alaska")
