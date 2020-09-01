@@ -1,10 +1,12 @@
 using System;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
+    [PublicAPI]
     public static class RentDynamicsHttpClientFactory
     {
         public static HttpClient Create<TClientSettings>(TClientSettings settings, ILoggerFactory? loggerFactory)

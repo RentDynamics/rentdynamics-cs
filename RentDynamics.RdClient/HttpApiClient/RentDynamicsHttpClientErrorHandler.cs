@@ -2,11 +2,13 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
+    [PublicAPI]
     public class RentDynamicsHttpClientErrorHandler<TClientSettings> : DelegatingHandler
         where TClientSettings : IRentDynamicsApiClientSettings
     {

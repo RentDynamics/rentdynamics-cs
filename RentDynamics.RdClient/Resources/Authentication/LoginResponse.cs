@@ -11,6 +11,7 @@ namespace RentDynamics.RdClient.Resources.Authentication
         [JsonProperty("token")]
         public string AuthenticationToken { get; }
 
+        [UsedImplicitly]
         public LoginResponse(int userId, string authenticationToken)
         {
             UserId = userId;
