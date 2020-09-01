@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RentDynamics.RdClient.HttpApiClient;
 using RentDynamics.RdClient.Resources;
+using RentDynamics.RdClient.Tests.TestUtils;
 
 namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 {
@@ -11,7 +12,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         where TResource : BaseRentDynamicsResource
     {
         protected Mock<HttpMessageHandler> MockHandler { get; private set; } = null!;
-        protected RentDynamicsOptions Options { get; private set; }
+        protected RentDynamicsOptions Options { get; private set; } = null!;
 
         protected virtual TResource Resource => (TResource) Activator.CreateInstance(typeof(TResource), CreateRdClient())!;
 
@@ -30,7 +31,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         protected static RentDynamicsApiClient CreateRdClient(Mock<HttpMessageHandler> mockHandler, RentDynamicsOptions options)
         {
             var httpClient = mockHandler.CreateClientWithBaseAddress();
-            return new RentDynamicsApiClient(httpClient, new RentDynamicsApiClientSettings { Options = options });
+            return new RentDynamicsApiClient(httpClient, new RentDynamicsApiClientSettings(options));
         }
     }
 }

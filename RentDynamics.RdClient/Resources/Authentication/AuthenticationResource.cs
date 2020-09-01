@@ -1,12 +1,15 @@
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace RentDynamics.RdClient.Resources.Authentication
 {
+    [PublicAPI]
     public class AuthenticationResource : BaseRentDynamicsResource
     {
         private UserAuthentication UserAuthentication => ApiClient.Options.UserAuthentication;
 
+        [UsedImplicitly]
         public AuthenticationResource(IRentDynamicsApiClient apiClient) : base(apiClient)
         {
         }
@@ -23,7 +26,7 @@ namespace RentDynamics.RdClient.Resources.Authentication
         {
             if (!UserAuthentication.IsAuthenticated) throw new AuthenticationResourceException("User is not authenticated");
 
-            var logoutRequest = new LogoutRequest(UserAuthentication.UserId.Value);
+            var logoutRequest = new LogoutRequest(UserAuthentication.UserId!.Value);
             await ApiClient.PostAsync<LogoutRequest, object?>("/auth/logout", logoutRequest, cancellationToken);
             UserAuthentication.RemoveAuthentication();
         }

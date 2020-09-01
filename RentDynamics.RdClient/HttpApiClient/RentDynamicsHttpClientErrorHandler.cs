@@ -46,7 +46,7 @@ namespace RentDynamics.RdClient.HttpApiClient
                 {
                     try
                     {
-                        apiError = JsonConvert.DeserializeObject<ApiError>(responseBody, _settings.JsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings);
+                        apiError = JsonConvert.DeserializeObject<ApiError>(responseBody, _settings.JsonSerializerSettings);
                     }
                     catch (Exception e)
                     {

@@ -33,7 +33,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
 
         protected override RentDynamicsHttpClientAuthenticationHandler<RentDynamicsApiClientSettings> CreateHandlerUnderTest()
         {
-            var settings = new RentDynamicsApiClientSettings { Options = Options };
+            var settings = new RentDynamicsApiClientSettings(Options);
             return new RentDynamicsHttpClientAuthenticationHandler<RentDynamicsApiClientSettings>(settings, NonceCalculatorMock.Object);
         }
 

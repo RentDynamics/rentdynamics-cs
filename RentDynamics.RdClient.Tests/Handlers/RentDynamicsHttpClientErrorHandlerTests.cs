@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.Contrib.HttpClient;
 using Newtonsoft.Json;
 using RentDynamics.RdClient.HttpApiClient;
@@ -12,14 +13,13 @@ using RentDynamics.RdClient.HttpApiClient;
 namespace RentDynamics.RdClient.Tests.Handlers
 {
     [TestClass]
-    public class RentDynamicsHttpClientErrorHandlerTests : BaseHandlersTest<RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>>
+    public class RentDynamicsHttpClientErrorHandlerTests : BaseHandlersTest<RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings>>
     {
-        protected override RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings> CreateHandlerUnderTest()
+        protected override RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings> CreateHandlerUnderTest()
         {
-            var settings = new RentDynamicsApiClientSettings();
-            var logger = new NullLogger<RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>>();
+            var logger = new NullLogger<RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings>>();
             
-            return new RentDynamicsHttpClientErrorHandler<RentDynamicsApiClientSettings>(settings, logger);
+            return new RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings>(Mock.Of<IRentDynamicsApiClientSettings>(), logger);
         }
 
         [TestMethod]

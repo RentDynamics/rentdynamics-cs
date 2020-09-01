@@ -1,9 +1,11 @@
 using System.Security.Cryptography;
 using System.Text;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace RentDynamics.RdClient.Resources.Authentication
 {
+    [PublicAPI]
     public class LoginRequest
     {
         public string Username { get; }

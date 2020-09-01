@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using RentDynamics.RdClient.DependencyInjection;
 using RentDynamics.RdClient.HttpApiClient;
 using RentDynamics.RdClient.Resources;
@@ -57,8 +58,12 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
             resource.Should().NotBeNull();
         }
 
-        class CustomClientSettings : RentDynamicsApiClientSettings
+        private class CustomClientSettings : RentDynamicsApiClientSettings
         {
+            public CustomClientSettings(RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings = null) 
+                : base(options, jsonSerializerSettings)
+            {
+            }
         }
 
         [TestMethod]
@@ -66,11 +71,13 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
         {
             var services = new ServiceCollection();
 
-            services.AddRentDynamicsApiClient<CustomClientSettings>(new CustomClientSettings { Options = new RentDynamicsOptions("test", "test", isDevelopment: true) });
+            services.AddRentDynamicsApiClient(new CustomClientSettings (new RentDynamicsOptions("test", "test", isDevelopment: true)));
             using var provider = services.BuildServiceProvider();
             using var scope = provider.CreateScope();
 
-            var customApiClient = scope.ServiceProvider.GetRequiredService<IRentDynamicsApiClient<CustomClientSettings>>();
+            var customApiClient = scope.ServiceProvider.GetService<IRentDynamicsApiClient<CustomClientSettings>>();
+
+            customApiClient.Should().NotBeNull();
         }
         
         [TestMethod]
@@ -79,7 +86,7 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
         {
             var services = new ServiceCollection();
 
-            var customClientSettings = new CustomClientSettings {Options = new RentDynamicsOptions("custom-key", "custom-secret", isDevelopment: true)};
+            var customClientSettings = new CustomClientSettings(new RentDynamicsOptions("custom-key", "custom-secret", isDevelopment: true));
             services.AddRentDynamicsApiClient(customClientSettings);
 
             using var provider = services.BuildServiceProvider();

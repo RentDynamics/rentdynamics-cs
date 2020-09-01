@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentDynamics.RdClient.HttpApiClient;
@@ -22,6 +23,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
         protected virtual string RdApiSecretKey => Config.GetEnvVar<string>("RD_API_SECRET_KEY");
         protected virtual bool AutomaticAuthentication => Config.GetValue<bool?>("RD_API_AUTO_AUTHENTICATION") == true;
 
+        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
         public BaseRdApiIntegrationTest()
         {
             Config = new ConfigurationBuilder().AddEnvironmentVariables()
@@ -44,7 +46,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
         protected virtual RentDynamicsApiClient CreateApiClient()
         {
-            var settings = new RentDynamicsApiClientSettings { Options = ApiOptions };
+            var settings = new RentDynamicsApiClientSettings(ApiOptions);
             var client = new RentDynamicsApiClient(settings);
             return client;
         }

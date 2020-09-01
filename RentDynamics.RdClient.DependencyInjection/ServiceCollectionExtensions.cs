@@ -64,7 +64,7 @@ namespace RentDynamics.RdClient.DependencyInjection
         }
 
         /// <summary>
-        /// Add <see cref="TClient"/>" api client type with <see cref="TClientImplementation"/> as implementation type using <see cref="TClientSettings"/> type to get api credentials from
+        /// Add <typeparamref name="TClient"/> api client type with <typeparamref name="TClientImplementation"/> as implementation type using <typeparamref name="TClientSettings"/> type to get api credentials from
         /// </summary>
         /// <param name="services"><see cref="IServiceCollection"/> object to add service to</param>
         /// <param name="settings">Object to get api credentials from</param>
@@ -110,11 +110,8 @@ namespace RentDynamics.RdClient.DependencyInjection
             bool isDevelopment = false,
             JsonSerializerSettings? jsonSerializerSettings = null)
         {
-            var settings = new RentDynamicsApiClientSettings
-            {
-                Options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment),
-                JsonSerializerSettings = jsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings
-            };
+            var options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment);
+            var settings = new RentDynamicsApiClientSettings(options, jsonSerializerSettings);
 
             return services.AddRentDynamicsApiClient<IRentDynamicsApiClient, RentDynamicsApiClient, RentDynamicsApiClientSettings>(settings);
         }

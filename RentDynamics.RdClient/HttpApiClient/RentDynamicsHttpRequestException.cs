@@ -1,8 +1,10 @@
 using System;
 using System.Net.Http;
+using JetBrains.Annotations;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
+    [PublicAPI]
     public class RentDynamicsHttpRequestException : HttpRequestException
     {
         public string? RawResponseBody { get; }

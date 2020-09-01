@@ -27,12 +27,9 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             var apiClient = CreateApiClient();
             var resource = new LeadCardsResource(apiClient);
 
-            var req = new LeadCard
+            var req = new LeadCard("Valeriy", "21111111111", "valery_petrov@somedomain.com")
             {
-                FirstName = "Valeriy",
                 LastName = "Petrov",
-                PhoneNumber = "8005553535",
-                Email = "valery_petrov@somedomain.com",
                 Bathrooms = (decimal?) 1.5,
                 Bedrooms = 2,
                 Note = "My note",
@@ -46,38 +43,29 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                 NoAppointmentReasonTypeId = 1,
                 SecondaryPreferredCommunicationTypeId = 1,
                 LeaseTerm = 1,
-                ReferrerSourceId = 1,
+                ReferrerSourceId = 1
             };
 
             req.Amenities.Add(22);
 
-            var occupant = new Occupant
-            {
-                FirstName = "Pedro",
-                RelationshipTypeId = 1,
-                PhoneNumber = "1111111111",
-                EmailAddress = "pedro_petrov@somedomain.com"
-            };
+            var occupant = new Occupant("Pedro", "2111111111", "pedro_petrov@somedomain.com", 1);
             req.Occupants.Add(occupant);
 
-            var address = new Address
+            var address = new Address("123 Main Street", "MagicalLand", "Alaska")
             {
-                AddressLine1 = "123 Main Street",
                 AddressLine2 = "-",
                 County = "some county",
                 Zip = "7777",
-                City = "MagicalLand",
-                State = "Alaska",
                 AddressTypeId = 1
             };
 
             req.Address = address;
 
-            var pet = new Pet
+            var pet = new Pet(1)
             {
-                PetTypeId = 1,
                 Breed = "Bulldog",
-                PetName = "Anton"
+                PetName = "Anton",
+                IsServiceAnimal = true
             };
 
             req.Pets.Add(pet);
@@ -120,11 +108,11 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                                   oc.PhoneNumber == occupant.PhoneNumber
                            );
 
-            ShouldBeSame(req.Address, res.Address, a => a.City);
-            ShouldBeSame(req.Address!, res.Address, a => a.County);
-            ShouldBeSame(req.Address!, res.Address, a => a.State);
-            ShouldBeSame(req.Address!, res.Address, a => a.AddressLine1);
-            ShouldBeSame(req.Address!, res.Address, a => a.AddressLine2);
+            ShouldBeSame(req.Address, res.Address, a => a!.City);
+            ShouldBeSame(req.Address, res.Address, a => a!.County);
+            ShouldBeSame(req.Address, res.Address, a => a!.State);
+            ShouldBeSame(req.Address, res.Address, a => a!.AddressLine1);
+            ShouldBeSame(req.Address, res.Address, a => a!.AddressLine2);
             res.Address!.Created.Should().BeCloseTo(DateTime.UtcNow, ResourceCreationDatePrecision);
 
 
@@ -156,6 +144,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             string addressId = createdAddress["id"].ToString()!;
 
             var getAddress = await apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
+
+            // getAddress.Should().
 
             var updateAddress = new Dictionary<string, object>
             {

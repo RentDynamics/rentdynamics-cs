@@ -1,10 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace RentDynamics.RdClient.Resources.LeadCards
 {
+    [PublicAPI]
     public class LeadCardsResource : BaseRentDynamicsResource
     {
+        [UsedImplicitly]
         public LeadCardsResource(IRentDynamicsApiClient apiClient) : base(apiClient)
         {
         }

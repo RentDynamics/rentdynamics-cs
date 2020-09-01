@@ -1,7 +1,9 @@
 using System;
+using JetBrains.Annotations;
 
 namespace RentDynamics.RdClient
 {
+    [PublicAPI]
     public class RentDynamicsOptions
     {
         public string ApiKey { get; }

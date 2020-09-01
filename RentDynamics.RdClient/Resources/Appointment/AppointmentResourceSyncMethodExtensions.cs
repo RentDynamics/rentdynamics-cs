@@ -1,7 +1,9 @@
 using System;
+using JetBrains.Annotations;
 
 namespace RentDynamics.RdClient.Resources.Appointment
 {
+    [PublicAPI]
     public static class AppointmentResourceSyncMethodExtensions
     {
         public static AppointmentTimes GetAppointmentTimes(this AppointmentResource resource, int communityGroupId, DateTime appointmentDate, bool isUtc)

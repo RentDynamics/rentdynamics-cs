@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
+    [PublicAPI]
     public class RentDynamicsApiClient : RentDynamicsApiClient<RentDynamicsApiClientSettings>
     {
         public RentDynamicsApiClient(RentDynamicsApiClientSettings settings, ILoggerFactory? loggerFactory = null)
@@ -37,7 +38,7 @@ namespace RentDynamics.RdClient.HttpApiClient
             HttpClient = httpClient;
             Options = settings.Options;
 
-            JsonFormatter = new JsonMediaTypeFormatter { SerializerSettings = settings.JsonSerializerSettings ?? RentDynamicsDefaultSettings.DefaultSerializerSettings };
+            JsonFormatter = new JsonMediaTypeFormatter { SerializerSettings = settings.JsonSerializerSettings };
             Formatters = new MediaTypeFormatter[] { JsonFormatter };
         }
 

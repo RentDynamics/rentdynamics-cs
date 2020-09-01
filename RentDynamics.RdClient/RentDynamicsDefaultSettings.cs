@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Globalization;
+using JetBrains.Annotations;
 using JsonNet.ContractResolvers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace RentDynamics.RdClient
 {
+    [PublicAPI]
     public static class RentDynamicsDefaultSettings
     {
         public static JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings

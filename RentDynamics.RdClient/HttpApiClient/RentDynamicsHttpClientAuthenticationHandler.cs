@@ -7,7 +7,6 @@ namespace RentDynamics.RdClient.HttpApiClient
 {
     public class RentDynamicsHttpClientAuthenticationHandler<TClientSettings> : DelegatingHandler
         where TClientSettings : IRentDynamicsApiClientSettings
-
     {
         private readonly TClientSettings _settings;
         private readonly INonceCalculator _nonceCalculator;

@@ -17,6 +17,7 @@ namespace RentDynamics.RdClient
         Task DeleteAsync(string requestUri, CancellationToken token = default);
     }
 
+    [PublicAPI]
     public interface IRentDynamicsApiClient<[UsedImplicitly] TSettings> : IRentDynamicsApiClient
         where TSettings : IRentDynamicsApiClientSettings
     {

@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace RentDynamics.RdClient.Resources.Appointment
 {
+    [PublicAPI]
     public class AppointmentResource : BaseRentDynamicsResource
     {
+        [UsedImplicitly]
         public AppointmentResource(IRentDynamicsApiClient apiClient) : base(apiClient)
         {
         }
