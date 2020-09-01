@@ -60,8 +60,8 @@ namespace RentDynamics.RdClient.Tests.DependencyInjection
 
         private class CustomClientSettings : RentDynamicsApiClientSettings
         {
-            public CustomClientSettings(RentDynamicsOptions options, JsonSerializerSettings? jsonSerializerSettings = null) 
-                : base(options, jsonSerializerSettings)
+            public CustomClientSettings(RentDynamicsOptions options) 
+                : base(options)
             {
             }
         }
