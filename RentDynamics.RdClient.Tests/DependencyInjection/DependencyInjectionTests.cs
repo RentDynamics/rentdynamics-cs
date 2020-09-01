@@ -4,7 +4,6 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using RentDynamics.RdClient.DependencyInjection;
 using RentDynamics.RdClient.HttpApiClient;
 using RentDynamics.RdClient.Resources;
