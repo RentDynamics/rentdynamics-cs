@@ -33,7 +33,7 @@ string apiSecretKey = "<api-secret-key>";
 bool isDevelopment = false; //Chose between production/development RD environment
 
 var options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment);
-var settings = new RentDynamicsApiClientSettings { Options = options };
+var settings = new RentDynamicsApiClientSettings(options);
 var rdApiClient = new RentDynamicsApiClient(settings); //Store API client somewhere in a `static` field and reuse it for single-user scenarios
 
 var authenticationResource = new AuthenticationResource(rdApiClient);
@@ -41,10 +41,8 @@ await authenticationResource.LoginAsync("<your-username>", "<your-password>"); /
 
 var leadCardResource = new LeadCardsResource(rdApiClient);
 
-var leadCard = new LeadCard
+var leadCard = new LeadCard("Peter", "example@email.com", phoneNumber: null) 
 {
-    Email = "example@email.com",
-    FirstName = "Peter",
     LastName = "Parker"
 };
 
@@ -88,7 +86,7 @@ public class RdExampleController
   {
     await _authenticationResource.LoginAsync("<username>", "<password>");
 
-    var leadCard = new LeadCard { ... };
+    var leadCard = new LeadCard(...) { ... };
     return await _leadCardsResource.CreateLeadCardAsync(communityId, leadCard);
   }
 }
@@ -104,10 +102,16 @@ Api keys and user authentication information is persisted inside `IRentDynamicsA
 //Custom interface implementation
 public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
 {
+    public CustomRentDynamicsApiClientSettings(RentDynamicsOptions options) : base(options)
+    {
+    }
 }
 
 public class AnotherCustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
 {
+    public CustomRentDynamicsApiClientSettings(RentDynamicsOptions options) : base(options)
+    {
+    }
 }
 ```
 
@@ -116,10 +120,10 @@ Then in your `ConfigureServices` method
 public void ConfigureServices(IServiceCollection services)
 {
   ...
-  var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret-key>", isDevelopment: true) };
+  var customSettings = new CustomRentDynamicsApiClientSettings(new RentDynamicsOptions("<api-key>", "<api-secret-key>", isDevelopment: true));
   services.AddRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>(customSettings);
 
-  var anotherCustomSettings = new AnotherCustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<another-api-key>", "<another-api-secret-key>", isDevelopment: true) };
+  var anotherCustomSettings = new AnotherCustomRentDynamicsApiClientSettings(new RentDynamicsOptions("<another-api-key>", "<another-api-secret-key>", isDevelopment: true));
   services.AddRentDynamicsApiClient<AnotherCustomRentDynamicsApiClientSettings>(anotherCustomSettings);
   ...
 }
@@ -156,12 +160,15 @@ For simple scenarios paired with `AddRentDynamicsApiClient<TClientSettings>(...)
 ```c#
 public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
 {
+    public CustomRentDynamicsApiClientSettings(RentDynamicsOptions options) : base(options)
+    {
+    }
 }
 
 //Inside your Startup.cs file
 public void ConfigureServices(IServiceCollection services)
 {
-    var customSettings = new CustomRentDynamicsApiClientSettings { Options = new RentDynamicsOptions("<api-key>", "<api-secret-key>") };
+    var customSettings = new CustomRentDynamicsApiClientSettings(new RentDynamicsOptions("<api-key>", "<api-secret-key>"));
     services.AddRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>(customSettings); //Register api client implementation that will use credentials from CustomRentDynamicsApiClientSettings class
     
     ... //other code
@@ -187,6 +194,9 @@ For scenarios when you define your own implementation of `IRentDynamicsApiClient
 ```c#
 public class CustomRentDynamicsApiClientSettings : RentDynamicsApiClientSettings
 {
+    public CustomRentDynamicsApiClientSettings(RentDynamicsOptions options) : base(options)
+    {
+    }
 }
 
 public interface ICustomRentDynamicsApiClient : IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings>
