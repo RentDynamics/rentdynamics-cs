@@ -8,7 +8,7 @@ commands:
             mkdir release_info && cd release_info
             
             date +'%Y%m%d' | cat > build_date.txt
-            cat ${CIRCLE_BUILD_NUM} > build_num.txt
+            echo ${CIRCLE_BUILD_NUM} > build_num.txt
       - persist_to_workspace:
           root: release_info
           paths:
