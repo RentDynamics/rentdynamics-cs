@@ -6,11 +6,14 @@ commands:
       - run:
           command: |
             mkdir release_info && cd release_info
+            
             date +'%Y%m%d' | cat > build_date.txt
+            cat ${CIRCLE_BUILD_NUM} > build_num.txt
       - persist_to_workspace:
           root: release_info
           paths:
             - build_date.txt
+            - build_num.txt
   export_version_info:
     steps:
       - run:
@@ -31,10 +34,11 @@ commands:
           command: |
             is_prerelease=<< parameters.is_prerelease >>
             version=$BASE_VERSION
-            build_date=$(cat release_info/build_date.txt)
             if [ $is_prerelease ]
             then
-              version="${version}-preview.${build_date}.${CIRCLE_BUILD_NUM}"
+              build_date=$(cat release_info/build_date.txt)
+              build_num=$(cat release_info/build_num.txt)
+              version="${version}-preview.${build_date}.${build_num}"
             fi
 
             echo "Final version is: '$version'"
