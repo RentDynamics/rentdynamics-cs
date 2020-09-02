@@ -35,7 +35,7 @@ namespace RentDynamics.RdClient.HttpApiClient
             }
             else
             {
-                outerHandler.InnerHandler = authenticator;
+                SetInnerHandler(outerHandler, authenticator);
             }
 
             var httpClient = new HttpClient(outerHandler)
@@ -44,6 +44,22 @@ namespace RentDynamics.RdClient.HttpApiClient
             };
 
             return httpClient;
+        }
+
+        private static void SetInnerHandler(DelegatingHandler outerHandler, DelegatingHandler innerHandler)
+        {
+            var current = outerHandler;
+            while (current.InnerHandler != null)
+            {
+                if (!(current.InnerHandler is DelegatingHandler innerDelegatingHandler))
+                {
+                    throw new RentDynamicsHttpClientFactoryException($"Only {typeof(DelegatingHandler)} handler types are supported. Received: {current.InnerHandler.GetType()}");
+                }
+
+                current = innerDelegatingHandler;
+            }
+            
+            current.InnerHandler = innerHandler;
         }
     }
 }
