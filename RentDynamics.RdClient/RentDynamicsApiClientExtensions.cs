@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 namespace RentDynamics.RdClient
 {
     [PublicAPI]
-    public static class RentDynamicsApiClientSyncMethodExtensions
+    public static class RentDynamicsApiClientExtensions
     {
         public static TResult Get<TResult>(this IRentDynamicsApiClient apiClient, string requestUri)
             => apiClient.GetAsync<TResult>(requestUri).GetAwaiter().GetResult();
