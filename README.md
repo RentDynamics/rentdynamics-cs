@@ -5,7 +5,7 @@
 [![MIT License](https://img.shields.io/npm/l/rentdynamics.svg)](LICENSE)
 [![Nuget](https://img.shields.io/nuget/v/RentDynamics.RdClient?style=flat)](https://www.nuget.org/packages/RentDynamics.RdClient)
 
-C# client package to access RentDynamics API
+C# client package to access the RentDynamics API
 
 ## Installation
 
@@ -15,11 +15,11 @@ Install-Package RentDynamics.RdClient.DependencyInjection //For DI container ext
 ```
 
 ## API credentials and authentication
-You need a set of credentials to access API: `apiKey` and `apiSecretKey`.
+You need a set of credentials to access the API: `apiKey` and `apiSecretKey`.
 
-There are 2 types of API credentials: normal credentials that require user authentication and by-pass user authentication credentials.
+There are 2 ways to authenticate. You can authenticate with a username & password, or an API key that doesn't require the login method to be invoked with a username & password.
 
-As for normal credentials, you will also need to authenticate with a RentDynamics user using `AuthenticationResource` class ([see example below](#console-apps-with-no-di-container)).
+If you authenticate with a username & password then you will need to use the `AuthenticationResource` class ([see example below](#console-apps-with-no-di-container)).
 
 
 ## Simple usage
@@ -30,14 +30,14 @@ As for normal credentials, you will also need to authenticate with a RentDynamic
 string apiKey = "<api-key>";
 string apiSecretKey = "<api-secret-key>";
 
-bool isDevelopment = false; //Chose between production/development RD environment
+bool isDevelopment = false; //The default is production. If you want to interact with the development environment set this equal to true
 
 var options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment);
 var settings = new RentDynamicsApiClientSettings(options);
 var rdApiClient = new RentDynamicsApiClient(settings); //Store API client somewhere in a `static` field and reuse it for single-user scenarios
 
 var authenticationResource = new AuthenticationResource(rdApiClient);
-await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step for by-pass user authentication api credentials
+await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step depending on how you will authenticate. This is necessary if you will be authenticating with a username & password. It is not necessary if you are using an apiKey that by-passes traditional authentication.
 
 var leadCardResource = new LeadCardsResource(rdApiClient);
 
