@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace RentDynamics.RdClient.Resources.LeadCards
 {
     [PublicAPI]
-    public class Address
+    public class AddressVM
     {
         public string AddressLine1 { get; set; }
         public string? AddressLine2 { get; set; }
@@ -18,7 +18,7 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         public int? AddressTypeId { get; set; }
         
         [UsedImplicitly]
-        public Address(string addressLine1, string city, string state)
+        public AddressVM(string addressLine1, string city, string state)
         {
             AddressLine1 = addressLine1;
             City = city;

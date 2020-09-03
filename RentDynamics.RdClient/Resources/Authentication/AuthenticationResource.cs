@@ -14,9 +14,9 @@ namespace RentDynamics.RdClient.Resources.Authentication
         {
         }
 
-        public async Task<LoginResponse> LoginAsync(string username, string password, CancellationToken token = default)
+        public async Task<LoginResponseVM> LoginAsync(string username, string password, CancellationToken token = default)
         {
-            var authenticationResponse = await ApiClient.PostAsync<LoginRequest, LoginResponse>("/auth/login", new LoginRequest(username, password), token);
+            var authenticationResponse = await ApiClient.PostAsync<LoginRequestVM, LoginResponseVM>("/auth/login", new LoginRequestVM(username, password), token);
 
             UserAuthentication.SetAuthentication(authenticationResponse.UserId, authenticationResponse.AuthenticationToken);
             return authenticationResponse;
@@ -26,8 +26,8 @@ namespace RentDynamics.RdClient.Resources.Authentication
         {
             if (!UserAuthentication.IsAuthenticated) throw new AuthenticationResourceException("User is not authenticated");
 
-            var logoutRequest = new LogoutRequest(UserAuthentication.UserId!.Value);
-            await ApiClient.PostAsync<LogoutRequest, object?>("/auth/logout", logoutRequest, cancellationToken);
+            var logoutRequest = new LogoutRequestVM(UserAuthentication.UserId!.Value);
+            await ApiClient.PostAsync<LogoutRequestVM, object?>("/auth/logout", logoutRequest, cancellationToken);
             UserAuthentication.RemoveAuthentication();
         }
     }

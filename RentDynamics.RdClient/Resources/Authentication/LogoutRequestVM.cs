@@ -2,12 +2,12 @@ using Newtonsoft.Json;
 
 namespace RentDynamics.RdClient.Resources.Authentication
 {
-    public class LogoutRequest
+    public class LogoutRequestVM
     {
         [JsonProperty("user")]
         public int UserId { get; }
 
-        public LogoutRequest(int userId)
+        public LogoutRequestVM(int userId)
         {
             UserId = userId;
         }

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace RentDynamics.RdClient.Resources.LeadCards
 {
     [PublicAPI]
-    public class Pet
+    public class PetVM
     {
         public int PetTypeId { get; set; }
         public string? Breed { get; set; }
@@ -15,7 +15,7 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         public DateTime Created { get; protected set; }
 
         [UsedImplicitly]
-        public Pet(int petTypeId)
+        public PetVM(int petTypeId)
         {
             PetTypeId = petTypeId;
         }

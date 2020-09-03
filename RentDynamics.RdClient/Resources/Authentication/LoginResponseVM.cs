@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace RentDynamics.RdClient.Resources.Authentication
 {
     [PublicAPI]
-    public class LoginResponse
+    public class LoginResponseVM
     {
         public int UserId { get; }
 
@@ -12,7 +12,7 @@ namespace RentDynamics.RdClient.Resources.Authentication
         public string AuthenticationToken { get; }
 
         [UsedImplicitly]
-        public LoginResponse(int userId, string authenticationToken)
+        public LoginResponseVM(int userId, string authenticationToken)
         {
             UserId = userId;
             AuthenticationToken = authenticationToken;

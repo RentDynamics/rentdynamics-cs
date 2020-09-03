@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 namespace RentDynamics.RdClient.Resources.LeadCards
 {
     [PublicAPI]
-    public class Occupant
+    public class OccupantVM
     {
         public string FirstName { get; set; }
         public string PhoneNumber { get; set; }
@@ -17,17 +17,17 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         public int? RelatedPersonId { get; set; }
         public int? RelationshipTypeId { get; set; }
 
-#pragma warning disable 8618
 //Disable nullability warnings
+#pragma warning disable 8618
         [UsedImplicitly]
-        protected Occupant() //Protected ctor for deserialization only.
-                             //This ctor is required because API sometimes returns this object with 'relationshipTypeId' property set to 'null'
-                             //But 'relationshipTypeId' must be a non-null value when the object is sent to API 
+        protected OccupantVM() //Protected ctor for deserialization only.
+                               //This ctor is required because API sometimes returns this object with 'relationshipTypeId' property set to 'null'
+                               //But 'relationshipTypeId' must be a non-null value when the object is sent to API 
         {
         }
 #pragma warning restore 8618
         
-        public Occupant(string firstName, string phoneNumber, string emailAddress, int relationshipTypeId)
+        public OccupantVM(string firstName, string phoneNumber, string emailAddress, int relationshipTypeId)
         {
             FirstName = firstName;
             RelationshipTypeId = relationshipTypeId;

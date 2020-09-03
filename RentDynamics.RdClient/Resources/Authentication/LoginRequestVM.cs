@@ -6,14 +6,14 @@ using Newtonsoft.Json;
 namespace RentDynamics.RdClient.Resources.Authentication
 {
     [PublicAPI]
-    public class LoginRequest
+    public class LoginRequestVM
     {
         public string Username { get; }
         
         [JsonProperty("password")]
         public string PasswordHash { get; }
 
-        public LoginRequest(string username, string password)
+        public LoginRequestVM(string username, string password)
         {
             Username = username;
             PasswordHash = GetPasswordHash(password);

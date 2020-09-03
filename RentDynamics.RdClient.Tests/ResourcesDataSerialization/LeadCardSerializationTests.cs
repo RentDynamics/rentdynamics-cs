@@ -12,7 +12,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         public void LeadCard_ShouldBeDeserialized_WhenEmailAndPhoneNumber_AreNull()
         {
             const string json = "{\"phoneNumber\":null, \"email\":null}";
-            var leadCard = JsonConvert.DeserializeObject<LeadCard>(json, RentDynamicsDefaultSettings.DefaultSerializerSettings);
+            var leadCard = JsonConvert.DeserializeObject<LeadCardVM>(json, RentDynamicsDefaultSettings.DefaultSerializerSettings);
 
             leadCard.PhoneNumber.Should().BeNull();
             leadCard.Email.Should().BeNull();

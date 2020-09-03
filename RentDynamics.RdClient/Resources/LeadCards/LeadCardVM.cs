@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace RentDynamics.RdClient.Resources.LeadCards
 {
     [PublicAPI]
-    public class LeadCard
+    public class LeadCardVM
     {
         public string FirstName { get; set; }
         public string? PhoneNumber { get; set; }
@@ -40,21 +40,21 @@ namespace RentDynamics.RdClient.Resources.LeadCards
         public int? PreferredCommunicationTypeId { get; set; }
         public int? SecondaryPreferredCommunicationTypeId { get; set; }
 
-        public Address? Address { get; set; }
+        public AddressVM? Address { get; set; }
 
         public List<int> Amenities { get; set; } = new List<int>();
-        public List<Occupant> Occupants { get; set; } = new List<Occupant>();
-        public List<Pet> Pets { get;  set; } = new List<Pet>();
+        public List<OccupantVM> Occupants { get; set; } = new List<OccupantVM>();
+        public List<PetVM> Pets { get;  set; } = new List<PetVM>();
 
         
 #pragma warning disable 8618
         [UsedImplicitly]
-        protected LeadCard() //Ctor for deserialization only. Required to by-pass validation implemented by the public ctor. 
+        protected LeadCardVM() //Ctor for deserialization only. Required to by-pass validation implemented by the public ctor. 
         {
         }
 #pragma warning restore 8618
 
-        public LeadCard(string firstName, string? phoneNumber, string? email)
+        public LeadCardVM(string firstName, string? phoneNumber, string? email)
         {
             if (phoneNumber == null && email == null)
             {
