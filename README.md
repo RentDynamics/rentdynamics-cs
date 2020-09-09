@@ -39,7 +39,7 @@ var rdApiClient = new RentDynamicsApiClient(settings); //Store API client somewh
 var authenticationResource = new AuthenticationResource(rdApiClient);
 await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step depending on how you will authenticate. This is necessary if you will be authenticating with a username & password. It is not necessary if you are using an apiKey that by-passes traditional authentication.
 
-var leadCardResource = new LeadCardsResource(rdApiClient);
+var leadCardResource = new LeadCardResource(rdApiClient);
 
 var leadCard = new LeadCard("Peter", "example@email.com", phoneNumber: null) 
 {
@@ -71,15 +71,15 @@ public class RdExampleController
 {
   private readonly IRentDynamicsApiClient _rdApiClient;
   private readonly AuthenticationResource _authenticationResource;
-  private readonly LeadCardsResource _leadCardsResource;
+  private readonly LeadCardResource _leadCardResource;
 
   public RdExampleController(IRentDynamicsApiClient rdApiClient,
                              AuthenticationResource authenticationResource,
-                             LeadCardsResource leadCardsResource)
+                             LeadCardResource leadCardResource)
   {
     _rdApiClient = rdApiClient;
     _authenticationResource = authenticationResource;
-    _leadCardsResource = leadCardsResource;
+    _leadCardResource = leadCardResource;
   }
 
   public async Task<LeadCard> PostLeadCard([FromQuery] int communityId, [FromBody] object input)
@@ -87,7 +87,7 @@ public class RdExampleController
     await _authenticationResource.LoginAsync("<username>", "<password>");
 
     var leadCard = new LeadCard(...) { ... };
-    return await _leadCardsResource.CreateLeadCardAsync(communityId, leadCard);
+    return await _leadCardResource.CreateLeadCardAsync(communityId, leadCard);
   }
 }
 ```
@@ -176,11 +176,11 @@ public void ConfigureServices(IServiceCollection services)
 
 public class ResourceBySettingsFactoryExample
 {
-    private readonly LeadCardsResource _leadCardsResource;
+    private readonly LeadCardResource _leadCardResource;
     
     public ResourceBySettingsFactoryExample(IRentDynamicsResourceBySettingsFactory<CustomRentDynamicsApiClientSettings> resourceBySettingsFactory)
     {
-        _leadCardsResource = resourceBySettingsFactory.CreateResource<LeadCardsResource>(); //The resource will be created with IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings> api client implementation
+        _leadCardResource = resourceBySettingsFactory.CreateResource<LeadCardResource>(); //The resource will be created with IRentDynamicsApiClient<CustomRentDynamicsApiClientSettings> api client implementation
     }
 }
 ```
@@ -222,11 +222,11 @@ public void ConfigureServices(IServiceCollection services)
 
 public class ResourceByClientFactoryExample
 {
-    private readonly LeadCardsResource _leadCardsResource;
+    private readonly LeadCardResource _leadCardResource;
     
     public ResourceByClientFactoryExample(IRentDynamicsResourceByClientFactory<ICustomRentDynamicsApiClient> resourceByClientFactory)
     {
-        _leadCardsResource = resourceByClientFactory.CreateResource<LeadCardsResource>(); //The resource will be created with ICustomRentDynamicsApiClient api client implementation
+        _leadCardResource = resourceByClientFactory.CreateResource<LeadCardResource>(); //The resource will be created with ICustomRentDynamicsApiClient api client implementation
     }
 }
 ```
