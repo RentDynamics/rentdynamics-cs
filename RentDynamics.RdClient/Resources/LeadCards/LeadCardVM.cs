@@ -44,23 +44,10 @@ namespace RentDynamics.RdClient.Resources.LeadCards
 
         public List<int> Amenities { get; set; } = new List<int>();
         public List<OccupantVM> Occupants { get; set; } = new List<OccupantVM>();
-        public List<PetVM> Pets { get;  set; } = new List<PetVM>();
-
-        
-#pragma warning disable 8618
-        [UsedImplicitly]
-        protected LeadCardVM() //Ctor for deserialization only. Required to by-pass validation implemented by the public ctor. 
-        {
-        }
-#pragma warning restore 8618
+        public List<PetVM> Pets { get; set; } = new List<PetVM>();
 
         public LeadCardVM(string firstName, string? phoneNumber, string? email)
         {
-            if (phoneNumber == null && email == null)
-            {
-                throw new ModelValidationException($"At least {nameof(phoneNumber)} or {nameof(email)} must be specified");
-            }
-            
             FirstName = firstName;
             PhoneNumber = phoneNumber;
             Email = email;
