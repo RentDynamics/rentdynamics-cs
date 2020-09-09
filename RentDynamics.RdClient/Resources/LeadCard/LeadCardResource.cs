@@ -2,13 +2,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace RentDynamics.RdClient.Resources.LeadCards
+namespace RentDynamics.RdClient.Resources.LeadCard
 {
     [PublicAPI]
-    public class LeadCardsResource : BaseRentDynamicsResource
+    public class LeadCardResource : BaseRentDynamicsResource
     {
         [UsedImplicitly]
-        public LeadCardsResource(IRentDynamicsApiClient apiClient) : base(apiClient)
+        public LeadCardResource(IRentDynamicsApiClient apiClient) : base(apiClient)
         {
         }
 

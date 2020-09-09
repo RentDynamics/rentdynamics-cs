@@ -5,7 +5,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RentDynamics.RdClient.Resources.Appointment;
-using RentDynamics.RdClient.Resources.LeadCards;
+using RentDynamics.RdClient.Resources.LeadCard;
 
 namespace RentDynamics.RdClient.Tests.IntegrationTests
 {
@@ -25,7 +25,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             int communityId = AvailableCommunityId;
 
             var apiClient = CreateApiClient();
-            var resource = new LeadCardsResource(apiClient);
+            var resource = new LeadCardResource(apiClient);
 
             var req = new LeadCardVM("Valeriy", "2111111111", "valery_petrov@somedomain.com")
             {

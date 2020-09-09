@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using RentDynamics.RdClient.Resources.LeadCards;
+using RentDynamics.RdClient.Resources.LeadCard;
 
 namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 {

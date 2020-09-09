@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace RentDynamics.RdClient.Resources.LeadCards
+namespace RentDynamics.RdClient.Resources.LeadCard
 {
     [PublicAPI]
     public class LeadCardVM
