@@ -9,7 +9,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
     {
         protected override bool AutomaticAuthentication => false;
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore("Does not pass with by-pass authentication credentials - 500 error code")]
         public async Task LoginLogoutTest()
         {
             var apiClient = CreateApiClient();
