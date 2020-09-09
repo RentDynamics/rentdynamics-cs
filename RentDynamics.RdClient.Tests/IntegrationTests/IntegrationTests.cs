@@ -145,8 +145,6 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
             var getAddress = await apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
 
-            // getAddress.Should().
-
             var updateAddress = new Dictionary<string, object>
             {
                 { "city", "New city" }
