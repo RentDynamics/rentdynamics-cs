@@ -46,6 +46,7 @@ namespace RentDynamics.RdClient.Resources.LeadCard
         public List<OccupantVM> Occupants { get; set; } = new List<OccupantVM>();
         public List<PetVM> Pets { get; set; } = new List<PetVM>();
 
+        [UsedImplicitly]
         public LeadCardVM(string firstName, string? phoneNumber, string? email)
         {
             FirstName = firstName;
