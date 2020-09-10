@@ -46,6 +46,13 @@ namespace RentDynamics.RdClient.Resources.LeadCard
         public List<OccupantVM> Occupants { get; set; } = new List<OccupantVM>();
         public List<PetVM> Pets { get; set; } = new List<PetVM>();
 
+        /// <summary>
+        /// The constructor for <see cref="LeadCardVM"/> class
+        /// </summary>
+        /// <param name="firstName">First name of the lead. This is a required parameter</param>
+        /// <param name="phoneNumber">Phone number of the lead.</param>
+        /// <param name="email">Email address of the lead</param>
+        /// <remarks>Both <paramref name="phoneNumber"/> and <paramref name="email"/> cannot be <c>null</c> at the same time. At least one of them have to be provided.</remarks>
         [UsedImplicitly]
         public LeadCardVM(string firstName, string? phoneNumber, string? email)
         {
