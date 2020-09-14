@@ -273,3 +273,47 @@ public class RdExampleAddressService
   }
 }
 ```
+
+## Endpoint usage examples
+The section covers some common endpoints that are accessible with the help of `Resource` classes. If you do not know how to obtain a `Resource` class, please read [Simple usage](#simple-usage) or [Advanced usage](#advanced-usage) sections first.
+
+### Appointment endpoints
+
+**Required resource class**: [`AppointmentResource`](RentDynamics.RdClient/Resources/Appointment/AppointmentResource.cs)
+
+1. `GetAppointmentTimes`
+    ```c#
+   AppointmentResource resource = ...;
+   
+   int communityGroupId = <communityGroupId>;
+   DateTime appointmentDate = DateTime.Today;
+   bool isUtc = true; //If set to false, the response will contain values in MDT timezone
+   
+   AppointmentTimesVM appointmentTimes = await resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, isUtc);
+   //OR you can use synchronous version of the method
+   AppointmentTimesVM appointmentTimes = resource.GetAppointmentTimes(communityGroupId, appointmentDate, isUtc);
+   
+   //AppointmentTimesVM is a List<DateTime> object
+   foreach(DateTime appointmentTime in appointmentTimes)
+   {
+       //do something with the appointmentTime
+   }
+    ```
+2. `GetAppointmentDays`
+    ```c#
+      AppointmentResource resource = ...;
+      
+      int communityGroupId = <communityGroupId>;
+      DateTime startAppointmentDate = DateTime.Today.AddDays(-3);
+      DateTime endAppointmentDate = DateTime.Today.AddDays(1);
+      
+      AppointmentDaysVM appointmentDays = await resource.GetAppointmentDaysAsync(communityGroupId, startAppointmentDate, endAppointmentDate);
+      //OR you can use synchronous version of the method
+      AppointmentDaysVM appointmentDays = resource.GetAppointmentDaysAsync(communityGroupId, startAppointmentDate, endAppointmentDate);
+      
+      //AppointmentDaysVM is a List<DateTime> object
+      foreach(DateTime appointmentDay in appointmentDays)
+      {
+          //do something with the appointmentDay
+      }
+    ```
