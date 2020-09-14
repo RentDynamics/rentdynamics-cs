@@ -20,15 +20,15 @@ namespace RentDynamics.RdClient.Resources.Appointment
         /// </summary>
         /// <param name="communityGroupId">Id of the community group for which appointment times should be returned</param>
         /// <param name="appointmentDate">A specific date you want for which appointment times should be returned</param>
-        /// <param name="isUtc">Return appointment times as UTC values. If the parameter is set to <c>false</c>, the response will be in MDT timezone.</param>
+        /// <param name="asUtc">Default value is false. When <c>false</c>, the response returns appointment times in local time. When <c>true</c>, the response returns appointment times will be in UTC.</param>
         /// <param name="token">The token to monitor for cancellation requests</param>
         /// <returns><see cref="AppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTime"/> objects.</returns>
-        public async Task<AppointmentTimesVM> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool isUtc, CancellationToken token = default)
+        public async Task<AppointmentTimesVM> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool asUtc = false, CancellationToken token = default)
         {
             var parameters = new Dictionary<string, string>
             {
                 { "appointmentDate", appointmentDate.Date.ToString(RentDynamicsDefaultSettings.DateFormatShortUs) },
-                { "utc", isUtc.ToString() }
+                { "utc", asUtc.ToString() }
             };
             string query = QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
             return await ApiClient.GetAsync<AppointmentTimesVM>(query, token);

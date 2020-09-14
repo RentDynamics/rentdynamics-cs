@@ -7,8 +7,8 @@ namespace RentDynamics.RdClient.Resources.Appointment
     public static class AppointmentResourceExtensions
     {
         /// <inheritdoc cref="AppointmentResource.GetAppointmentTimesAsync"/>
-        public static AppointmentTimesVM GetAppointmentTimes(this AppointmentResource resource, int communityGroupId, DateTime appointmentDate, bool isUtc)
-            => resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, isUtc).GetAwaiter().GetResult();
+        public static AppointmentTimesVM GetAppointmentTimes(this AppointmentResource resource, int communityGroupId, DateTime appointmentDate, bool asUtc = false)
+            => resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, asUtc).GetAwaiter().GetResult();
 
         /// <inheritdoc cref="AppointmentResource.GetAppointmentDaysAsync"/>
         public static AppointmentDaysVM GetAppointmentDays(this AppointmentResource resource, int communityGroupId, DateTime startAppointmentDate, DateTime endAppointmentDate)

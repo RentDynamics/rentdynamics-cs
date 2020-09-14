@@ -287,11 +287,11 @@ The section covers some common endpoints that are accessible with the help of `R
    
    int communityGroupId = <communityGroupId>;
    DateTime appointmentDate = DateTime.Today;
-   bool isUtc = true; //If set to false, the response will contain values in MDT timezone
+   bool asUtc = true; //Defaults to false. When false, times will be in local time. When true, times will be in UTC
    
-   AppointmentTimesVM appointmentTimes = await resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, isUtc);
+   AppointmentTimesVM appointmentTimes = await resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, asUtc);
    //OR you can use synchronous version of the method
-   AppointmentTimesVM appointmentTimes = resource.GetAppointmentTimes(communityGroupId, appointmentDate, isUtc);
+   AppointmentTimesVM appointmentTimes = resource.GetAppointmentTimes(communityGroupId, appointmentDate, asUtc);
    
    //AppointmentTimesVM is a List<DateTime> object
    foreach(DateTime appointmentTime in appointmentTimes)
