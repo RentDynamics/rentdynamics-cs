@@ -16,7 +16,7 @@ namespace RentDynamics.RdClient.Resources.Appointment
         }
 
         /// <summary>
-        /// Access to appointment times
+        /// Returns a list of available times for a given date
         /// </summary>
         /// <param name="communityGroupId">Id of the community group for which appointment times should be returned</param>
         /// <param name="appointmentDate">A specific date you want for which appointment times should be returned</param>
@@ -35,7 +35,7 @@ namespace RentDynamics.RdClient.Resources.Appointment
         }
 
         /// <summary>
-        /// Access to appointment days within the specified date interval
+        /// Returns a list of days that have availability for a specified date range
         /// </summary>
         /// <param name="communityGroupId">Id of the community group for which appointment days should be returned</param>
         /// <param name="startAppointmentDate">Starting date for the search interval (inclusive bound)</param>
