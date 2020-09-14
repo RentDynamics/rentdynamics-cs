@@ -15,9 +15,6 @@ namespace RentDynamics.RdClient.Resources.Appointment
         {
         }
 
-        public AppointmentTimesVM GetAppointmentTimes(AppointmentResource resource, int communityGroupId, DateTime appointmentDate, bool isUtc)
-            => resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, isUtc).GetAwaiter().GetResult();
-
         /// <summary>
         /// Access to appointment times
         /// </summary>
@@ -45,7 +42,11 @@ namespace RentDynamics.RdClient.Resources.Appointment
         /// <param name="endAppointmentDate">Starting date for the search interval (inclusive bound)</param>
         /// <param name="token">The token to monitor for cancellation requests</param>
         /// <returns><see cref="AppointmentDaysVM"/> object that contains appointment days represented as <see cref="DateTime"/> objects.</returns>
-        public async Task<AppointmentDaysVM> GetAppointmentDaysAsync(int communityGroupId, DateTime startAppointmentDate, DateTime endAppointmentDate, CancellationToken token = default)
+        public async Task<AppointmentDaysVM> GetAppointmentDaysAsync(
+            int communityGroupId,
+            DateTime startAppointmentDate,
+            DateTime endAppointmentDate,
+            CancellationToken token = default)
         {
             var parameters = new Dictionary<string, string>
             {
