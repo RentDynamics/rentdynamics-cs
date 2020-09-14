@@ -37,7 +37,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
                 message.RequestUri.TryReadQueryAs<Dictionary<string, object>>(out var queryDict).Should().BeTrue();
                 
                 queryDict.Should().ContainKey("appointmentDate").WhichValue.Should().Be("08/06/2020");
-                queryDict.Should().ContainKey("isUTC").WhichValue.Should().BeOfType<string>().Which.Should().ContainEquivalentOf("false");
+                queryDict.Should().ContainKey("utc").WhichValue.Should().BeOfType<string>().Which.Should().ContainEquivalentOf("false");
                 
                 return true;
             });
