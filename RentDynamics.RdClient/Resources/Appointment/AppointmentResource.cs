@@ -19,7 +19,7 @@ namespace RentDynamics.RdClient.Resources.Appointment
             var parameters = new Dictionary<string, string>
             {
                 { "appointmentDate", appointmentDate.Date.ToString(RentDynamicsDefaultSettings.DateFormatShortUs) },
-                { "isUTC", isUtc.ToString() }
+                { "utc", isUtc.ToString() }
             };
             string query = QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
             return await ApiClient.GetAsync<AppointmentTimesVM>(query);
