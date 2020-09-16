@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -162,9 +163,19 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             var appointmentResource = new AppointmentResource(client);
 
             int communityGroupId = AvailableCommunityGroupId;
-            var appointmentTimes = await appointmentResource.GetAppointmentTimesAsync(communityGroupId, new DateTime(2020, 08, 01), true);
 
-            Assert.IsNotNull(appointmentTimes);
+            DateTime appointmentDate = new DateTime(2020, 08, 01);
+            var utcTimes = await appointmentResource.GetAppointmentTimesAsUtcAsync(communityGroupId, appointmentDate);
+            var communityLocalTimes = await appointmentResource.GetAppointmentTimesAsCommunityLocalAsync(communityGroupId, appointmentDate);
+
+            utcTimes.Should().HaveCount(communityLocalTimes.Count);
+
+            var localToUtcTimes = communityLocalTimes.Select(t => t.ToUniversalTime()).ToArray();
+
+            utcTimes.Should().ContainInOrder(localToUtcTimes);
+
+
+            // Assert.IsNotNull(utcTimes);
         }
 
         [TestMethod]

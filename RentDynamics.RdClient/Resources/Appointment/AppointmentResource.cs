@@ -16,14 +16,13 @@ namespace RentDynamics.RdClient.Resources.Appointment
         }
 
         /// <summary>
-        /// Returns a list of available times for a given date
+        /// Returns a list of available times for a given date 
         /// </summary>
         /// <param name="communityGroupId">Id of the community group for which appointment times should be returned</param>
         /// <param name="appointmentDate">A specific date you want for which appointment times should be returned</param>
-        /// <param name="asUtc">Default value is false. When <c>false</c>, the response returns appointment times in local time of the community. When <c>true</c>, the response returns appointment times will be in UTC.</param>
         /// <param name="token">The token to monitor for cancellation requests</param>
         /// <returns><see cref="AppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTime"/> objects.</returns>
-        public async Task<AppointmentTimesVM> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool asUtc = false, CancellationToken token = default)
+        private async Task<AppointmentTimesVM> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool asUtc, CancellationToken token = default)
         {
             var parameters = new Dictionary<string, string>
             {
@@ -33,6 +32,20 @@ namespace RentDynamics.RdClient.Resources.Appointment
             string query = QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
             return await ApiClient.GetAsync<AppointmentTimesVM>(query, token);
         }
+
+        /// <summary>
+        /// Returns a list of available times as UTC for a given date 
+        /// </summary>
+        /// <inheritdoc cref="GetAppointmentTimesAsync"/>
+        public Task<AppointmentTimesVM> GetAppointmentTimesAsUtcAsync(int communityGroupId, DateTime appointmentDate, CancellationToken token = default)
+            => GetAppointmentTimesAsync(communityGroupId, appointmentDate, true, token);
+
+        /// <summary>
+        /// Returns a list of available times as community local time for a given date 
+        /// </summary>
+        /// <inheritdoc cref="GetAppointmentTimesAsync"/>
+        public Task<AppointmentTimesVM> GetAppointmentTimesAsCommunityLocalAsync(int communityGroupId, DateTime appointmentDate, CancellationToken token = default)
+            => GetAppointmentTimesAsync(communityGroupId, appointmentDate, false, token);
 
         /// <summary>
         /// Returns a list of days that have availability for a specified date range

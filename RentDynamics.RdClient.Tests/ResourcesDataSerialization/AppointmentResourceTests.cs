@@ -22,7 +22,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
                        .ReturnsResponse("[\"2020-08-06T20:30:00-0600\",\"2020-08-06T20:45:00-0600\"]", MediaTypeNames.Application.Json);
 
 
-            var appointmentTimes = await Resource.GetAppointmentTimesAsync(communityGroupId, new DateTime(2020, 08, 06), false);
+            var appointmentTimes = await Resource.GetAppointmentTimesAsUtcAsync(communityGroupId, new DateTime(2020, 08, 06));
 
             var utcAppointmentTimes = appointmentTimes.Select(d => d.ToUniversalTime()).ToArray();
 
