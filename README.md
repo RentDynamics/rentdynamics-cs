@@ -281,25 +281,42 @@ The section covers some common endpoints that are accessible with the help of `R
 
 **Required resource class**: [`AppointmentResource`](RentDynamics.RdClient/Resources/Appointment/AppointmentResource.cs)
 
-1. `GetAppointmentTimes`
+1. `GetAppointmentTimesAsUtc`
+   
+   ```c#
+   AppointmentResource resource = ...;
+   
+   int communityGroupId = <communityGroupId>;
+   DateTime appointmentDate = DateTime.Today.Add(1);
+   
+   UtcAppointmentTimesVM utcAppointmentTimes = await resource.GetAppointmentTimesAsUtcAsync(communityGroupId, appointmentDate);
+   //OR you can use synchronous version of the method
+   UtcAppointmentTimesVM utcAppointmentTimes = resource.GetAppointmentTimesAsUtc(communityGroupId, appointmentDate);
+   
+   //UtcAppointmentTimesVM is a List<DateTimeOffset> object
+   foreach(DateTimeOffset appointmentTime in appointmentTimes)
+   {
+       appointmentTime.UtcDateTime //do something with the appointment time
+   }
+    ```
+2. `GetAppointmentTimesAsCommunityLocal`
     ```c#
    AppointmentResource resource = ...;
    
    int communityGroupId = <communityGroupId>;
-   DateTime appointmentDate = DateTime.Today;
-   bool asUtc = true; //Defaults to false. When false, times will be in local time. When true, times will be in UTC
+   DateTime appointmentDate = DateTime.Today.Add(1);
    
-   AppointmentTimesVM appointmentTimes = await resource.GetAppointmentTimesAsync(communityGroupId, appointmentDate, asUtc);
+   CommunityLocalAppointmentTimesVM communityLocalAppointmentTimes = await resource.GetAppointmentTimesAsCommunityLocalAsync(communityGroupId, appointmentDate);
    //OR you can use synchronous version of the method
-   AppointmentTimesVM appointmentTimes = resource.GetAppointmentTimes(communityGroupId, appointmentDate, asUtc);
+   CommunityLocalAppointmentTimesVM communityLocalAppointmentTimes = resource.GetAppointmentTimesAsCommunityLocal(communityGroupId, appointmentDate);
    
-   //AppointmentTimesVM is a List<DateTime> object
-   foreach(DateTime appointmentTime in appointmentTimes)
+   //CommunityLocalAppointmentTimesVM is a List<DateTime> object
+   foreach(DateTime appointmentTime in communityLocalAppointmentTimes)
    {
-       //do something with the appointmentTime
+       //do something with the appointment time
    }
     ```
-2. `GetAppointmentDays`
+3. `GetAppointmentDays`
     ```c#
       AppointmentResource resource = ...;
       
