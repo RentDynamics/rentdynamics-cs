@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -163,7 +164,9 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             var appointmentResource = new AppointmentResource(client);
 
             int communityGroupId = AvailableCommunityGroupId;
-            TimeZoneInfo communityTimezone = TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time");
+            TimeZoneInfo communityTimezone = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                ? TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time")
+                : TimeZoneInfo.FindSystemTimeZoneById("America/Denver");
 
             DateTime appointmentDate = DateTime.Today.AddDays(1);
 
@@ -173,8 +176,10 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             var communityLocalAsUtcTimes = communityLocalTimes.Select(t => TimeZoneInfo.ConvertTimeToUtc(t, communityTimezone)).ToArray();
 
 
-            utcTimes.Should().HaveCount(communityLocalTimes.Count);
-            utcTimes.Select(offset => offset.UtcDateTime).Should().ContainInOrder(communityLocalAsUtcTimes);
+            utcTimes.Select(offset => offset.UtcDateTime)
+                    .Should()
+                    .HaveCount(communityLocalTimes.Count)
+                    .And.ContainInOrder(communityLocalAsUtcTimes);
         }
 
         [TestMethod]
