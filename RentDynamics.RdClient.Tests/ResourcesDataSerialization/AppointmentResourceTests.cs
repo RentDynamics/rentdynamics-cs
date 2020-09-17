@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
@@ -19,16 +20,20 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         {
             const int communityGroupId = 1;
             MockHandler.SetupAnyRequest()
-                       .ReturnsResponse("[\"2020-08-06T20:30:00-0600\",\"2020-08-06T20:45:00-0600\"]", MediaTypeNames.Application.Json);
+                       .ReturnsResponse("[\"2020-09-18T15:00:00+0000\",\"2020-09-18T15:15:00+0000\"]", MediaTypeNames.Application.Json);
+            
+            var appointmentTimes = await Resource.GetAppointmentTimesAsUtcAsync(communityGroupId, new DateTime(2020, 09, 18));
 
 
-            var appointmentTimes = await Resource.GetAppointmentTimesAsUtcAsync(communityGroupId, new DateTime(2020, 08, 06));
+            var expected = new[]
+            {
+                DateTime.Parse("2020-09-18T15:00:00+0000").ToUniversalTime(),
+                DateTime.Parse("2020-09-18T15:15:00+0000").ToUniversalTime()
+            };
 
-            var utcAppointmentTimes = appointmentTimes.Select(d => d.ToUniversalTime()).ToArray();
-
-            utcAppointmentTimes.Should()
-                               .HaveCount(2)
-                               .And.ContainInOrder(DateTime.Parse("2020-08-07T02:30:00"), DateTime.Parse("2020-08-07T02:45:00"));
+            appointmentTimes.Select(offset => offset.UtcDateTime).Should()
+                            .HaveCount(2)
+                            .And.ContainInOrder(expected);
             
             MockHandler.VerifyRequest(message =>
             {
@@ -36,8 +41,8 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 
                 message.RequestUri.TryReadQueryAs<Dictionary<string, object>>(out var queryDict).Should().BeTrue();
                 
-                queryDict.Should().ContainKey("appointmentDate").WhichValue.Should().Be("08/06/2020");
-                queryDict.Should().ContainKey("utc").WhichValue.Should().BeOfType<string>().Which.Should().ContainEquivalentOf("false");
+                queryDict.Should().ContainKey("appointmentDate").WhichValue.Should().Be("09/18/2020");
+                queryDict.Should().ContainKey("utc").WhichValue.Should().BeOfType<string>().Which.Should().ContainEquivalentOf("true");
                 
                 return true;
             });
