@@ -163,19 +163,18 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             var appointmentResource = new AppointmentResource(client);
 
             int communityGroupId = AvailableCommunityGroupId;
+            TimeZoneInfo communityTimezone = TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time");
 
-            DateTime appointmentDate = new DateTime(2020, 08, 01);
+            DateTime appointmentDate = DateTime.Today.AddDays(1);
+
             var utcTimes = await appointmentResource.GetAppointmentTimesAsUtcAsync(communityGroupId, appointmentDate);
             var communityLocalTimes = await appointmentResource.GetAppointmentTimesAsCommunityLocalAsync(communityGroupId, appointmentDate);
 
+            var communityLocalAsUtcTimes = communityLocalTimes.Select(t => TimeZoneInfo.ConvertTimeToUtc(t, communityTimezone)).ToArray();
+
+
             utcTimes.Should().HaveCount(communityLocalTimes.Count);
-
-            var localToUtcTimes = communityLocalTimes.Select(t => t.ToUniversalTime()).ToArray();
-
-            utcTimes.Should().ContainInOrder(localToUtcTimes);
-
-
-            // Assert.IsNotNull(utcTimes);
+            utcTimes.Select(offset => offset.UtcDateTime).Should().ContainInOrder(communityLocalAsUtcTimes);
         }
 
         [TestMethod]

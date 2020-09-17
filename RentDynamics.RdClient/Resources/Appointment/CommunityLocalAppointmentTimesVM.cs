@@ -10,7 +10,15 @@ namespace RentDynamics.RdClient.Resources.Appointment
     [PublicAPI, UsedImplicitly]
     [DebuggerDisplay("Count = {Count}")]
     [JsonArray(ItemConverterType = typeof(DateFormatConverter), ItemConverterParameters = new object[] { RentDynamicsDefaultSettings.TimeFormatUs, RentDynamicsDefaultSettings.CultureNameUs })]
-    public class AppointmentTimesVM : List<DateTime>
+    public class CommunityLocalAppointmentTimesVM : List<DateTime>
     {
+        [UsedImplicitly]
+        public CommunityLocalAppointmentTimesVM()
+        {
+        }
+
+        public CommunityLocalAppointmentTimesVM(int capacity) : base(capacity)
+        {
+        }
     }
 }

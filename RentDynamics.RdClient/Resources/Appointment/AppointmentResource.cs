@@ -15,37 +15,55 @@ namespace RentDynamics.RdClient.Resources.Appointment
         {
         }
 
-        /// <summary>
-        /// Returns a list of available times for a given date 
-        /// </summary>
         /// <param name="communityGroupId">Id of the community group for which appointment times should be returned</param>
         /// <param name="appointmentDate">A specific date you want for which appointment times should be returned</param>
-        /// <param name="token">The token to monitor for cancellation requests</param>
-        /// <returns><see cref="AppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTime"/> objects.</returns>
-        private async Task<AppointmentTimesVM> GetAppointmentTimesAsync(int communityGroupId, DateTime appointmentDate, bool asUtc, CancellationToken token = default)
+        private static string GetAppointmentTimesQuery(int communityGroupId, DateTime appointmentDate, bool asUtc)
         {
             var parameters = new Dictionary<string, string>
             {
                 { "appointmentDate", appointmentDate.Date.ToString(RentDynamicsDefaultSettings.DateFormatShortUs) },
                 { "utc", asUtc.ToString() }
             };
-            string query = QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
-            return await ApiClient.GetAsync<AppointmentTimesVM>(query, token);
+            return QueryHelpers.AddQueryString($"/appointmentTimes/{communityGroupId}", parameters);
         }
 
         /// <summary>
-        /// Returns a list of available times as UTC for a given date 
+        /// Returns a list of available times as UTC for a given date
         /// </summary>
-        /// <inheritdoc cref="GetAppointmentTimesAsync"/>
-        public Task<AppointmentTimesVM> GetAppointmentTimesAsUtcAsync(int communityGroupId, DateTime appointmentDate, CancellationToken token = default)
-            => GetAppointmentTimesAsync(communityGroupId, appointmentDate, true, token);
+        /// <inheritdoc cref="GetAppointmentTimesQuery"/>
+        /// <returns><see cref="UtcAppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTimeOffset"/> objects.</returns>
+        public Task<UtcAppointmentTimesVM> GetAppointmentTimesAsUtcAsync(
+            int communityGroupId,
+            DateTime appointmentDate,
+            CancellationToken token = default)
+        {
+            string query = GetAppointmentTimesQuery(communityGroupId, appointmentDate, true);
+            return ApiClient.GetAsync<UtcAppointmentTimesVM>(query, token);
+        }
 
         /// <summary>
         /// Returns a list of available times as community local time for a given date 
         /// </summary>
-        /// <inheritdoc cref="GetAppointmentTimesAsync"/>
-        public Task<AppointmentTimesVM> GetAppointmentTimesAsCommunityLocalAsync(int communityGroupId, DateTime appointmentDate, CancellationToken token = default)
-            => GetAppointmentTimesAsync(communityGroupId, appointmentDate, false, token);
+        /// <inheritdoc cref="GetAppointmentTimesQuery"/>
+        /// <returns><see cref="CommunityLocalAppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTime"/> objects.</returns>
+        public async Task<CommunityLocalAppointmentTimesVM> GetAppointmentTimesAsCommunityLocalAsync(
+            int communityGroupId,
+            DateTime appointmentDate,
+            CancellationToken token = default)
+        {
+            string query = GetAppointmentTimesQuery(communityGroupId, appointmentDate, false);
+            var response = await ApiClient.GetAsync<CommunityLocalAppointmentTimesVM>(query, token);
+
+            var responseWithFixedDates = new CommunityLocalAppointmentTimesVM(response.Count);
+
+            foreach (DateTime dateTime in response)
+            {
+                DateTime fixedDateTime = appointmentDate.Date.Add(dateTime.TimeOfDay);
+                responseWithFixedDates.Add(DateTime.SpecifyKind(fixedDateTime, DateTimeKind.Unspecified));
+            }
+
+            return responseWithFixedDates;
+        }
 
         /// <summary>
         /// Returns a list of days that have availability for a specified date range
