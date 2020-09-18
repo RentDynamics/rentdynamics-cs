@@ -170,15 +170,16 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
             DateTime appointmentDate = DateTime.Today.AddDays(1);
 
-            var utcTimes = await appointmentResource.GetAppointmentTimesAsUtcAsync(communityGroupId, appointmentDate);
-            var communityLocalTimes = await appointmentResource.GetAppointmentTimesAsCommunityLocalAsync(communityGroupId, appointmentDate);
 
-            var communityLocalAsUtcTimes = communityLocalTimes.Select(t => TimeZoneInfo.ConvertTimeToUtc(t, communityTimezone)).ToArray();
+            UtcAppointmentTimesVM utcTimes = await appointmentResource.GetAppointmentTimesAsUtcAsync(communityGroupId, appointmentDate);
+            LocalAppointmentTimesVM localTimes = await appointmentResource.GetAppointmentTimesAsLocalAsync(communityGroupId, appointmentDate);
+
+            var communityLocalAsUtcTimes = localTimes.Select(t => TimeZoneInfo.ConvertTimeToUtc(t, communityTimezone)).ToArray();
 
 
             utcTimes.Select(offset => offset.UtcDateTime)
                     .Should()
-                    .HaveCount(communityLocalTimes.Count)
+                    .HaveCount(localTimes.Count)
                     .And.ContainInOrder(communityLocalAsUtcTimes);
         }
 

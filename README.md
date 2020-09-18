@@ -299,16 +299,16 @@ The section covers some common endpoints that are accessible with the help of `R
        appointmentTime.UtcDateTime //do something with the appointment time
    }
     ```
-2. `GetAppointmentTimesAsCommunityLocal`
+2. `GetAppointmentTimesAsLocal`
     ```c#
    AppointmentResource resource = ...;
    
    int communityGroupId = <communityGroupId>;
    DateTime appointmentDate = DateTime.Today.Add(1);
    
-   CommunityLocalAppointmentTimesVM communityLocalAppointmentTimes = await resource.GetAppointmentTimesAsCommunityLocalAsync(communityGroupId, appointmentDate);
+   LocalAppointmentTimesVM localAppointmentTimes = await resource.GetAppointmentTimesAsLocalAsync(communityGroupId, appointmentDate);
    //OR you can use synchronous version of the method
-   CommunityLocalAppointmentTimesVM communityLocalAppointmentTimes = resource.GetAppointmentTimesAsCommunityLocal(communityGroupId, appointmentDate);
+   LocalAppointmentTimesVM localAppointmentTimes = resource.GetAppointmentTimesAsLocal(communityGroupId, appointmentDate);
    
    //CommunityLocalAppointmentTimesVM is a List<DateTime> object
    foreach(DateTime appointmentTime in communityLocalAppointmentTimes)

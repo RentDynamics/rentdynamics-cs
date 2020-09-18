@@ -45,16 +45,16 @@ namespace RentDynamics.RdClient.Resources.Appointment
         /// Returns a list of available times as community local time for a given date 
         /// </summary>
         /// <inheritdoc cref="GetAppointmentTimesQuery"/>
-        /// <returns><see cref="CommunityLocalAppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTime"/> objects.</returns>
-        public async Task<CommunityLocalAppointmentTimesVM> GetAppointmentTimesAsCommunityLocalAsync(
+        /// <returns><see cref="LocalAppointmentTimesVM"/> object that contains appointment times represented as <see cref="DateTime"/> objects.</returns>
+        public async Task<LocalAppointmentTimesVM> GetAppointmentTimesAsLocalAsync(
             int communityGroupId,
             DateTime appointmentDate,
             CancellationToken token = default)
         {
             string query = GetAppointmentTimesQuery(communityGroupId, appointmentDate, false);
-            var response = await ApiClient.GetAsync<CommunityLocalAppointmentTimesVM>(query, token);
+            var response = await ApiClient.GetAsync<LocalAppointmentTimesVM>(query, token);
 
-            var responseWithFixedDates = new CommunityLocalAppointmentTimesVM(response.Count);
+            var responseWithFixedDates = new LocalAppointmentTimesVM(response.Count);
 
             foreach (DateTime dateTime in response)
             {

@@ -10,9 +10,9 @@ namespace RentDynamics.RdClient.Resources.Appointment
         public static UtcAppointmentTimesVM GetAppointmentTimesAsUtc(this AppointmentResource resource, int communityGroupId, DateTime appointmentDate)
             => resource.GetAppointmentTimesAsUtcAsync(communityGroupId, appointmentDate).GetAwaiter().GetResult();
 
-        /// <inheritdoc cref="AppointmentResource.GetAppointmentTimesAsCommunityLocalAsync"/>
-        public static CommunityLocalAppointmentTimesVM GetAppointmentTimesAsCommunityLocalAsync(this AppointmentResource resource, int communityGroupId, DateTime appointmentDate)
-            => resource.GetAppointmentTimesAsCommunityLocalAsync(communityGroupId, appointmentDate).GetAwaiter().GetResult();
+        /// <inheritdoc cref="AppointmentResource.GetAppointmentTimesAsLocalAsync"/>
+        public static LocalAppointmentTimesVM GetAppointmentTimesAsLocalAsync(this AppointmentResource resource, int communityGroupId, DateTime appointmentDate)
+            => resource.GetAppointmentTimesAsLocalAsync(communityGroupId, appointmentDate).GetAwaiter().GetResult();
 
         /// <inheritdoc cref="AppointmentResource.GetAppointmentDaysAsync"/>
         public static AppointmentDaysVM GetAppointmentDays(this AppointmentResource resource, int communityGroupId, DateTime startAppointmentDate, DateTime endAppointmentDate)
