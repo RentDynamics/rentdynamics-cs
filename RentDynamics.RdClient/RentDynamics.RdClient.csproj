@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>RentDynamics.RdClient</RootNamespace>
+        <AssemblyName>RentDynamics.RdClient</AssemblyName>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DocumentationFile>bin\Debug\RentDynamics.RdClient.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DocumentationFile>bin\Release\RentDynamics.RdClient.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS</DefineConstants>
+    </PropertyGroup>
+
+    <Import Project="../common.props"/>
+    <Import Project="../common.targets"/>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2020.1.0"/>
+        <PackageReference Include="JsonNet.ContractResolvers" Version="1.1.0"/>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.1"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>RentDynamics.RdClient.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+</Project>

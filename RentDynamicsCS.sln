@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.RdClient", "RentDynamics.RdClient\RentDynamics.RdClient.csproj", "{15358AB5-F692-4A00-8C47-228C9D01A546}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.RdClient.Tests", "RentDynamics.RdClient.Tests\RentDynamics.RdClient.Tests.csproj", "{73EDDC6D-75AF-4C4B-B800-5A30C132A792}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentDynamics.RdClient.DependencyInjection", "RentDynamics.RdClient.DependencyInjection\RentDynamics.RdClient.DependencyInjection.csproj", "{04A816C6-800C-4894-B1DC-80BC614D5739}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15358AB5-F692-4A00-8C47-228C9D01A546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15358AB5-F692-4A00-8C47-228C9D01A546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15358AB5-F692-4A00-8C47-228C9D01A546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15358AB5-F692-4A00-8C47-228C9D01A546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73EDDC6D-75AF-4C4B-B800-5A30C132A792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EDDC6D-75AF-4C4B-B800-5A30C132A792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EDDC6D-75AF-4C4B-B800-5A30C132A792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73EDDC6D-75AF-4C4B-B800-5A30C132A792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A816C6-800C-4894-B1DC-80BC614D5739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A816C6-800C-4894-B1DC-80BC614D5739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A816C6-800C-4894-B1DC-80BC614D5739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A816C6-800C-4894-B1DC-80BC614D5739}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

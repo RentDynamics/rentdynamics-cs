@@ -1,0 +1,196 @@
+version: 2.1
+
+commands:
+  store_build_date:
+    steps:
+      - run:
+          command: |
+            mkdir release_info && cd release_info
+            
+            date +'%Y%m%d' | cat > build_date.txt
+            echo ${CIRCLE_BUILD_NUM} > build_num.txt
+      - persist_to_workspace:
+          root: release_info
+          paths:
+            - build_date.txt
+            - build_num.txt
+  export_version_info:
+    steps:
+      - run:
+          command: |
+            echo 'export BASE_VERSION=$(cat version.md | head -1)' >> $BASH_ENV
+            echo 'export CHANGELOG=$(cat version.md | tail +2)' >> $BASH_ENV
+  export_final_version:
+    parameters:
+      is_prerelease:
+        type: boolean
+        default: false
+    steps:
+      - attach_workspace:
+          at: release_info
+      - export_version_info
+      - run:
+          name: Calculate and export final version
+          command: |
+            is_prerelease=<< parameters.is_prerelease >>
+            version=$BASE_VERSION
+            if [ $is_prerelease ]
+            then
+              build_date=$(cat release_info/build_date.txt)
+              build_num=$(cat release_info/build_num.txt)
+              version="${version}-preview.${build_date}.${build_num}"
+            fi
+
+            echo "Final version is: '$version'"
+
+            echo "export FINAL_VERSION=$version" >> $BASH_ENV
+
+jobs:
+  build:
+    parameters:
+      is_prerelease:
+        type: boolean
+        default: false
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dotnet-rd-client-lib
+      - store_build_date
+      - export_final_version:
+          is_prerelease: << parameters.is_prerelease >>
+      - run:
+          name: Compile
+          command: dotnet build -c Release --packages .packages -p:Version="$FINAL_VERSION"
+      - run:
+          name: Unit Tests
+          command: |
+            dotnet test -c Release -v normal --logger "trx" --no-restore --no-build --collect:"XPlat Code Coverage"
+      - run:
+          name: Convert test trx files to JUnit
+          command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
+          when: always
+      - store_test_results:
+          path: test-results
+          when: always
+      - run:
+          name: Upload Code coverage results
+          command: |
+            dotnet tool install -g codecov.tool || true
+  
+            covfile=$(find . -name "coverage.cobertura.xml" | head -1)
+            echo "Cov file path: $covfile"
+
+            ~/.dotnet/tools/codecov -f "$covfile"
+          when: always
+      - save_cache:
+          key: dotnet-rd-client-lib
+          paths:
+            - .packages
+      - run:
+          name: Pack Release
+          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$FINAL_VERSION"
+      - persist_to_workspace:
+          root: out
+          paths:
+            - lib
+  publish_nuget_release:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - attach_workspace:
+          at: out
+      - run:
+          name: Publish to Nuget.org
+          command: dotnet nuget push out/lib/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+  publish_github_release:
+    docker:
+      - image: cibuilds/github:0.13
+    parameters:
+      is_prerelease:
+        type: boolean
+        default: false
+    steps:
+      - checkout
+      - attach_workspace:
+          at: out
+      - export_final_version:
+          is_prerelease: << parameters.is_prerelease >>
+      - run:
+          name: Publish Github Release
+          command: |
+            is_prerelease=<< parameters.is_prerelease >>
+
+            args=()
+            args+=('-u' "${CIRCLE_PROJECT_USERNAME}")
+            args+=('-t' "${RD_NUGET_PASSWORD}")
+            args+=('-r' "${CIRCLE_PROJECT_REPONAME}")
+            args+=('-c' "${CIRCLE_SHA1}")
+            args+=('-n' "v$FINAL_VERSION")
+            args+=('-soft')
+
+            $is_prerelease && args+=('-prerelease')
+            ! $is_prerelease && args+=('-b' "$CHANGELOG")
+
+            args+=("v$FINAL_VERSION")
+            args+=("out/lib")
+
+            echo "ghr args:" "${args[@]}"
+
+            ghr_result=$(ghr "${args[@]}")
+            echo "$ghr_result"
+
+            if [[ "$ghr_result" =~ ghr\ aborted\ since\ tag\ .*\ already\ exists ]]
+            then
+              exit 1
+            fi
+
+
+workflows:
+  version: 2
+  build_dev:
+    jobs:
+      - build:
+          is_prerelease: true
+          context: DotNetBuild
+          filters:
+            branches:
+              ignore:
+                - master
+      - publish_nuget_release:
+          context: DotNetBuild
+          filters:
+            branches:
+              only: /.*__dev$/
+          requires:
+            - build
+      - publish_github_release:
+          is_prerelease: true
+          context: DotNetBuild
+          filters:
+            branches:
+              only: /.*__dev$/
+          requires:
+            - build
+            - publish_nuget_release
+  build_release:
+    jobs:
+      - build:
+          is_prerelease: false
+          context: DotNetBuild
+          filters:
+            branches:
+              only: master
+      - publish_nuget_release:
+          context: DotNetBuild
+          requires:
+            - build
+      - publish_github_release:
+          is_prerelease: false
+          context: DotNetBuild
+          requires:
+            - build
+            - publish_nuget_release
