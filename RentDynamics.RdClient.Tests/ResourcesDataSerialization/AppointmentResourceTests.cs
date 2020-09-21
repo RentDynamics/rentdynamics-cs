@@ -20,15 +20,15 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         {
             const int communityGroupId = 1;
             MockHandler.SetupAnyRequest()
-                       .ReturnsResponse("[\"2020-09-18T15:00:00+0000\",\"2020-09-18T15:15:00+0000\"]", MediaTypeNames.Application.Json);
+                       .ReturnsResponse("[\"2020-09-18T15:00:00Z\",\"2020-09-18T15:15:00Z\"]", MediaTypeNames.Application.Json);
             
             var appointmentTimes = await Resource.GetAppointmentTimesAsUtcAsync(communityGroupId, new DateTime(2020, 09, 18));
 
 
             var expected = new[]
             {
-                DateTime.Parse("2020-09-18T15:00:00+0000").ToUniversalTime(),
-                DateTime.Parse("2020-09-18T15:15:00+0000").ToUniversalTime()
+                DateTime.Parse("2020-09-18T15:00:00Z").ToUniversalTime(),
+                DateTime.Parse("2020-09-18T15:15:00Z").ToUniversalTime()
             };
 
             appointmentTimes.Select(offset => offset.UtcDateTime).Should()
