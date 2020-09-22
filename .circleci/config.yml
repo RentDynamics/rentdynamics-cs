@@ -34,7 +34,7 @@ commands:
           command: |
             is_prerelease=<< parameters.is_prerelease >>
             version=$BASE_VERSION
-            if [ $is_prerelease ]
+            if $is_prerelease
             then
               build_date=$(cat release_info/build_date.txt)
               build_num=$(cat release_info/build_num.txt)
