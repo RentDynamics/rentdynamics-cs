@@ -261,7 +261,10 @@ public class RdExampleAddressService
 
     string addressId = createdAddress["id"].ToString();
 
+    // This GET request only returns one object.
     var getAddress = await _apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
+    // If the GET request will return more than one object, then you need to return an array of Dictionaries.
+    // Ex: var getObjects = await _apiClient.GetAsync<Dictionary<string, object>[]>($"url that returns multiple objects");
 
     var addressUpdate = new Dictionary<string, object>
     {
