@@ -235,12 +235,14 @@ public class ResourceByClientFactoryExample
 This package does not yet implement support for the full set of available RentDynamics API endpoints. Only a limited set of [Resource](RentDynamics.RdClient/Resources) classes is provided as of now. The list is going to be extended in the future, however, you can still access any API endpoint using the `IRentDynamicsApiClient` interface directly.
 
 ```c#
-public class RdExampleAddressService
+using Newtonsoft.Json.Linq;
+
+public class RdExampleService
 {
   private readonly IRentDynamicsApiClient _apiClient;
 
-  public RdExampleAddressService(IRentDynamicsApiClient defaultApiClient, // You can use default client
-                                 IRentDynamicsApiClient<AnotherCustomRentDynamicsApiClientSettings> anotherCustomRdApiClient // Or any custom client
+  public RdExampleService(IRentDynamicsApiClient defaultApiClient, // You can use default client
+                          IRentDynamicsApiClient<AnotherCustomRentDynamicsApiClientSettings> anotherCustomRdApiClient // Or any custom client
   )
   {
     _apiClient = defaultApiClient;
@@ -261,10 +263,7 @@ public class RdExampleAddressService
 
     string addressId = createdAddress["id"].ToString();
 
-    // This GET request only returns one object.
     var getAddress = await _apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
-    // If the GET request will return more than one object, then you need to return an array of Dictionaries.
-    // Ex: var getObjects = await _apiClient.GetAsync<Dictionary<string, object>[]>($"url that returns multiple objects");
 
     var addressUpdate = new Dictionary<string, object>
     {
@@ -273,6 +272,19 @@ public class RdExampleAddressService
     var updatedAddress = await _apiClient.PutAsync<Dictionary<string, object>, Dictionary<string, object>>($"addresses/{addressId}", addressUpdate);
 
     await _apiClient.DeleteAsync($"addresses/{addressId}");
+  }
+
+  public async Task GetExamples()
+  {
+    // A GET request that fetches a record using a primary key will only return a single object
+    var getAddress = await _apiClient.GetAsync<Dictionary<string, object>>($"addresses/{addressId}");
+
+    // A GET request that fetches a record using the 'filters' argument will return multiple objects
+    var communitiesAsArrayOfDictionaries
+      = await _apiClient.GetAsync<Dictionary<string, object>[]>($"communities?filters=website__icontains=Whispering Springs");
+
+    // For troubleshooting and debugging purposes you may want to get the response as a JSON object
+    var communitiesAsJToken = await _apiClient.GetAsync<JToken>($"communities?filters=website__icontains=Whispering Springs");
   }
 }
 ```
