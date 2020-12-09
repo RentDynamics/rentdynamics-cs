@@ -231,7 +231,7 @@ public class ResourceByClientFactoryExample
 }
 ```
 
-## Accessing not yet implemented endpoints
+## Accessing general endpoints (not strongly-typed)
 This package does not yet implement support for the full set of available RentDynamics API endpoints. Only a limited set of [Resource](RentDynamics.RdClient/Resources) classes is provided as of now. The list is going to be extended in the future, however, you can still access any API endpoint using the `IRentDynamicsApiClient` interface directly.
 
 ```c#
