@@ -12,16 +12,17 @@ namespace RentDynamics.RdClient.HttpApiClient
         public static HttpClient Create<TClientSettings>(
             TClientSettings settings,
             ILoggerFactory? loggerFactory = null,
+            HttpMessageHandler? innerHandler = null,
             DelegatingHandler? outerHandler = null)
             where TClientSettings : IRentDynamicsApiClientSettings
         {
             loggerFactory ??= new NullLoggerFactory();
 
-            var httpClientHandler = new HttpClientHandler();
+            innerHandler ??= new HttpClientHandler();
 
             var errorHandler = new RentDynamicsHttpClientErrorHandler<TClientSettings>(settings, loggerFactory.CreateLogger<RentDynamicsHttpClientErrorHandler<TClientSettings>>())
             {
-                InnerHandler = httpClientHandler
+                InnerHandler = innerHandler
             };
 
             var authenticator = new RentDynamicsHttpClientAuthenticationHandler<TClientSettings>(settings)
