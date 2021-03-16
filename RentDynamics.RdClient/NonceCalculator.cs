@@ -16,13 +16,14 @@ namespace RentDynamics.RdClient
     {
         private static async Task<string> GetSortedJsonAsync(TextReader unsortedJsonReader)
         {
-            using var reader = new JsonTextReader(unsortedJsonReader)
+            //Do not use 'using' statement here. The underlying reader should not be closed as it may be needed by the logic outside of this call.
+            //The caller is responsible for disposing the reader
+            var reader = new JsonTextReader(unsortedJsonReader)
             {
                 DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone
             };
 
             JObject jObject = await JObject.LoadAsync(reader).ConfigureAwait(false);
-
             JsonSortHelper.Sort(jObject);
 
             return jObject.ToString(Formatting.None);
@@ -33,7 +34,6 @@ namespace RentDynamics.RdClient
             if (dataReader == null) return null;
 
             string sortedJson = await GetSortedJsonAsync(dataReader).ConfigureAwait(false);
-
             return sortedJson.Replace(" ", string.Empty);
         }
 
@@ -42,9 +42,7 @@ namespace RentDynamics.RdClient
             var encoding = Encoding.UTF8;
 
             HMACSHA1 hmac = new HMACSHA1(encoding.GetBytes(apiSecretKey));
-
             byte[] buffer = hmac.ComputeHash(encoding.GetBytes(nonceString));
-
             return buffer.ToHexString().ToLower();
         }
 
