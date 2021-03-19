@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentDynamics.RdClient.DependencyInjection;
 using RentDynamics.RdClient.HttpApiClient;
 using RentDynamics.RdClient.Resources.Authentication;
 using RentDynamics.RdClient.Tests.TestUtils;
@@ -11,6 +13,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
     [TestClass, TestCategory("RD-API-IntegrationTests")]
     public class BaseRdApiIntegrationTest
     {
+        private IServiceProvider _serviceProvider;
+        
         protected IConfigurationRoot Config { get; }
 
         protected RentDynamicsOptions ApiOptions { get; }
@@ -31,11 +35,16 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
             ApiOptions = new RentDynamicsOptions(RdApiKey, RdApiSecretKey, isDevelopment: true);
 
+            _serviceProvider = new ServiceCollection()
+                               .AddRentDynamicsApiClient(new RentDynamicsApiClientSettings(ApiOptions))
+                               .AddDefaultRentDynamicsClient(s => s.GetRequiredService<IRentDynamicsApiClient<RentDynamicsApiClientSettings>>())
+                               .BuildServiceProvider();
+            
             if (AutomaticAuthentication)
             {
                 Console.WriteLine("Start login");
-
-                RentDynamicsApiClient client = CreateApiClient();
+                
+                var client = CreateApiClient();
                 var authenticationResource = new AuthenticationResource(client);
 
                 authenticationResource.Login(RdApiUserName, RdApiPassword);
@@ -44,11 +53,9 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             }
         }
 
-        protected virtual RentDynamicsApiClient CreateApiClient()
+        protected virtual IRentDynamicsApiClient CreateApiClient()
         {
-            var settings = new RentDynamicsApiClientSettings(ApiOptions);
-            var client = new RentDynamicsApiClient(settings);
-            return client;
+            return _serviceProvider.GetRequiredService<IRentDynamicsApiClient>();
         }
     }
 }
