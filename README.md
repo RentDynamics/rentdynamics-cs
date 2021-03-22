@@ -34,7 +34,7 @@ bool isDevelopment = false; //The default is production. If you want to interact
 
 var options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment);
 var rdServices = new ServiceCollection()
-                    .AddRentDynamicsApiClient(new RentDynamicsApiClientSettings(ApiOptions))
+                    .AddRentDynamicsApiClient(new RentDynamicsApiClientSettings(options))
                     .BuildServiceProvider();
                      
 
