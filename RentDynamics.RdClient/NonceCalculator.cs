@@ -16,11 +16,10 @@ namespace RentDynamics.RdClient
     {
         private static async Task<string> GetSortedJsonAsync(TextReader unsortedJsonReader)
         {
-            //Do not use 'using' statement here. The underlying reader should not be closed as it may be needed by the logic outside of this call.
-            //The caller is responsible for disposing the reader
-            var reader = new JsonTextReader(unsortedJsonReader)
+            using var reader = new JsonTextReader(unsortedJsonReader)
             {
-                DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone
+                CloseInput = false,                        //The underlying reader should not be closed as it may be needed by the logic outside of this call.
+                DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone,
             };
 
             JObject jObject = await JObject.LoadAsync(reader).ConfigureAwait(false);
