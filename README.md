@@ -33,8 +33,12 @@ string apiSecretKey = "<api-secret-key>";
 bool isDevelopment = false; //The default is production. If you want to interact with the development environment set this equal to true
 
 var options = new RentDynamicsOptions(apiKey, apiSecretKey, isDevelopment: isDevelopment);
-var settings = new RentDynamicsApiClientSettings(options);
-var rdApiClient = new RentDynamicsApiClient(settings); //Store API client somewhere in a `static` field and reuse it for single-user scenarios
+var rdServices = new ServiceCollection()
+                    .AddRentDynamicsApiClient(new RentDynamicsApiClientSettings(ApiOptions))
+                    .BuildServiceProvider();
+                     
+
+var rdApiClient = rdServices.GetRequiredService<IRentDynamicsApiClient<RentDynamicsApiClientSettings>>; //Store API client somewhere in a `static` field and reuse it for single-user scenarios
 
 var authenticationResource = new AuthenticationResource(rdApiClient);
 await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step depending on how you will authenticate. This is necessary if you will be authenticating with a username & password. It is not necessary if you are using an apiKey that by-passes traditional authentication.
