@@ -183,14 +183,14 @@ workflows:
           context: DotNetBuild
           filters:
             branches:
-              only: bugfix/release_nuget_test
-#      - publish_nuget_release:
-#          context: DotNetBuild
-#          requires:
-#            - build
-#      - publish_github_release:
-#          is_prerelease: false
-#          context: DotNetBuild
-#          requires:
-#            - build
-#            - publish_nuget_release
+              only: master
+      - publish_nuget_release:
+          context: DotNetBuild
+          requires:
+            - build
+      - publish_github_release:
+          is_prerelease: false
+          context: DotNetBuild
+          requires:
+            - build
+            - publish_nuget_release
