@@ -39,11 +39,11 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                                .AddRentDynamicsApiClient(new RentDynamicsApiClientSettings(ApiOptions))
                                .AddDefaultRentDynamicsClient(s => s.GetRequiredService<IRentDynamicsApiClient<RentDynamicsApiClientSettings>>())
                                .BuildServiceProvider();
-            
+
             if (AutomaticAuthentication)
             {
                 Console.WriteLine("Start login");
-                
+
                 var client = CreateApiClient();
                 var authenticationResource = new AuthenticationResource(client);
 
