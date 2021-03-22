@@ -95,8 +95,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             ShouldBeSame(req, res, a => a.SecondaryAdSourceId);
 
             res.EndFollowUpReasonTypeId.Should().BeNull();
-            res.PreferredCommunicationTypeId.Should().BeNull();
-            res.SecondaryPreferredCommunicationTypeId.Should().BeNull();
+            res.PreferredCommunicationTypeId.Should().Be(1);
+            res.SecondaryPreferredCommunicationTypeId.Should().Be(1);
             res.AppointmentDate.Should().BeCloseTo(req.AppointmentDate!.Value);
             res.MoveDate.Should().BeCloseTo(req.MoveDate!.Value);
             res.Created.Should().BeCloseTo(DateTime.UtcNow, ResourceCreationDatePrecision);
