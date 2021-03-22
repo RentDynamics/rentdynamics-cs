@@ -20,12 +20,12 @@ namespace RentDynamics.RdClient.HttpApiClient
             _nonceCalculator = nonceCalculator ?? new NonceCalculator();
         }
 
-        private static async Task<StringReader?> GetContentReaderAsync(HttpContent? content)
+        private static async Task<StreamReader?> GetContentReaderAsync(HttpContent? content)
         {
             if (content == null) return null;
 
-            var stringContent = await content.ReadAsStringAsync().ConfigureAwait(false);
-            return new StringReader(stringContent);
+            Stream? stream = await content.ReadAsStreamAsync();
+            return new StreamReader(stream);
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ namespace RentDynamics.RdClient.HttpApiClient
             var unixEpoch = new DateTime(1970, 1, 1);
             long unixTimestampMilliseconds = (long) (DateTime.UtcNow - unixEpoch).TotalMilliseconds;
 
-            using StringReader? contentReader = await GetContentReaderAsync(request.Content).ConfigureAwait(false); 
+            using StreamReader? contentReader = await GetContentReaderAsync(request.Content).ConfigureAwait(false); 
             string unescapedPathAndQuery = RdUriEscapeHelper.UnescapeSpecialRdApiCharacters(request.RequestUri.PathAndQuery);
             string nonce = await _nonceCalculator.GetNonceAsync(Options.ApiSecretKey, unixTimestampMilliseconds, unescapedPathAndQuery, contentReader).ConfigureAwait(false);
 
