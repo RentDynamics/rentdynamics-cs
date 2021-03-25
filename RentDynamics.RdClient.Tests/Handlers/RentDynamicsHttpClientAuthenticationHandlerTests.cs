@@ -1,3 +1,4 @@
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,11 +23,11 @@ namespace RentDynamics.RdClient.Tests.Handlers
             base.Initialize();
 
             NonceCalculatorMock = new Mock<INonceCalculator>();
-            NonceCalculatorMock.Setup(c => c.GetNonce(It.IsAny<string>(),
+            NonceCalculatorMock.Setup(c => c.GetNonceAsync(It.IsAny<string>(),
                                                       It.IsAny<long>(),
                                                       It.IsAny<string>(),
-                                                      It.IsAny<string?>()))
-                               .Returns(TestNonceString);
+                                                      It.IsAny<TextReader?>()))
+                               .Returns(Task.FromResult(TestNonceString));
             
             Options = new RentDynamicsOptions("testApiKey", "testApiSecret", isDevelopment: true);
         }
@@ -88,7 +89,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
 
             await Client.GetAsync(urlWithQueryParams);
 
-            NonceCalculatorMock.Verify(c => c.GetNonce(Options.ApiSecretKey, It.IsAny<long>(), urlWithQueryParams, null));
+            NonceCalculatorMock.Verify(c => c.GetNonceAsync(Options.ApiSecretKey, It.IsAny<long>(), urlWithQueryParams, null));
         }
 
         [TestMethod]
@@ -102,7 +103,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
             
             await Client.PostAsync(urlWithQueryParams, new StringContent(contentValue));
 
-            NonceCalculatorMock.Verify(c => c.GetNonce(Options.ApiSecretKey, It.IsAny<long>(), urlWithQueryParams, contentValue));
+            NonceCalculatorMock.Verify(c => c.GetNonceAsync(Options.ApiSecretKey, It.IsAny<long>(), urlWithQueryParams, It.IsNotNull<TextReader?>()));
         }
     }
 }

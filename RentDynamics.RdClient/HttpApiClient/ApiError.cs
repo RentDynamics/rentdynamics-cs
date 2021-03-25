@@ -8,7 +8,12 @@ namespace RentDynamics.RdClient.HttpApiClient
     {
         private string? GetValueOrNull(string key) => TryGetValue(key, out object result) ? result.ToString() : null;
 
-        public string? ErrorMessage => GetValueOrNull("errorMessage");
+        public string? ErrorMessage
+        {
+            get => GetValueOrNull("errorMessage");
+            set => this["errorMessage"] = value!;
+        }
+
         public string? ErrorMessage2 => GetValueOrNull("error_message");
         public string? Detail => GetValueOrNull("detail");
     }

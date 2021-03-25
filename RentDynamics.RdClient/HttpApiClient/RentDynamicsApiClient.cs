@@ -10,11 +10,6 @@ namespace RentDynamics.RdClient.HttpApiClient
     [PublicAPI]
     public class RentDynamicsApiClient : RentDynamicsApiClient<RentDynamicsApiClientSettings>
     {
-        public RentDynamicsApiClient(RentDynamicsApiClientSettings settings, ILoggerFactory? loggerFactory = null)
-            : base(RentDynamicsHttpClientFactory.Create(settings, loggerFactory), settings)
-        {
-        }
-
         public RentDynamicsApiClient(HttpClient httpClient, RentDynamicsApiClientSettings settings)
             : base(httpClient, settings)
         {
