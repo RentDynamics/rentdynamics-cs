@@ -37,9 +37,9 @@ namespace RentDynamics.RdClient.HttpApiClient
             string unescapedPathAndQuery = RdUriEscapeHelper.UnescapeSpecialRdApiCharacters(request.RequestUri.PathAndQuery);
             string nonce = await _nonceCalculator.GetNonceAsync(Options.ApiSecretKey, unixTimestampMilliseconds, unescapedPathAndQuery, contentReader).ConfigureAwait(false);
 
-            request.Headers.Add("x-rd-api-key", Options.ApiKey);
-            request.Headers.Add("x-rd-timestamp", unixTimestampMilliseconds.ToString());
-            request.Headers.Add("x-rd-api-nonce", nonce);
+            request.Headers.Add(RdHeaderNames.ApiKey, Options.ApiKey);
+            request.Headers.Add(RdHeaderNames.Timestamp, unixTimestampMilliseconds.ToString());
+            request.Headers.Add(RdHeaderNames.Nonce, nonce);
 
             var userAuthentication = Options.UserAuthentication;
             if (userAuthentication.IsAuthenticated)
