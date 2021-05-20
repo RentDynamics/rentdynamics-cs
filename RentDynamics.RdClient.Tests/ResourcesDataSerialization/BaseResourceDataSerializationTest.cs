@@ -31,7 +31,7 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
         protected static RentDynamicsApiClient CreateRdClient(Mock<HttpMessageHandler> mockHandler, RentDynamicsOptions options)
         {
             var httpClient = mockHandler.CreateClientWithBaseAddress();
-            return new RentDynamicsApiClient(httpClient, new RentDynamicsApiClientSettings(options));
+            return new RentDynamicsApiClient(httpClient, new RentDynamicsApiClientSettings { Options = options });
         }
     }
 }

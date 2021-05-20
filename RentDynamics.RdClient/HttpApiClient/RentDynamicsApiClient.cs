@@ -3,22 +3,11 @@ using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Logging;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
     [PublicAPI]
-    public class RentDynamicsApiClient : RentDynamicsApiClient<RentDynamicsApiClientSettings>
-    {
-        public RentDynamicsApiClient(HttpClient httpClient, RentDynamicsApiClientSettings settings)
-            : base(httpClient, settings)
-        {
-        }
-    }
-
-    [PublicAPI]
-    public class RentDynamicsApiClient<TSettings> : IRentDynamicsApiClient<TSettings>
-        where TSettings : IRentDynamicsApiClientSettings
+    public class RentDynamicsApiClient : IRentDynamicsApiClient
     {
         protected HttpClient HttpClient { get; }
 
@@ -28,7 +17,7 @@ namespace RentDynamics.RdClient.HttpApiClient
         public RentDynamicsOptions Options { get; }
 
         [UsedImplicitly]
-        public RentDynamicsApiClient(HttpClient httpClient, TSettings settings)
+        public RentDynamicsApiClient(HttpClient httpClient, RentDynamicsApiClientSettings settings)
         {
             HttpClient = httpClient;
             Options = settings.Options;

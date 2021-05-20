@@ -9,13 +9,12 @@ using Newtonsoft.Json;
 namespace RentDynamics.RdClient.HttpApiClient
 {
     [PublicAPI]
-    public class RentDynamicsHttpClientErrorHandler<TClientSettings> : DelegatingHandler
-        where TClientSettings : IRentDynamicsApiClientSettings
+    public class RentDynamicsHttpClientErrorHandler : DelegatingHandler
     {
-        private readonly TClientSettings _settings;
-        private readonly ILogger<RentDynamicsHttpClientErrorHandler<TClientSettings>> _logger;
+        private readonly RentDynamicsApiClientSettings _settings;
+        private readonly ILogger<RentDynamicsHttpClientErrorHandler> _logger;
 
-        public RentDynamicsHttpClientErrorHandler(TClientSettings settings, ILogger<RentDynamicsHttpClientErrorHandler<TClientSettings>> logger)
+        public RentDynamicsHttpClientErrorHandler(RentDynamicsApiClientSettings settings, ILogger<RentDynamicsHttpClientErrorHandler> logger)
         {
             _settings = settings;
             _logger = logger;
