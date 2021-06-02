@@ -54,7 +54,9 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
         protected virtual IRentDynamicsApiClient CreateApiClient()
         {
-            return _serviceProvider.GetRequiredService<IRentDynamicsApiClient>();
+            var settings = new RentDynamicsApiClientSettings(ApiOptions);
+            var client = new RentDynamicsApiClient(settings);
+            return client;
         }
     }
 }
