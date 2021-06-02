@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using RentDynamics.RdClient.HttpApiClient;
 
 namespace RentDynamics.RdClient
 {
@@ -15,11 +14,5 @@ namespace RentDynamics.RdClient
         Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default);
         Task<TResult> DeleteAsync<TResult>(string requestUri, CancellationToken token = default);
         Task DeleteAsync(string requestUri, CancellationToken token = default);
-    }
-
-    [PublicAPI]
-    public interface IRentDynamicsApiClient<[UsedImplicitly] TSettings> : IRentDynamicsApiClient
-        where TSettings : IRentDynamicsApiClientSettings
-    {
     }
 }
