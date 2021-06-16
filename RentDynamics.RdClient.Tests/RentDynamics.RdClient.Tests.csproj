@@ -26,7 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RentDynamics.RdClient.DependencyInjection\RentDynamics.RdClient.DependencyInjection.csproj"/>
         <ProjectReference Include="..\RentDynamics.RdClient\RentDynamics.RdClient.csproj"/>
     </ItemGroup>
 

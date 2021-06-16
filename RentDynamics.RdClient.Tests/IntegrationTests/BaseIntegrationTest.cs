@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RentDynamics.RdClient.DependencyInjection;
 using RentDynamics.RdClient.HttpApiClient;
 using RentDynamics.RdClient.Resources.Authentication;
 using RentDynamics.RdClient.Tests.TestUtils;

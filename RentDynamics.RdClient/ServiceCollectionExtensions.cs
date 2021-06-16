@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using RentDynamics.RdClient.HttpApiClient;
 
-namespace RentDynamics.RdClient.DependencyInjection
+namespace RentDynamics.RdClient
 {
     [PublicAPI]
     public static class ServiceCollectionExtensions
