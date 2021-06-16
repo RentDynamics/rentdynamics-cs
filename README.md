@@ -37,7 +37,7 @@ var rdServices = new ServiceCollection()
                     .BuildServiceProvider();
                      
 
-var rdApiClient = serviceScope.ServiceProvider.GetRequiredService<IRentDynamicsApiClient<RentDynamicsApiClientSettings>>; //Store API client somewhere in a `static` field and reuse it for single-user scenarios
+var rdApiClient = rdServices.GetRequiredService<IRentDynamicsApiClient<RentDynamicsApiClientSettings>>; //Store API client somewhere in a `static` field and reuse it for single-user scenarios
 
 var authenticationResource = new AuthenticationResource(rdApiClient);
 await authenticationResource.LoginAsync("<your-username>", "<your-password>"); //Optional step depending on how you will authenticate. This is necessary if you will be authenticating with a username & password. It is not necessary if you are using an apiKey that by-passes traditional authentication.
