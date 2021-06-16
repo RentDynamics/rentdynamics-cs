@@ -18,13 +18,15 @@ namespace RentDynamics.RdClient
         /// <param name="clientName">Name to associate <paramref name="options"/> object with</param>
         /// <param name="options">Object to get api credentials from</param>
         /// <param name="configureClient">Action allowing to extend <see cref="IHttpClientBuilder"/> configuration used to create the <see cref="HttpClient"/> instance</param>
+        /// <param name="clientLifetime"><see cref="ServiceLifetime"/> of the client. Use <see cref="ServiceLifetime.Singleton"/> for console apps and <see cref="ServiceLifetime.Scoped"/> for ASPNET Core apps</param>
         /// <returns>The same instance of <see cref="IServiceCollection"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static IServiceCollection AddRentDynamicsApiClient<TClient, TClientImplementation>(
             this IServiceCollection services,
             string clientName,
             RentDynamicsOptions options,
-            Action<IHttpClientBuilder>? configureClient = null
+            Action<IHttpClientBuilder>? configureClient = null,
+            ServiceLifetime clientLifetime = ServiceLifetime.Scoped
         )
             where TClient : class, IRentDynamicsApiClient
             where TClientImplementation : RentDynamicsApiClient, TClient
@@ -44,12 +46,12 @@ namespace RentDynamics.RdClient
 
             configureClient?.Invoke(httpClientBuilder);
 
-            services.AddScoped<TClient, TClientImplementation>(provider =>
+            services.Add(new ServiceDescriptor(typeof(TClient), provider =>
             {
                 var factory = provider.GetRequiredService<IHttpClientFactory>();
                 var settings = provider.GetRequiredService<IOptionsMonitor<RentDynamicsApiClientSettings>>().Get(clientName);
                 return ActivatorUtilities.CreateInstance<TClientImplementation>(provider, factory.CreateClient($"RentDynamics_{clientName}"), settings);
-            });
+            }, clientLifetime));
 
             return services;
         }
