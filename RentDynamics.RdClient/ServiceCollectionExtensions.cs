@@ -12,21 +12,7 @@ namespace RentDynamics.RdClient
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Register types required for the RdApi client.
-        ///
-        /// The method can be called multiple times, but it will add the required services only once.
-        /// </summary>
-        /// <param name="services"><see cref="IServiceCollection"/> object to add service to</param>
-        /// <returns>The same instance of <see cref="IServiceCollection"/></returns>
-        public static IServiceCollection TryAddCoreRentDynamicsServices(this IServiceCollection services)
-        {
-            services.TryAddScoped<INonceCalculator, NonceCalculator>();
-
-            return services;
-        }
-
-        /// <summary>
-        /// Add <typeparamref name="TClient"/> api client type with <typeparamref name="TClientImplementation"/> as implementation type using <typeparamref name="TClientSettings"/> type to get api credentials from
+        /// Add <typeparamref name="TClient"/> api client type with <typeparamref name="TClientImplementation"/> as implementation
         /// </summary>
         /// <param name="services"><see cref="IServiceCollection"/> object to add service to</param>
         /// <param name="clientName">Name to associate <paramref name="options"/> object with</param>
@@ -44,7 +30,7 @@ namespace RentDynamics.RdClient
             where TClientImplementation : RentDynamicsApiClient, TClient
         {
             services.Configure<RentDynamicsApiClientSettings>(clientName, settings => settings.Options = options);
-            services.TryAddCoreRentDynamicsServices();
+            services.TryAddScoped<INonceCalculator, NonceCalculator>();
 
             var httpClientBuilder = services.AddHttpClient($"RentDynamics_{clientName}", client => client.BaseAddress = new Uri(options.BaseUrl));
 
