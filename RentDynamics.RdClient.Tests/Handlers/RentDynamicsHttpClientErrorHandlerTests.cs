@@ -13,13 +13,13 @@ using RentDynamics.RdClient.HttpApiClient;
 namespace RentDynamics.RdClient.Tests.Handlers
 {
     [TestClass]
-    public class RentDynamicsHttpClientErrorHandlerTests : BaseHandlersTest<RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings>>
+    public class RentDynamicsHttpClientErrorHandlerTests : BaseHandlersTest<RentDynamicsHttpClientErrorHandler>
     {
-        protected override RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings> CreateHandlerUnderTest()
+        protected override RentDynamicsHttpClientErrorHandler CreateHandlerUnderTest()
         {
-            var logger = new NullLogger<RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings>>();
+            var logger = new NullLogger<RentDynamicsHttpClientErrorHandler>();
             
-            return new RentDynamicsHttpClientErrorHandler<IRentDynamicsApiClientSettings>(Mock.Of<IRentDynamicsApiClientSettings>(), logger);
+            return new RentDynamicsHttpClientErrorHandler(Mock.Of<RentDynamicsApiClientSettings>(), logger);
         }
 
         [TestMethod]

@@ -11,7 +11,7 @@ using RentDynamics.RdClient.HttpApiClient;
 namespace RentDynamics.RdClient.Tests.Handlers
 {
     [TestClass]
-    public class RentDynamicsHttpClientAuthenticationHandlerTests : BaseHandlersTest<RentDynamicsHttpClientAuthenticationHandler<RentDynamicsApiClientSettings>>
+    public class RentDynamicsHttpClientAuthenticationHandlerTests : BaseHandlersTest<RentDynamicsHttpClientAuthenticationHandler>
     {
         private const string TestNonceString = "TestNonceString";
         protected Mock<INonceCalculator> NonceCalculatorMock { get; private set; } = null!;
@@ -32,10 +32,10 @@ namespace RentDynamics.RdClient.Tests.Handlers
             Options = new RentDynamicsOptions("testApiKey", "testApiSecret", isDevelopment: true);
         }
 
-        protected override RentDynamicsHttpClientAuthenticationHandler<RentDynamicsApiClientSettings> CreateHandlerUnderTest()
+        protected override RentDynamicsHttpClientAuthenticationHandler CreateHandlerUnderTest()
         {
-            var settings = new RentDynamicsApiClientSettings(Options);
-            return new RentDynamicsHttpClientAuthenticationHandler<RentDynamicsApiClientSettings>(settings, NonceCalculatorMock.Object);
+            var settings = new RentDynamicsApiClientSettings { Options = Options };
+            return new RentDynamicsHttpClientAuthenticationHandler(settings, NonceCalculatorMock.Object);
         }
 
         [TestMethod]

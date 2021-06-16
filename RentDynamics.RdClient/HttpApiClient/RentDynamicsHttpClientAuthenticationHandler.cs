@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace RentDynamics.RdClient.HttpApiClient
 {
-    public class RentDynamicsHttpClientAuthenticationHandler<TClientSettings> : DelegatingHandler
-        where TClientSettings : IRentDynamicsApiClientSettings
+    public class RentDynamicsHttpClientAuthenticationHandler : DelegatingHandler
     {
-        private readonly TClientSettings _settings;
+        private readonly RentDynamicsApiClientSettings _settings;
         private readonly INonceCalculator _nonceCalculator;
 
         private RentDynamicsOptions Options => _settings.Options;
 
-        public RentDynamicsHttpClientAuthenticationHandler(TClientSettings settings, INonceCalculator? nonceCalculator = null)
+        public RentDynamicsHttpClientAuthenticationHandler(RentDynamicsApiClientSettings settings, INonceCalculator? nonceCalculator = null)
         {
             _settings = settings;
             _nonceCalculator = nonceCalculator ?? new NonceCalculator();
