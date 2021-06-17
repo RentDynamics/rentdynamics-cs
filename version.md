@@ -1,3 +1,3 @@
-0.3.0
-# Features
-* Remove `<TSettings>` generic parameter from `RentDynamicsApiClient` to make consuming the package easier
+0.3.1
+# Bugfixes
+* Change scope of `NonceCalculator` to be `Singleton`
