@@ -52,7 +52,7 @@ namespace RentDynamics.RdClient.HttpApiClient
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default, bool useTransientRetryPolicy = true)
+        public virtual async Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default, bool useTransientRetryPolicy = false)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
             {
