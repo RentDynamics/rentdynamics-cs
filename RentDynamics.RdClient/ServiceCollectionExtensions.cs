@@ -32,7 +32,7 @@ namespace RentDynamics.RdClient
             where TClientImplementation : RentDynamicsApiClient, TClient
         {
             services.Configure<RentDynamicsApiClientSettings>(clientName, settings => settings.Options = options);
-            services.TryAddScoped<INonceCalculator, NonceCalculator>();
+            services.TryAddSingleton<INonceCalculator, NonceCalculator>();
 
             var httpClientBuilder = services.AddHttpClient($"RentDynamics_{clientName}", client => client.BaseAddress = new Uri(options.BaseUrl));
 
