@@ -16,5 +16,7 @@ namespace RentDynamics.RdClient.HttpApiClient
 
         public string? ErrorMessage2 => GetValueOrNull("error_message");
         public string? Detail => GetValueOrNull("detail");
+
+        public string CombineAllErrorMessages() => string.Join(",", ErrorMessage, ErrorMessage2, Detail);
     }
 }
