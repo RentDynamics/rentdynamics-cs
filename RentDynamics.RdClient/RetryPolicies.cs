@@ -16,8 +16,24 @@ namespace RentDynamics.RdClient
         public static readonly TimeSpan DefaultMedianRetryDelay = TimeSpan.FromSeconds(3);
         public const int DefaultRetryCount = 3;
         
+        /// <summary>
+        /// Dictionary key under which a <see cref="ILogger"/> instance is stored in Polly's <see cref="Context"/>
+        /// </summary>
         public const string LoggerKey = nameof(LoggerKey);
 
+        /// <summary>
+        /// Creates a policy that automatically retries HTTP requests that failed with transient errors
+        /// <para>Retry conditions:
+        /// <list type="bullet">
+        /// <item><description>Network failures (as <see cref="T:System.Net.Http.HttpRequestException" />)</description></item>
+        /// <item><description>HTTP 5XX status codes (server errors)</description></item>
+        /// <item><description>HTTP 408 status code (request timeout)</description></item>
+        /// </list>
+        /// </para> 
+        /// </summary>
+        /// <param name="medianFirstRetry">Median value used to calculate delay timeouts with <see cref="Backoff.DecorrelatedJitterBackoffV2"/> strategy</param>
+        /// <param name="retryAttempts">Number of retry attempts</param>
+        /// <returns></returns>
         public static IAsyncPolicy<HttpResponseMessage> TransientRetryPolicy(TimeSpan medianFirstRetry, int retryAttempts)
         {
             var delays = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetry, retryAttempts);
@@ -43,9 +59,20 @@ namespace RentDynamics.RdClient
                    });
         }
 
+        /// <summary>
+        /// Shortcut to call <see cref="TransientRetryPolicy(System.TimeSpan,int)"/> using default parameters:
+        /// <see cref="DefaultMedianRetryDelay"/> and <see cref="DefaultMedianRetryDelay"/>
+        /// </summary>
+        /// <returns></returns>
         public static IAsyncPolicy<HttpResponseMessage> TransientRetryPolicy()
             => TransientRetryPolicy(DefaultMedianRetryDelay, DefaultRetryCount);
 
+        /// <summary>
+        /// Checks whether transient retry policy is enabled for a given <paramref name="message"/>
+        /// by checking its Property for <see cref="HttpRequestMessageProperties.UseTransientRetryPolicyForRequest"/> key
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static bool ApplyTransientRetryPolicy(HttpRequestMessage message)
         {
             return message.Properties.TryGetValue(HttpRequestMessageProperties.UseTransientRetryPolicyForRequest, out object? useRetryPolicy)
@@ -53,6 +80,19 @@ namespace RentDynamics.RdClient
         }
 
 
+        /// <summary>
+        /// Builds a top-level factory for constructing transient retry-policies.
+        /// <para>
+        /// Transient retry policy is enabled only for specific methods. See <see cref="ApplyTransientRetryPolicy"/> for details.
+        /// </para>
+        /// <para>
+        /// The factory will populate <see cref="Context"/> found in <see cref="HttpRequestMessage.Properties"/> with
+        /// a <see cref="ILogger{TCategoryName}"/> instance to allow using logger in policies. 
+        /// </para>
+        /// </summary>
+        /// <param name="policyProvider">Factory that creates the actual transient retry policy</param>
+        /// <typeparam name="TLoggerCategory">Type to use as category name for <see cref="ILogger{TCategoryName}"/></typeparam>
+        /// <returns></returns>
         public static Func<IServiceProvider, HttpRequestMessage, IAsyncPolicy<HttpResponseMessage>> CreateTransientRetryPolicyFactory<TLoggerCategory>(
             Func<IServiceProvider, IAsyncPolicy<HttpResponseMessage>> policyProvider)
         {
@@ -70,6 +110,11 @@ namespace RentDynamics.RdClient
             };
         }
 
+        /// <summary>
+        /// Shortcut for <see cref="CreateTransientRetryPolicyFactory{TLoggerCategory}"/> that uses <see cref="RentDynamicsApiClient"/>
+        /// as category for <see cref="ILogger{TCategoryName}"/>
+        /// </summary>
+        /// <returns></returns>
         public static Func<IServiceProvider, HttpRequestMessage, IAsyncPolicy<HttpResponseMessage>> CreateTransientRetryPolicyFactory(
             Func<IServiceProvider, IAsyncPolicy<HttpResponseMessage>> policyProvider)
             => CreateTransientRetryPolicyFactory<RentDynamicsApiClient>(policyProvider);
