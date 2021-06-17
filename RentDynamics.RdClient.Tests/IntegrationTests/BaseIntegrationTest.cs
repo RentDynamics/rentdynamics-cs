@@ -35,8 +35,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             ApiOptions = new RentDynamicsOptions(RdApiKey, RdApiSecretKey, isDevelopment: true);
 
             _serviceProvider = new ServiceCollection()
-                               .AddRentDynamicsApiClient<IRentDynamicsApiClient, RentDynamicsApiClient>("TestClient", ApiOptions)
-                               .BuildServiceProvider();
+                               .AddRentDynamicsApiClient<IRentDynamicsApiClient, RentDynamicsApiClient>("TestClient", ApiOptions, clientLifetime: ServiceLifetime.Singleton)
+                               .BuildServiceProvider(validateScopes: true);
 
             if (AutomaticAuthentication)
             {

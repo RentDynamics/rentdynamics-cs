@@ -32,7 +32,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
                        }));
 
             var exception = await Client.Awaiting(c => c.GetAsync(""))
-                                        .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
+                                        .Should().ThrowExactlyAsync<RentDynamicsApiException>();
 
             exception.Which.RawResponseBody.Should().Contain("My test error message");
             exception.Which.ApiError.Should().NotBeNull()
@@ -56,7 +56,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
                        });
 
             var exception = await Client.Awaiting(c => c.GetAsync(""))
-                                        .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
+                                        .Should().ThrowExactlyAsync<RentDynamicsApiException>();
 
             exception.Which.RawResponseBody.Should().Contain("My test error message");
             exception.Which.ApiError.Should().NotBeNull()
@@ -85,7 +85,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
                        });
 
             var exception = await Client.Awaiting(c => c.GetAsync(""))
-                                        .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
+                                        .Should().ThrowExactlyAsync<RentDynamicsApiException>();
             
             exception.Which.ApiError.Should().BeNull();
             exception.Which.RawResponseBody.Should().BeNull();
@@ -102,7 +102,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
                        });
 
             var exception = await Client.Awaiting(c => c.GetAsync(""))
-                                        .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
+                                        .Should().ThrowExactlyAsync<RentDynamicsApiException>();
             
             exception.Which.ApiError.Should().BeNull();
             exception.Which.RawResponseBody.Should().BeNull();
@@ -122,7 +122,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
                        });
             
             var exception = await Client.Awaiting(c => c.GetAsync(""))
-                                        .Should().ThrowExactlyAsync<RentDynamicsHttpRequestException>();
+                                        .Should().ThrowExactlyAsync<RentDynamicsApiException>();
             
             exception.Which.ApiError.Should().BeNull();
             exception.Which.RawResponseBody.Should().Be("this string is not serializable to ApiError model");

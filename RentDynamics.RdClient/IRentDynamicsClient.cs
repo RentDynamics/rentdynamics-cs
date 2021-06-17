@@ -9,10 +9,10 @@ namespace RentDynamics.RdClient
     {
         RentDynamicsOptions Options { get; }
 
-        Task<TResult> GetAsync<TResult>(string requestUri, CancellationToken token = default);
-        Task<TResult> PostAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default);
-        Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default);
-        Task<TResult> DeleteAsync<TResult>(string requestUri, CancellationToken token = default);
-        Task DeleteAsync(string requestUri, CancellationToken token = default);
+        Task<TResult> GetAsync<TResult>(string requestUri, CancellationToken token = default, bool useTransientRetryPolicy = true);
+        Task<TResult> PostAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default, bool useTransientRetryPolicy = false);
+        Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default, bool useTransientRetryPolicy = false);
+        Task<TResult> DeleteAsync<TResult>(string requestUri, CancellationToken token = default, bool useTransientRetryPolicy = false);
+        Task DeleteAsync(string requestUri, CancellationToken token = default, bool useTransientRetryPolicy = false);
     }
 }

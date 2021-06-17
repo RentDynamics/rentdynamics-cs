@@ -3,6 +3,7 @@ using System.Net.Http;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 using RentDynamics.RdClient.HttpApiClient;
 
@@ -32,17 +33,24 @@ namespace RentDynamics.RdClient
             where TClientImplementation : RentDynamicsApiClient, TClient
         {
             services.Configure<RentDynamicsApiClientSettings>(clientName, settings => settings.Options = options);
-            services.TryAddScoped<INonceCalculator, NonceCalculator>();
+            services.TryAddSingleton<INonceCalculator, NonceCalculator>();
+            var retryPolicyFactory = options.RetryPolicyFactory
+                                  ?? RdPolicies.CreateTransientRetryPolicyFactory<TClientImplementation>(_ => RdPolicies.TransientRetryPolicy());
 
             var httpClientBuilder = services.AddHttpClient($"RentDynamics_{clientName}", client => client.BaseAddress = new Uri(options.BaseUrl));
 
-            httpClientBuilder
-                .ConfigureHttpMessageHandlerBuilder(builder =>
+            httpClientBuilder                                  //Handlers are executed from bottom to top
+                .ConfigureHttpMessageHandlerBuilder(builder => //Error handler is the outer handler. We want to log error only when the last retry attempt failed
                 {
-                    RentDynamicsApiClientSettings settings = builder.Services.GetRequiredService<IOptionsMonitor<RentDynamicsApiClientSettings>>().Get(clientName);
-                    builder.AdditionalHandlers.Add(ActivatorUtilities.CreateInstance<RentDynamicsHttpClientAuthenticationHandler>(builder.Services, settings));
+                    var settings = GetClientSettings(clientName, builder);
                     builder.AdditionalHandlers.Add(ActivatorUtilities.CreateInstance<RentDynamicsHttpClientErrorHandler>(builder.Services, settings));
-                });
+                })
+                .ConfigureHttpMessageHandlerBuilder(builder => //Authentication is a handler in the middle. We want to update auth headers on every retry attempt.
+                {
+                    var settings = GetClientSettings(clientName, builder);
+                    builder.AdditionalHandlers.Add(ActivatorUtilities.CreateInstance<RentDynamicsHttpClientAuthenticationHandler>(builder.Services, settings));
+                })
+                .AddPolicyHandler(retryPolicyFactory); //Retry policy is the inner handler is the retry policy
 
             configureClient?.Invoke(httpClientBuilder);
 
@@ -54,6 +62,11 @@ namespace RentDynamics.RdClient
             }, clientLifetime));
 
             return services;
+        }
+
+        private static RentDynamicsApiClientSettings GetClientSettings(string clientName, HttpMessageHandlerBuilder builder)
+        {
+            return builder.Services.GetRequiredService<IOptionsMonitor<RentDynamicsApiClientSettings>>().Get(clientName);
         }
     }
 }

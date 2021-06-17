@@ -1,3 +1,6 @@
-0.3.0
+0.4.0
+# Bugfixes
+* Change scope of `NonceCalculator` to be `Singleton`
+
 # Features
-* Remove `<TSettings>` generic parameter from `RentDynamicsApiClient` to make consuming the package easier
+* Implement retry-policy that handles transient http errors
