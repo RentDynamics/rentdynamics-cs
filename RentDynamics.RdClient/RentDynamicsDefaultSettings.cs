@@ -1,9 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Http;
 using JetBrains.Annotations;
 using JsonNet.ContractResolvers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Polly;
+using Polly.Contrib.WaitAndRetry;
+using Polly.Extensions.Http;
+using RentDynamics.RdClient.HttpApiClient;
 
 namespace RentDynamics.RdClient
 {

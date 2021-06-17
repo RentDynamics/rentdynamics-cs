@@ -26,33 +26,58 @@ namespace RentDynamics.RdClient.HttpApiClient
             Formatters = new MediaTypeFormatter[] { JsonFormatter };
         }
 
-        public virtual async Task<TResult> GetAsync<TResult>(string requestUri, CancellationToken token = default)
+        private static void SetTransientRetryPolicyProperty(HttpRequestMessage request, bool useTransientRetryPolicy)
         {
-            var response = await HttpClient.GetAsync(requestUri, token);
+            request.Properties[HttpRequestMessageProperties.UseTransientRetryPolicyForRequest] = useTransientRetryPolicy;
+        }
+
+        public virtual async Task<TResult> GetAsync<TResult>(string requestUri, CancellationToken token = default, bool useTransientRetryPolicy = true)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            SetTransientRetryPolicyProperty(request, useTransientRetryPolicy);
+            
+            var response = await HttpClient.SendAsync(request, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> PostAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default)
+        public virtual async Task<TResult> PostAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default, bool useTransientRetryPolicy = false)
         {
-            var response = await HttpClient.PostAsync(requestUri, data, JsonFormatter, token);
+            var request = new HttpRequestMessage(HttpMethod.Post, requestUri)
+            {
+                Content = new ObjectContent<TRequest>(data, JsonFormatter)
+            };
+            SetTransientRetryPolicyProperty(request, useTransientRetryPolicy);
+            
+            var response = await HttpClient.SendAsync(request, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default)
+        public virtual async Task<TResult> PutAsync<TRequest, TResult>(string requestUri, TRequest data, CancellationToken token = default, bool useTransientRetryPolicy = true)
         {
-            var response = await HttpClient.PutAsync(requestUri, data, JsonFormatter, token);
+            var request = new HttpRequestMessage(HttpMethod.Put, requestUri)
+            {
+                Content = new ObjectContent<TRequest>(data, JsonFormatter)
+            };
+            SetTransientRetryPolicyProperty(request, useTransientRetryPolicy);
+            
+            var response = await HttpClient.SendAsync(request, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual async Task<TResult> DeleteAsync<TResult>(string requestUri, CancellationToken token = default)
+        public virtual async Task<TResult> DeleteAsync<TResult>(string requestUri, CancellationToken token = default, bool useTransientRetryPolicy = false)
         {
-            var response = await HttpClient.DeleteAsync(requestUri, token);
+            var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
+            SetTransientRetryPolicyProperty(request, useTransientRetryPolicy);
+            
+            var response = await HttpClient.SendAsync(request, token);
             return await response.Content.ReadAsAsync<TResult>(Formatters, token);
         }
 
-        public virtual Task DeleteAsync(string requestUri, CancellationToken token = default)
+        public virtual Task DeleteAsync(string requestUri, CancellationToken token = default, bool useTransientRetryPolicy = false)
         {
-            return HttpClient.DeleteAsync(requestUri, token);
+            var request = new HttpRequestMessage(HttpMethod.Delete, requestUri);
+            SetTransientRetryPolicyProperty(request, useTransientRetryPolicy);
+            return HttpClient.SendAsync(request, token);
         }
     }
 }
