@@ -69,7 +69,7 @@ namespace RentDynamics.RdClient
 
         /// <summary>
         /// Checks whether transient retry policy is enabled for a given <paramref name="message"/>
-        /// by checking its Property for <see cref="HttpRequestMessageProperties.UseTransientRetryPolicyForRequest"/> key
+        /// by checking its <see cref="HttpRequestMessage.Properties"/> for <see cref="HttpRequestMessageProperties.UseTransientRetryPolicyForRequest"/> key presense
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
