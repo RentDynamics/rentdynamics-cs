@@ -22,7 +22,7 @@
     <Import Project="../common.targets" />
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
         <PackageReference Include="JsonNet.ContractResolvers" Version="1.1.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
