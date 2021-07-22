@@ -105,7 +105,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
                                         .Should().ThrowExactlyAsync<RentDynamicsApiException>();
             
             exception.Which.ApiError.Should().BeNull();
-            exception.Which.RawResponseBody.Should().BeNull();
+            exception.Which.RawResponseBody.Should().Be(string.Empty);
         }
 
         [TestMethod]

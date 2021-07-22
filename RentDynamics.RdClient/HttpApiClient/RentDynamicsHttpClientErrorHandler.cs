@@ -23,8 +23,6 @@ namespace RentDynamics.RdClient.HttpApiClient
         protected virtual bool ShouldTryReadResponseBody(HttpResponseMessage responseMessage)
         {
             HttpContent? content = responseMessage.Content;
-            if (content == null) return false;
-
             long? contentLength = content.Headers.ContentLength;
 
             if (contentLength == null) return true;
