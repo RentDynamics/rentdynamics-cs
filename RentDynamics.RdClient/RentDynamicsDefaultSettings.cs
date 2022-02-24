@@ -15,7 +15,7 @@ namespace RentDynamics.RdClient
             ContractResolver = new PrivateSetterCamelCasePropertyNamesContractResolver(),
             DefaultValueHandling = DefaultValueHandling.Include,
             TypeNameHandling = TypeNameHandling.None,
-            NullValueHandling = NullValueHandling.Ignore,
+            NullValueHandling = NullValueHandling.Include,
             Formatting = Formatting.None,
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
             Converters = new List<JsonConverter> { new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal } }
