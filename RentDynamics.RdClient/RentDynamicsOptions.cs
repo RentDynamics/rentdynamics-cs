@@ -32,7 +32,7 @@ namespace RentDynamics.RdClient
             ApiSecretKey = apiSecretKey ?? throw new ArgumentNullException(nameof(apiSecretKey));
             UserAuthentication = new UserAuthentication();
             IsDevelopment = isDevelopment;
-            DevelopmentUrl = developmentUrl ?? "https://api-dev.rentdynamics.com";
+            DevelopmentUrl = developmentUrl ?? "https://api.rentdynamics.dev";
             ProductionUrl = productionUrl ?? "https://api.rentdynamics.com";
 
             configureUserAuthentication?.Invoke(UserAuthentication);
