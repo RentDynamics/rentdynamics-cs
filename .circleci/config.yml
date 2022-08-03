@@ -1,5 +1,6 @@
 version: 2.1
-
+orbs:
+  codecov: codecov/codecov@3.2.3
 commands:
   store_build_date:
     steps:
@@ -76,16 +77,8 @@ jobs:
       - store_test_results:
           path: test-results
           when: always
-      - run:
-          name: Upload Code coverage results
-          command: |
-            dotnet tool install -g codecov.tool || true
-  
-            covfile=$(find . -name "coverage.cobertura.xml" | head -1)
-            echo "Cov file path: $covfile"
-
-            ~/.dotnet/tools/codecov -f "$covfile"
-          when: always
+      - codecov/upload:
+          file: './coverage/cobertura.xml'
       - save_cache:
           key: dotnet-rd-client-lib-6.0
           paths:
