@@ -51,8 +51,8 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
             {
                 var jContent = await message.Content.ReadAsAsync<JObject>();
 
-                jContent.Should().ContainKey("id").WhichValue.Value<int>().Should().Be(100500);
-                jContent.Should().ContainKey("nameProperty").WhichValue.Value<string>().Should().Be("MyTestName");
+                jContent.Should().ContainKey("id").WhoseValue.Value<int>().Should().Be(100500);
+                jContent.Should().ContainKey("nameProperty").WhoseValue.Value<string>().Should().Be("MyTestName");
 
                 return true;
             });

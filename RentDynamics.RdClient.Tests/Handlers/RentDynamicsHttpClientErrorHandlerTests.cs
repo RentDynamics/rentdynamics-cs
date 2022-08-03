@@ -36,7 +36,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
 
             exception.Which.RawResponseBody.Should().Contain("My test error message");
             exception.Which.ApiError.Should().NotBeNull()
-                     .And.ContainKey("errorMessage").WhichValue.Should().Be("My test error message");
+                     .And.ContainKey("errorMessage").WhoseValue.Should().Be("My test error message");
 
             exception.Which.ApiError!.ErrorMessage.Should().Be("My test error message");
         }
@@ -60,7 +60,7 @@ namespace RentDynamics.RdClient.Tests.Handlers
 
             exception.Which.RawResponseBody.Should().Contain("My test error message");
             exception.Which.ApiError.Should().NotBeNull()
-                     .And.ContainKey("errorMessage").WhichValue.Should().Be("My test error message");
+                     .And.ContainKey("errorMessage").WhoseValue.Should().Be("My test error message");
 
             exception.Which.ApiError!.ErrorMessage.Should().Be("My test error message");
         }
