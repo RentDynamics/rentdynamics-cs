@@ -78,6 +78,7 @@ jobs:
           path: test-results
           when: always
       - codecov/upload:
+          when: always
       - save_cache:
           key: dotnet-rd-client-lib-6.0
           paths:
