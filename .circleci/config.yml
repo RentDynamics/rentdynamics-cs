@@ -78,7 +78,6 @@ jobs:
           path: test-results
           when: always
       - codecov/upload:
-          file: './coverage/cobertura.xml'
           validate: false
       - save_cache:
           key: dotnet-rd-client-lib-6.0
