@@ -194,7 +194,7 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
                                                                                     new DateTime(2019, 10, 31),
                                                                                     new DateTime(2019, 11, 12));
 
-            Assert.IsNull(appointmentDays);
+            Assert.IsNotNull(appointmentDays);
         }
 
         [TestMethod]
