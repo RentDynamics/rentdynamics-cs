@@ -6,11 +6,6 @@
         <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
-	<PropertyGroup>
-		<Nullable>enable</Nullable>
-		<LangVersion>8.0</LangVersion>
-	</PropertyGroup>
-
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DocumentationFile>bin\Debug\RentDynamics.RdClient.xml</DocumentationFile>
     </PropertyGroup>
