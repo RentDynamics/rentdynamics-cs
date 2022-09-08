@@ -12,7 +12,7 @@ namespace RentDynamics.RdClient.HttpApiClient
         private readonly RentDynamicsApiClientSettings _settings;
         private readonly INonceCalculator _nonceCalculator;
 
-        private RentDynamicsOptions Options => _settings.Options;
+        private RentDynamicsOptions Options => _settings.Options!;
 
         public RentDynamicsHttpClientAuthenticationHandler(RentDynamicsApiClientSettings settings, INonceCalculator? nonceCalculator = null)
         {

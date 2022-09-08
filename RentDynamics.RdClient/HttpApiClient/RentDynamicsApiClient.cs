@@ -20,7 +20,7 @@ namespace RentDynamics.RdClient.HttpApiClient
         public RentDynamicsApiClient(HttpClient httpClient, RentDynamicsApiClientSettings settings)
         {
             HttpClient = httpClient;
-            Options = settings.Options;
+            Options = settings.Options!;
 
             JsonFormatter = new JsonMediaTypeFormatter { SerializerSettings = settings.JsonSerializerSettings };
             Formatters = new MediaTypeFormatter[] { JsonFormatter };
