@@ -228,8 +228,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             string AddFeedbackToPropertyManagementSystem = "AddFeedbackToPropertyManagementSystem";
             var apiClient = CreateApiClient();
             var resource = new MessageQueueResource(apiClient);
-
-            var res = await resource.EnqueueMessageAsync(communityId, 1, payload, AddFeedbackToPropertyManagementSystem, DateTime.UtcNow);
+            var messageQueue = new MessageQueueVM(communityId, 1, payload, AddFeedbackToPropertyManagementSystem, DateTime.UtcNow);
+            var res = await resource.EnqueueMessageAsync(messageQueue);
 
             Console.WriteLine(JsonConvert.SerializeObject(res, Formatting.Indented));
 
