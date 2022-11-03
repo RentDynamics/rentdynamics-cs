@@ -13,7 +13,7 @@ namespace RentDynamics.RdClient.Resources.MessageQueue
         {
         }
 
-        public async Task<int> EnqueueMessage(
+        public async Task<int> EnqueueMessageAsync(
             int communityId, 
             int clientId,
             Dictionary<string, string> payload, 
@@ -22,13 +22,8 @@ namespace RentDynamics.RdClient.Resources.MessageQueue
         { 
             var messageQueue = new MessageQueueVM(communityId, clientId, payload, messageType, scheduledTime);
 
-            var result = await CreateEnqueueMessageAsync(messageQueue);
+            var result = await ApiClient.PostAsync<MessageQueueVM, int>("/svc/pm-sync/MessageQueue/Enqueue", messageQueue);
             return result;
-        }
-
-        public Task<int> CreateEnqueueMessageAsync(MessageQueueVM request, CancellationToken token = default)
-        {
-            return ApiClient.PostAsync<MessageQueueVM, int>("/svc/pm-sync/MessageQueue/Enqueue", request, token);
         }
     }
 }
