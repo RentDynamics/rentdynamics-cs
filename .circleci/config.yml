@@ -6,7 +6,7 @@ commands:
       - run:
           command: |
             mkdir release_info && cd release_info
-            
+
             date +'%Y%m%d' | cat > build_date.txt
             echo ${CIRCLE_BUILD_NUM} > build_num.txt
       - persist_to_workspace:
@@ -64,14 +64,16 @@ jobs:
           is_prerelease: << parameters.is_prerelease >>
       - run:
           name: Compile
-          command: dotnet build -c Release --packages .packages -p:Version="$FINAL_VERSION"
+          command: dotnet build -c Release --packages .packages
+            -p:Version="$FINAL_VERSION"
       - run:
           name: Unit Tests
           command: |
             dotnet test -c Release -v normal --logger "trx" --no-restore --no-build --collect:"XPlat Code Coverage"
       - run:
           name: Convert test trx files to JUnit
-          command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
+          command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit
+            RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
           when: always
       - store_test_results:
           path: test-results
@@ -80,7 +82,7 @@ jobs:
           name: Upload Code coverage results
           command: |
             dotnet tool install -g codecov.tool || true
-  
+
             covfile=$(find . -name "coverage.cobertura.xml" | head -1)
             echo "Cov file path: $covfile"
 
@@ -92,7 +94,8 @@ jobs:
             - .packages
       - run:
           name: Pack Release
-          command: dotnet pack -c Release -o out/lib --no-restore --no-build -p:Version="$FINAL_VERSION"
+          command: dotnet pack -c Release -o out/lib --no-restore --no-build
+            -p:Version="$FINAL_VERSION"
       - persist_to_workspace:
           root: out
           paths:
@@ -105,7 +108,10 @@ jobs:
           at: out
       - run:
           name: Publish to Nuget.org
-          command: dotnet nuget push out/lib/**/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+          command: dotnet nuget push out/lib/**/*.nupkg --source
+            https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
   publish_github_release:
     docker:
       - image: cibuilds/github:0.13
@@ -147,7 +153,6 @@ jobs:
             then
               exit 1
             fi
-
 
 workflows:
   version: 2
