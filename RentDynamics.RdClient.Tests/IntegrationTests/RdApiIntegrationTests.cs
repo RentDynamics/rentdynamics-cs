@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RentDynamics.RdClient.Resources.Appointment;
 using RentDynamics.RdClient.Resources.LeadCard;
+using RentDynamics.RdClient.Resources.MessageQueue;
 
 namespace RentDynamics.RdClient.Tests.IntegrationTests
 {
@@ -213,6 +214,26 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
             {
                 Assert.Inconclusive("No conversations available");
             }
+        }
+
+        [TestMethod]
+        public async Task CreateEnqueueMessage()
+        {
+            int communityId = AvailableCommunityId;
+            Dictionary<string, string> payload = new Dictionary<string, string>
+            {
+              { "leadID", "12314" },
+              { "communityID", communityId.ToString() }
+            };
+            string AddFeedbackToPropertyManagementSystem = "AddFeedbackToPropertyManagementSystem";
+            var apiClient = CreateApiClient();
+            var resource = new MessageQueueResource(apiClient);
+            var messageQueue = new MessageQueueVM(communityId, 1, payload, AddFeedbackToPropertyManagementSystem, DateTime.UtcNow);
+            var res = await resource.EnqueueMessageAsync(messageQueue);
+
+            Console.WriteLine(JsonConvert.SerializeObject(res, Formatting.Indented));
+
+            res.Should().BeGreaterThan(0);
         }
     }
 }
