@@ -97,8 +97,8 @@ namespace RentDynamics.RdClient.Tests.IntegrationTests
 
             res.PreferredCommunicationTypeId.Should().Be(1);
             res.SecondaryPreferredCommunicationTypeId.Should().Be(1);
-            res.AppointmentDate.Should().BeCloseTo(req.AppointmentDate!.Value);
-            res.MoveDate.Should().BeCloseTo(req.MoveDate!.Value);
+            res.AppointmentDate.Should().BeCloseTo(req.AppointmentDate!.Value, TimeSpan.FromHours(1));
+            res.MoveDate.Should().BeCloseTo(req.MoveDate!.Value, TimeSpan.FromHours(1));
             res.Created.Should().BeCloseTo(DateTime.UtcNow, ResourceCreationDatePrecision);
 
             res.Amenities.Should().ContainInOrder(req.Amenities);

@@ -1,5 +1,6 @@
 version: 2.1
-
+orbs:
+  codecov: codecov/codecov@3.2.4
 commands:
   store_build_date:
     steps:
@@ -52,13 +53,13 @@ jobs:
         type: boolean
         default: false
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
 
     steps:
       - checkout
       - restore_cache:
           keys:
-            - dotnet-rd-client-lib
+            - dotnet-rd-client-lib-7.0
       - store_build_date
       - export_final_version:
           is_prerelease: << parameters.is_prerelease >>
@@ -76,18 +77,10 @@ jobs:
       - store_test_results:
           path: test-results
           when: always
-      - run:
-          name: Upload Code coverage results
-          command: |
-            dotnet tool install -g codecov.tool || true
-  
-            covfile=$(find . -name "coverage.cobertura.xml" | head -1)
-            echo "Cov file path: $covfile"
-
-            ~/.dotnet/tools/codecov -f "$covfile"
-          when: always
+      - codecov/upload:
+          validate: false
       - save_cache:
-          key: dotnet-rd-client-lib
+          key: dotnet-rd-client-lib-7.0
           paths:
             - .packages
       - run:
@@ -99,7 +92,7 @@ jobs:
             - lib
   publish_nuget_release:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
     steps:
       - attach_workspace:
           at: out

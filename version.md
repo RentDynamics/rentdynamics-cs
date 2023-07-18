@@ -1,4 +1,9 @@
-0.5.0
+0.6.0
 
-# Features
+### Changed
+* Upgrade project to .net 7
+
+## 0.5.0 -- 2022-11-07
+
+## Features
 * Add CreateEnqueueMessage

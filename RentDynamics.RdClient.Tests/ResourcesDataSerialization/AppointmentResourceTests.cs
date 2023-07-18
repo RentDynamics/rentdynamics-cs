@@ -41,8 +41,8 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
 
                 message.RequestUri.TryReadQueryAs<Dictionary<string, object>>(out var queryDict).Should().BeTrue();
                 
-                queryDict.Should().ContainKey("appointmentDate").WhichValue.Should().Be("09/18/2020");
-                queryDict.Should().ContainKey("utc").WhichValue.Should().BeOfType<string>().Which.Should().ContainEquivalentOf("true");
+                queryDict.Should().ContainKey("appointmentDate").WhoseValue.Should().Be("09/18/2020");
+                queryDict.Should().ContainKey("utc").WhoseValue.Should().BeOfType<string>().Which.Should().ContainEquivalentOf("true");
                 
                 return true;
             });
@@ -63,8 +63,8 @@ namespace RentDynamics.RdClient.Tests.ResourcesDataSerialization
                 message.RequestUri.AbsolutePath.Should().Be($"/appointmentDays/{communityGroupId}");
                 message.RequestUri.TryReadQueryAs<Dictionary<string, object>>(out var queryDict).Should().BeTrue();
 
-                queryDict.Should().ContainKey("start").WhichValue.Should().Be("10/31/2019");
-                queryDict.Should().ContainKey("end").WhichValue.Should().Be("11/02/2019");
+                queryDict.Should().ContainKey("start").WhoseValue.Should().Be("10/31/2019");
+                queryDict.Should().ContainKey("end").WhoseValue.Should().Be("11/02/2019");
                 return true;
             });
             
