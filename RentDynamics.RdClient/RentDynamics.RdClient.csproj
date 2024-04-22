@@ -4,6 +4,7 @@
         <RootNamespace>RentDynamics.RdClient</RootNamespace>
         <AssemblyName>RentDynamics.RdClient</AssemblyName>
         <NoWarn>$(NoWarn);1591</NoWarn>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
