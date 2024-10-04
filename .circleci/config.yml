@@ -53,13 +53,13 @@ jobs:
         type: boolean
         default: false
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:7.0
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
 
     steps:
       - checkout
       - restore_cache:
           keys:
-            - dotnet-rd-client-lib-7.0
+            - dotnet-rd-client-lib-8.0
       - store_build_date
       - export_final_version:
           is_prerelease: << parameters.is_prerelease >>
@@ -80,7 +80,7 @@ jobs:
       - codecov/upload:
           validate: false
       - save_cache:
-          key: dotnet-rd-client-lib-7.0
+          key: dotnet-rd-client-lib-8.0
           paths:
             - .packages
       - run:
@@ -92,7 +92,7 @@ jobs:
             - lib
   publish_nuget_release:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:7.0
+      - image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
       - attach_workspace:
           at: out
