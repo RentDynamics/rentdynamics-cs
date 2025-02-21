@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -22,7 +23,7 @@ namespace RentDynamics.RdClient
                 jProperty.Remove();
             }
 
-            foreach (JProperty jProperty in properties.OrderBy(a => a.Name))
+            foreach (JProperty jProperty in properties.OrderBy(a => a.Name, StringComparer.Ordinal))
             {
                 jObject.Add(jProperty);
                 SortJProperty(jProperty);
