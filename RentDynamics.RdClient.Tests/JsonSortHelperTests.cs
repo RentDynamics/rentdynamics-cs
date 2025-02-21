@@ -50,6 +50,21 @@ namespace RentDynamics.RdClient.Tests
         }
 
         [TestMethod]
+        public void ObjectProperties_ShouldBeSorted_ByAscii()
+        {
+            var unsortedDictionary = new Dictionary<string, object>
+            {
+                { "Id", 2 },
+                { "ID", 1 }
+            };
+
+            var jObject = JObject.FromObject(unsortedDictionary);
+            JsonSortHelper.Sort(jObject);
+
+            ShouldBeSorted(jObject);
+        }
+
+        [TestMethod]
         public void ObjectProperties_ShouldBeSorted_WhenObjectIsInsideArray()
         {
             var unsortedDictionary = new Dictionary<string, object>
