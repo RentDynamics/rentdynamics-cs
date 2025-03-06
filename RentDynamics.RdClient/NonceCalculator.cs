@@ -24,12 +24,6 @@ namespace RentDynamics.RdClient
             };
 
             var jToken = await JToken.LoadAsync(reader).ConfigureAwait(false);
-            if (jToken is JArray jArray)
-            {
-                JsonSortHelper.Sort(jArray);
-                return jArray.ToString(Formatting.None);
-            }
-
             JsonSortHelper.Sort(jToken);
             return jToken.ToString(Formatting.None);
         }
