@@ -1,4 +1,3 @@
-using FluentAssertions;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,7 +25,7 @@ public class NonceCalculatorTests
             """
             [{"a":1,"b":2,"c":3},{"x":2,"y":3,"z":1}]
             """;
-        sortedJson.Should().Be(sortedPayload);
+        Assert.AreEqual(sortedPayload, sortedJson);
     }
 
     [TestMethod]
@@ -47,6 +46,6 @@ public class NonceCalculatorTests
             """
             {"a":1,"b":2,"c":3}
             """;
-        sortedJson.Should().Be(sortedPayload);
+        Assert.AreEqual(sortedPayload, sortedJson);
     }
 }
