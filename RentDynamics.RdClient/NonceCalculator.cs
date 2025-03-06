@@ -23,23 +23,15 @@ namespace RentDynamics.RdClient
                 DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone,
             };
 
-            try
+            var jToken = await JToken.LoadAsync(reader).ConfigureAwait(false);
+            if (jToken is JArray jArray)
             {
-                JObject jObject = await JObject.LoadAsync(reader).ConfigureAwait(false);
-                JsonSortHelper.Sort(jObject);
-                return jObject.ToString(Formatting.None);
-            }
-            catch (JsonReaderException ex) when (
-                ex.Message.IndexOf(
-                    "Current JsonReader item is not an object: StartArray.",
-                    StringComparison.OrdinalIgnoreCase
-                ) >= 0
-              )
-            {
-                JArray jArray = await JArray.LoadAsync(reader).ConfigureAwait(false);
                 JsonSortHelper.Sort(jArray);
                 return jArray.ToString(Formatting.None);
             }
+
+            JsonSortHelper.Sort(jToken);
+            return jToken.ToString(Formatting.None);
         }
 
         private static async Task<string?> PrepareBodyAsync(TextReader? dataReader)
