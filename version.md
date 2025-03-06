@@ -1,4 +1,9 @@
-0.7.1
+0.7.2
+
+### Changed
+* Update json sort to handle arrays
+
+## 0.7.1 -- 2025-02-21
 
 ### Changed
 * Update json sort helper to do an ordinal sort

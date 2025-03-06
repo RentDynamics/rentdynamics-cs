@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -14,7 +15,7 @@ namespace RentDynamics.RdClient
 
     public class NonceCalculator : INonceCalculator
     {
-        private static async Task<string> GetSortedJsonAsync(TextReader unsortedJsonReader)
+        internal static async Task<string> GetSortedJsonAsync(TextReader unsortedJsonReader)
         {
             using var reader = new JsonTextReader(unsortedJsonReader)
             {
@@ -22,10 +23,23 @@ namespace RentDynamics.RdClient
                 DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone,
             };
 
-            JObject jObject = await JObject.LoadAsync(reader).ConfigureAwait(false);
-            JsonSortHelper.Sort(jObject);
-
-            return jObject.ToString(Formatting.None);
+            try
+            {
+                JObject jObject = await JObject.LoadAsync(reader).ConfigureAwait(false);
+                JsonSortHelper.Sort(jObject);
+                return jObject.ToString(Formatting.None);
+            }
+            catch (JsonReaderException ex) when (
+                ex.Message.IndexOf(
+                    "Current JsonReader item is not an object: StartArray.",
+                    StringComparison.OrdinalIgnoreCase
+                ) >= 0
+              )
+            {
+                JArray jArray = await JArray.LoadAsync(reader).ConfigureAwait(false);
+                JsonSortHelper.Sort(jArray);
+                return jArray.ToString(Formatting.None);
+            }
         }
 
         private static async Task<string?> PrepareBodyAsync(TextReader? dataReader)
