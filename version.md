@@ -1,4 +1,9 @@
-0.7.2
+0.7.3
+
+### Changed
+* Update json sort to only read once
+
+## 0.7.2 -- 2025-03-05
 
 ### Changed
 * Update json sort to handle arrays
