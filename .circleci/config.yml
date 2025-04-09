@@ -148,13 +148,17 @@ workflows:
     jobs:
       - build:
           is_prerelease: true
-          context: DotNetBuild
+          context:
+            - DotNetBuild
+            - RentDynamicsGeneral
           filters:
             branches:
               ignore:
                 - master
       - publish_nuget_release:
-          context: DotNetBuild
+          context:
+            - DotNetBuild
+            - RentDynamicsGeneral
           filters:
             branches:
               only: /.*__dev$/
@@ -162,7 +166,9 @@ workflows:
             - build
       - publish_github_release:
           is_prerelease: true
-          context: DotNetBuild
+          context:
+            - DotNetBuild
+            - RentDynamicsGeneral
           filters:
             branches:
               only: /.*__dev$/
@@ -173,17 +179,23 @@ workflows:
     jobs:
       - build:
           is_prerelease: false
-          context: DotNetBuild
+          context:
+            - DotNetBuild
+            - RentDynamicsGeneral
           filters:
             branches:
               only: master
       - publish_nuget_release:
-          context: DotNetBuild
+          context:
+            - DotNetBuild
+            - RentDynamicsGeneral
           requires:
             - build
       - publish_github_release:
           is_prerelease: false
-          context: DotNetBuild
+          context:
+            - DotNetBuild
+            - RentDynamicsGeneral
           requires:
             - build
             - publish_nuget_release
