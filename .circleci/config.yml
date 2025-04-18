@@ -79,6 +79,18 @@ jobs:
           when: always
       - codecov/upload:
           validate: false
+      - run:
+         name: Run Backslash
+         command: |
+           # Download the latest CLI for Linux amd64
+           curl https://s3.amazonaws.com/cli-bin.backslash.security/latest/backslashctl-linux-x64 -o backslashctl
+           # Verify the checksum of the binary
+           echo "$(curl -s https://s3.amazonaws.com/cli-sha.backslash.security/latest/backslashctl-linux-x64.sha256)  backslashctl" | sha256sum -c
+           # Modify the permissions of the binary to ensure it is executable
+           chmod +x ./backslashctl
+           # Create an alias backslashctl of the binary to ensure it is available in other directory
+           alias backslashctl="$PWD/backslashctl"
+           ./backslashctl analyze --repositoryCloneUrl="${CIRCLE_REPOSITORY_URL}" --analyzedBranch="${CIRCLE_BRANCH}" --baselineBranch="master" --gitProvider="github" --gitProviderOrganization="RentDynamics" --deltaScan=true --authToken="${BACKSLASH_AUTH_TOKEN}"
       - save_cache:
           key: dotnet-rd-client-lib-8.0
           paths:
