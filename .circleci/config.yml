@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  codecov: codecov/codecov@3.2.4
 commands:
   store_build_date:
     steps:
@@ -69,7 +67,7 @@ jobs:
       - run:
           name: Unit Tests
           command: |
-            dotnet test -c Release -v normal --logger "trx" --no-restore --no-build --collect:"XPlat Code Coverage"
+            dotnet test -c Release -v normal --logger "trx" --no-restore --no-build
       - run:
           name: Convert test trx files to JUnit
           command: dotnet tool install -g trx2junit || true && ~/.dotnet/tools/trx2junit RentDynamics.RdClient.Tests/TestResults/*.trx --output test-results
@@ -77,8 +75,6 @@ jobs:
       - store_test_results:
           path: test-results
           when: always
-      - codecov/upload:
-          validate: false
       - run:
          name: Run Backslash
          command: |
