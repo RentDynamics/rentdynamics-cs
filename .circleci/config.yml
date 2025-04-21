@@ -202,6 +202,7 @@ workflows:
           context:
             - DotNetBuild
             - RentDynamicsGeneral
+            - Nuget
           requires:
             - build
       - publish_github_release:
