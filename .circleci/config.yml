@@ -171,6 +171,7 @@ workflows:
           context:
             - DotNetBuild
             - RentDynamicsGeneral
+            - Nuget
           filters:
             branches:
               only: /.*__dev$/
