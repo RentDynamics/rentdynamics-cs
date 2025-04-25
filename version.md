@@ -1,4 +1,9 @@
-0.7.3
+0.7.4
+
+### Changed
+* Error handling around JToken.Load
+
+## 0.7.3 -- 2025-04-24
 
 ### Changed
 * Update json sort to only read once

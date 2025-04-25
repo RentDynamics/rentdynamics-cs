@@ -15,7 +15,7 @@ namespace RentDynamics.RdClient
 
     public class NonceCalculator : INonceCalculator
     {
-        internal static async Task<string> GetSortedJsonAsync(TextReader unsortedJsonReader)
+        internal static async Task<string?> GetSortedJsonAsync(TextReader unsortedJsonReader)
         {
             using var reader = new JsonTextReader(unsortedJsonReader)
             {
@@ -23,7 +23,18 @@ namespace RentDynamics.RdClient
                 DateParseHandling = DateParseHandling.None //Prevent DateTime values from being converted to local timezone,
             };
 
-            var jToken = await JToken.LoadAsync(reader).ConfigureAwait(false);
+            JToken? jToken;
+            try
+            {
+                jToken = await JToken.LoadAsync(reader).ConfigureAwait(false);
+            }
+            catch (JsonReaderException)
+            {
+                // Calling LoadAsync on a null or empty string will throw an exception.
+                // This can happen when we call POST/PUT/DELETE with URL arg's and no payload
+                return null;
+            }
+
             JsonSortHelper.Sort(jToken);
             return jToken.ToString(Formatting.None);
         }
@@ -32,8 +43,8 @@ namespace RentDynamics.RdClient
         {
             if (dataReader == null) return null;
 
-            string sortedJson = await GetSortedJsonAsync(dataReader).ConfigureAwait(false);
-            return sortedJson.Replace(" ", string.Empty);
+            string? sortedJson = await GetSortedJsonAsync(dataReader).ConfigureAwait(false);
+            return sortedJson?.Replace(" ", string.Empty);
         }
 
         private static string ComputeHash(string apiSecretKey, string nonceString)
