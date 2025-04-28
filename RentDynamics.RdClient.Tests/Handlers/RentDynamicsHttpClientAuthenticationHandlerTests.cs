@@ -105,5 +105,26 @@ namespace RentDynamics.RdClient.Tests.Handlers
 
             NonceCalculatorMock.Verify(c => c.GetNonceAsync(Options.ApiSecretKey, It.IsAny<long>(), urlWithQueryParams, It.IsNotNull<TextReader?>()));
         }
+
+        [TestMethod]
+        public void Test_ConvertNullTypeBodyToNull_EmptyBodyBecomesNull()
+        {
+            var body = "{}";
+
+            var result = NonceCalculator.ConvertNullTypeBodyToNull(body);
+
+            Assert.AreNotEqual(body, result);
+            Assert.AreEqual(result, null);
+        }
+
+        [TestMethod]
+        public void Test_ConvertNullTypeBodyToNull_BodyRemainsIntact()
+        {
+            var body = """{"Test":1}""";
+
+            var result = NonceCalculator.ConvertNullTypeBodyToNull(body);
+
+            Assert.AreEqual(result, body);
+        }
     }
 }

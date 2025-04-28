@@ -44,7 +44,9 @@ namespace RentDynamics.RdClient
             if (dataReader == null) return null;
 
             string? sortedJson = await GetSortedJsonAsync(dataReader).ConfigureAwait(false);
-            return sortedJson?.Replace(" ", string.Empty);
+            string? sortedJsonWithoutWhitespace = sortedJson?.Replace(" ", string.Empty);
+
+            return ConvertNullTypeBodyToNull(sortedJsonWithoutWhitespace);
         }
 
         private static string ComputeHash(string apiSecretKey, string nonceString)
@@ -62,6 +64,11 @@ namespace RentDynamics.RdClient
             string nonceString = unixTimestampMilliseconds + relativeUrl + body;
 
             return ComputeHash(apiSecretKey, nonceString);
+        }
+
+        internal static string? ConvertNullTypeBodyToNull(string? body)
+        {
+            return body != "{}" ? body : null;
         }
     }
 }

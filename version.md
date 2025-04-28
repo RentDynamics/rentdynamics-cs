@@ -1,4 +1,9 @@
-0.7.4
+0.7.5
+
+### Changed
+* Convert empty JSON body to null
+
+## 0.7.4 -- 2025-04-28
 
 ### Changed
 * Error handling around JToken.Load
